@@ -3,6 +3,7 @@ User features
     - user authentication - limited to mimuw students, as simple as possible
       for the user
     - ability to register and report lost/found items: hats (main) and non-hats
+      (two categories)
 
     - registering items: user uploads photo(s) of item along with short text
       description; data is validated by server, user receives error if data
@@ -17,7 +18,20 @@ User features
       manually in app/website, potential connection with external message bots
     - when matching lost items, prioritize items marked as lost, then all
       registered items, finally post globally
+      
+    - global newsfeed, lists of items that are currently found/lost, sorting/filtering
+      by category, time etc.
 
+	- rewards for finding lost items (different cases: user reporting lost item
+	  gives reward to the person who found it, some reward for any valid cases of
+	  reporting found items, initial reward for registering any hat
+	- public ranklist based on reward amount (XP/cash) and fancy MIMUW names
+	  for each level (1 - WPI, 2 - MD etc.) 
+	 
+	- events integration (from external sources like webcams) - adding lost items
+	  from cameras 
+	
+	  
 Detailed features
     - 
     - global posts - just photo + text with ability to mark as found and simple
