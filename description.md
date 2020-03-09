@@ -20,7 +20,7 @@ User features
 
   * notifying users of items being found: push notifications, email, check
     manually in app/website
-  * possible extension: connection with external message bots
+  * unimplemented: connection with external message bots
   * when matching lost items, prioritize items marked as lost, then all
     registered items, finally post globally - simple posts consisting of photo
     and text with ability to mark as found and simple interaction - bumping,
@@ -35,11 +35,12 @@ User features
   * public ranklist based on reward amount (XP/cash) and fancy MIMUW names
     for each level (1 - WPI, 2 - MD etc.) 
    
-  * events integration (from external sources like webcams) - adding lost items
-    from cameras 
+  * unimplemented: events integration (from external sources like webcams) -
+    adding lost items from cameras 
 
 Backend features
 -----
   * classifier for validating type of object
   * model for matching submitted found items with lost/registered items
-  * model for predicting areas with most often lost items
+  * unimplemented: modelling areas with most often lost items, predicting where
+    new items might be lost and giving hints to users
