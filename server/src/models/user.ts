@@ -1,6 +1,6 @@
-import { Document, Schema, Model, model, Error } from "mongoose";
+import {Document, Schema, Model, model, Error} from 'mongoose';
 
-export interface IUser extends Document {
+export interface Authorizable extends Document {
   username: string;
   password: string;
 }
@@ -10,17 +10,21 @@ export const userSchema: Schema = new Schema({
   password: String,
 });
 
-
-userSchema.pre<IUser>("save", function save(next) {
-  const user = this;
-
+userSchema.pre<Authorizable>('save', next => {
   next();
 });
 
-userSchema.methods.comparePassword = function (candidatePassword: string, callback: any) {
+userSchema.methods.comparePassword = function (
+  candidatePassword: string,
+  callback: any
+) {
   // bcrypt.compare(candidatePassword, this.password, (err: Error, isMatch: boolean) => {
   //   callback(err, isMatch);
   // });
+  callback();
 };
 
-export const User: Model<IUser> = model<IUser>("User", userSchema);
+export const User: Model<Authorizable> = model<Authorizable>(
+  'User',
+  userSchema
+);
