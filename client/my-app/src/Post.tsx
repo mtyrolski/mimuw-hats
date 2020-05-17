@@ -1,4 +1,5 @@
 import {User} from './User'
+import {ReactionInstance} from "./Reaction";
 
 export interface Post {
     user: User;

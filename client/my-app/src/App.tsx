@@ -82,24 +82,26 @@ class App extends React.Component {
                             <NavLink to="/mine" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My hats</NavLink>
                         </Menu.Item>
                         <Menu.Item key="3" icon={<PlusOutlined />}>
-                            <a onClick={() => {
+                            <a onClick={(e) => {
+                                e.stopPropagation();
                                 this.setState({lostVisible: true});
                             }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost hat</a>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<SearchOutlined />}>
-                            <a onClick={() => {
+                            <a onClick={(e) => {
+                                e.stopPropagation();
                                 this.setState({foundVisible: true});
                             }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</a>
                         </Menu.Item>
 
                         <Menu.Item key="5" icon={<SettingOutlined />}>
 
-                            <Link to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</Link>
+                            <NavLink to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</NavLink>
                         </Menu.Item>
 
                         <Menu.Item key="6" icon={<LogoutOutlined />}>
 
-                            <Link to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Logout</Link>
+                            <NavLink to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Logout</NavLink>
                         </Menu.Item>
                     </Menu>
                 </Sider>

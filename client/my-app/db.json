@@ -7,11 +7,7 @@
             "imageID": "papiez.png",
             "reactions": [
                 {
-                    "reaction": {
-                        "imageID": "tso.png",
-                        "name": "tso",
-                        "id": 0
-                    },
+                    "id": 2,
                     "user": {
                         "name": "alpinista2137"
                     }
@@ -23,18 +19,7 @@
             "user": {"name": "alpinista2137"},
             "description": "witam, zgubiłem czapkę ale mam zdjęcie tylko na głowie",
             "imageID": "tso.png",
-            "reactions": [
-                {
-                    "reaction": {
-                        "imageID": "tso.png",
-                        "name": "tso",
-                        "id": 0
-                    },
-                    "user": {
-                        "name": "alpinista2137"
-                    }
-                }
-            ]
+            "reactions": []
         },
         {
             "id": 2,
@@ -43,16 +28,35 @@
             "imageID": "hamt.png",
             "reactions": [
                 {
-                    "reaction": {
-                        "imageID": "tso.png",
-                        "name": "tso",
-                        "id": 0
-                    },
+                    "id": 1,
                     "user": {
                         "name": "alpinista2137"
                     }
+                },
+                {
+                    "id": 1,
+                    "user": {
+                        "name": "jan_pawel2"
+                    }
                 }
             ]
+        }
+    ],
+    "reactions": [
+        {
+            "imageID": "tso.png",
+            "name": "tso",
+            "id": 0
+        },
+        {
+            "imageID": "hamt.png",
+            "name": "hamt",
+            "id": 1
+        },
+        {
+            "imageID": "gigakubica.png",
+            "name": "gigakubica",
+            "id": 2
         }
     ]
 }
