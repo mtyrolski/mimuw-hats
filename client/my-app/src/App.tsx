@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-do
 import './App.css';
 import {PostView} from "./PostView";
 import {FoundOverlay, LostOverlay} from "./Overlay"
+import InfiniteScroll from 'react-infinite-scroller';
 import  {Layout, Menu} from 'antd';
 import {
     UserOutlined,
@@ -115,7 +116,16 @@ class App extends React.Component {
                     <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: '50vw', marginLeft: 'auto', marginRight: 'auto' }}>
                         <Switch>
                             <Route path="/feed">
-                                {this.state.posts.map(post => <PostView post={post} />)}
+                                <InfiniteScroll
+                                    pageStart = {0}
+                                    loadMore = {() => {}}
+                                    hasMore = {true}
+                                    loader={
+                                        <div>Loading...</div>
+                                    }
+                                >
+                                    {this.state.posts.map(post => <PostView post={post} />)}
+                                </InfiniteScroll>
                             </Route>
                             <Route path="/mine">
                                 <MineView user={this.state.user}></MineView>
