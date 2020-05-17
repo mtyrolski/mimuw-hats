@@ -12,7 +12,6 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "dependencies": {
-    "@types/bcrypt-nodejs": "0.0.30",
     "@types/compression": "0.0.36",
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
@@ -20,9 +19,7 @@
     "@types/node": "^11.9.4",
     "@types/passport": "^1.0.0",
     "@types/passport-jwt": "^3.0.1",
-    "@types/passport-local": "^1.0.33",
     "@types/uuid": "^3.4.4",
-    "bcrypt-nodejs": "0.0.3",
     "compression": "^1.7.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
@@ -30,18 +27,17 @@
     "nodemon": "^1.18.10",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
     "typescript": "^3.3.3",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "tslint": "^5.12.1"
+    "concurrently": "^4.1.0"
   },
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jerrychong25/node-express-mongo-passport-jwt-typescript.git"
+    "url": ""
   },
   "license": "MIT"
 }

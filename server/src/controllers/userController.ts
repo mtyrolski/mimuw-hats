@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt-nodejs";
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import passport from "passport";
@@ -10,11 +9,11 @@ import { JWT_SECRET } from "../util/secrets";
 export class UserController {
 
   public async registerUser(req: Request, res: Response): Promise<void> {
-    const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    // const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 
     await User.create({
       username: req.body.username,
-      password: hashedPassword,
+      password: 'xd',
 
     });
 

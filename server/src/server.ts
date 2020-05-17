@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+require("dotenv").config();
 
 import compression from "compression";
 import cors from "cors";
