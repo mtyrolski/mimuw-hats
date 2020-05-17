@@ -8,7 +8,7 @@ import {
 import './App.css';
 import {PostView} from "./PostView";
 import {Boro} from "./Boro";
-import {OverlayVisible} from "./Overlay"
+import {FoundOverlay, LostOverlay} from "./Overlay"
 import  {Layout, Menu} from 'antd';
 import {UserOutlined, SearchOutlined, GlobalOutlined, PlusOutlined} from "@ant-design/icons/lib";
 
@@ -65,10 +65,10 @@ class App extends React.Component {
                                 <Boro/>
                             </Route>
                             <Route path="/lost">
-                                <OverlayVisible/>
+                                <LostOverlay/>
                             </Route>
                             <Route path="/found">
-                                TODO
+                                <FoundOverlay/>
                             </Route>
                         </Switch>
                     </Content>

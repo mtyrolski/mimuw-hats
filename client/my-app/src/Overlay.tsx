@@ -1,6 +1,7 @@
-import {Modal, Button, Form, Input, Checkbox, Upload, Select} from 'antd';
+import {Modal, Button, Form, Input, Checkbox, Upload, Select, Radio} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React, {ChangeEvent, Context} from 'react';
+import {RadioChangeEvent} from "antd/es/radio";
 
 const { Option } = Select;
 
@@ -11,6 +12,11 @@ const layout = {
 
 const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
+};
+
+const optionLayout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16, offset: 4 },
 };
 
 interface overlayProps {
@@ -33,7 +39,7 @@ const uploadProps = {
     },
 };
 
-export class OverlayVisible extends React.Component {
+export class FoundOverlay extends React.Component {
 
     state = { visible: true };
 
@@ -69,6 +75,7 @@ export class OverlayVisible extends React.Component {
                         </Button>,
                     ]}
                 >
+
                     <Form
                         {...layout}
                         name="basic"
@@ -103,6 +110,112 @@ export class OverlayVisible extends React.Component {
                             </Button>
                         </Upload>
                             </Form.Item>
+
+                        <Form.Item {...tailLayout}>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+
+
+                    </Form>
+                </Modal>
+            </div>
+        );
+    }
+}
+
+export class LostOverlay extends React.Component {
+
+    state = {
+        visible: true,
+        radioValue: "choose"
+    };
+
+    constructor(props : overlayProps) {
+        super(props);
+        this.handleOk = this.handleOk.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleRadioChange = this.handleRadioChange.bind(this);
+        this.state.radioValue = "choose";
+    }
+
+    handleOk() {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel() {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleRadioChange(event : RadioChangeEvent) {
+        this.setState({
+            radioValue: event.target.value,
+        });
+    };
+
+    render() {
+        return (
+            <div>
+                <Modal
+                    title="Zgłoś zgubienie czapki"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    footer={[
+                        <Button key="back" onClick={this.handleCancel}>
+                            Anuluj
+                        </Button>,
+                    ]}
+                >
+
+                    <Form
+                        {...layout}
+                        name="basic"
+                        initialValues={{ remember: true }}
+                    >
+                        <Form.Item
+                            label="Content"
+                            name="Treść"
+                            rules={[{ required: true, message: 'Dodaj opis czapki!' }]}
+                        >
+                            <Input.TextArea />
+                        </Form.Item>
+
+                        <Form.Item {...tailLayout} name="radio-options">
+                            <Radio.Group onChange={this.handleRadioChange} defaultValue={"choose"}>
+                                <Radio value={"choose"}>Wybierz z posiadanych
+
+                                </Radio>
+
+                                <Radio value={"upload"}> Dodaj nowe zdjęcie
+
+                                </Radio>
+
+                            </Radio.Group>
+                        </Form.Item>
+
+                        {this.state.radioValue === "choose" ?
+                            <Form.Item {...optionLayout} name="hat" rules={[{ required: (this.state.radioValue === "choose"),  message: 'Wybierz czapkę!' }]}>
+                                <Select placeholder="Wybierz czapkę..." allowClear>
+                                    <Option value="czapka1">czapka1</Option>
+                                    <Option value="czapka2">czapka2</Option>
+                                </Select>
+                            </Form.Item> : null}
+
+                        {this.state.radioValue === "upload" ?
+                            <Form.Item {...optionLayout} name="image" rules={[{ required: (this.state.radioValue === "upload"),  message: 'Musisz dodać zdjęcie!' }]}>
+                                <Upload {...uploadProps}>
+                                    <Button>
+                                        <UploadOutlined /> Wyślij zdjęcie
+                                    </Button>
+                                </Upload>
+                            </Form.Item> : null}
+
 
                         <Form.Item {...tailLayout}>
                             <Button type="primary" htmlType="submit">
