@@ -15,15 +15,14 @@ export const uploadProps = {
 };
 
 export const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    textAlign: "center",
 };
 
 export const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: { span: 16},
 };
 
 export const optionLayout = {
     labelCol: { span: 8 },
-    wrapperCol: { span: 16, offset: 4 },
+    wrapperCol: { span: 16},
 };

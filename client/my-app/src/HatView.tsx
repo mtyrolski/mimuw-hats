@@ -1,10 +1,18 @@
 import * as React from 'react';
 import {Button, Divider, Form, Input, Modal, Slider, Upload} from "antd";
+import {Popconfirm, message, Button, Divider, Form, Input, Modal, Select, Slider, Tooltip, Upload} from "antd";
 import {Hat} from "./Hat";
 import {User} from "./User";
 import {SliderValue} from "antd/es/slider";
 import {layout, tailLayout, uploadProps} from "./FormLayouts";
-import {UploadOutlined} from "@ant-design/icons/lib";
+import {
+    DeleteOutlined,
+    MailOutlined,
+    PlusOutlined,
+    RestOutlined,
+    SearchOutlined,
+    UploadOutlined
+} from "@ant-design/icons/lib";
 
 interface HatViewProps {
     hat: Hat;
@@ -13,6 +21,12 @@ interface HatViewProps {
 
 interface MineViewProps {
     user: User;
+}
+
+interface HatAddProps {
+    visible: boolean;
+    handleOk: () => void;
+    handleCancel: () => void;
 }
 
 class HatView extends React.Component<HatViewProps> {
@@ -26,19 +40,23 @@ class HatView extends React.Component<HatViewProps> {
             <div>
             <div onClick={() => {this.setState({popupVisibility: true})}}
                  className="site-layout-background" style={{ width: this.props.size.toString() + "%",
-                padding: 5, margin: 5, float: "left"}}
+                float: "left", border: "3px solid", borderColor: "dark-blue"}}
                 >
-                <b style={{fontSize: this.props.size.toString()}}>{this.props.hat.name}</b>
+                <b style={{fontSize: this.props.size}}>{this.props.hat.name}
+                </b>
                 <img style={{width: '100%'}} alt={this.props.hat.imageID} src={"/images/" + this.props.hat.imageID} />
             </div>
 
                 <Modal
-                    title={this.props.hat.name}
+                    title={[this.props.hat.name]}
                     visible={this.state.popupVisibility}
                     onOk={() => this.setState({popupVisibility: false})}
                     onCancel={() => this.setState({popupVisibility: false})}
                     footer={[
-                        <button> Usuń </button>
+                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
+                                    onConfirm={() => {message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
+                        <Button type={"primary"} danger style={{paddingLeft: 5}}> <DeleteOutlined/>Delete </Button>
+                            </Popconfirm>
                     ]}
                 >
                     <img style={{width: '100%', height: '100%'}} alt={this.props.hat.imageID} src={"/images/" + this.props.hat.imageID} />
@@ -46,6 +64,49 @@ class HatView extends React.Component<HatViewProps> {
 
             </div>
         )
+    }
+}
+
+export class AddHat extends React.Component<HatAddProps> {
+
+    render() { return(
+        <Modal
+            title="Add new hat"
+            visible={this.props.visible}
+            onOk={this.props.handleOk}
+            onCancel={this.props.handleCancel}
+            footer={[
+                <Button key="back" onClick={this.props.handleOk}>
+                    Cancel
+                </Button>,
+            ]}
+        >
+
+            <Form
+                {...layout}
+                name="basic"
+                initialValues={{ remember: true }}
+            >
+                <Form.Item name="name" label={"hat name"} rules={[{ required: true,  message: 'Name is required' }]}>
+                    <Input/>
+                </Form.Item>
+
+                <Form.Item {...tailLayout} name="image" rules={[{ required: true,  message: 'Image is required' }]}>
+                    <Upload {...uploadProps}>
+                        <Button>
+                            <UploadOutlined /> Send image
+                        </Button>
+                    </Upload>
+                </Form.Item>
+
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit">
+                        <MailOutlined/>Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+
+        </Modal>)
     }
 }
 
@@ -82,45 +143,10 @@ export class MineView extends React.Component<MineViewProps> {
 
                 <Divider />
 
-                <button onClick={() => this.setState({addVisible: true})}> Dodaj czapkę </button>
+                <button onClick={() => this.setState({addVisible: true})}> <PlusOutlined/> Add new hat </button>
+                <AddHat visible={this.state.addVisible} handleOk={() => {this.setState({addVisible: false})}}
+                        handleCancel={() => {this.setState({addVisible: false})}}/>
 
-                <Modal
-                    title="Dodaj czapkę"
-                    visible={this.state.addVisible}
-                    onOk={() => this.setState({addVisible: false})}
-                    onCancel={() => this.setState({addVisible: false})}
-                    footer={[
-                        <Button key="back" onClick={() => this.setState({addVisible: false})}>
-                            Anuluj
-                        </Button>,
-                    ]}
-                >
-
-                    <Form
-                        {...layout}
-                        name="basic"
-                        initialValues={{ remember: true }}
-                    >
-                        <Form.Item name="name" label={"hat name"} rules={[{ required: true,  message: 'Podaj nazwę!' }]}>
-                            <Input/>
-                        </Form.Item>
-
-                        <Form.Item {...tailLayout} name="image" rules={[{ required: true,  message: 'Musisz dodać zdjęcie!' }]}>
-                            <Upload {...uploadProps}>
-                                <Button>
-                                    <UploadOutlined /> Wyślij zdjęcie
-                                </Button>
-                            </Upload>
-                        </Form.Item>
-
-                        <Form.Item {...tailLayout}>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
-
-                    </Modal>
             </div>
         )
     }
