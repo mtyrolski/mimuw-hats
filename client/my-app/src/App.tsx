@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons/lib";
 import {AddHat, MineView} from "./HatView";
 import {RegisterView} from "./Register";
+import {FeedView} from "./FeedView";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -54,13 +55,6 @@ class App extends React.Component {
         foundVisible: false,
         addVisible: false
     };
-
-    // TODO change localhost:2137, handle error in fetch
-    componentDidMount() {
-        fetch('http://localhost:2137/posts', {method: 'GET'})
-            .then(res => res.json())
-            .then(json => this.setState({posts: json}));
-    }
 
     render() {
         return <Router>
@@ -120,16 +114,7 @@ class App extends React.Component {
                     <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: '50vw', marginLeft: 'auto', marginRight: 'auto' }}>
                         <Switch>
                             <Route path="/feed">
-                                <InfiniteScroll
-                                    pageStart = {0}
-                                    loadMore = {() => {}}
-                                    hasMore = {true}
-                                    loader={
-                                        <div>Loading...</div>
-                                    }
-                                >
-                                    {this.state.posts.map(post => <PostView post={post} />)}
-                                </InfiniteScroll>
+                                <FeedView />
                             </Route>
                             <Route path="/mine">
                                 <MineView user={this.state.user}></MineView>
