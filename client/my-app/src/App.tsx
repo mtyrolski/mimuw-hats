@@ -8,6 +8,7 @@ import {
 import './App.css';
 import {PostView} from "./PostView";
 import {Boro} from "./Boro";
+import {OverlayVisible} from "./Overlay"
 import  {Layout, Menu} from 'antd';
 import {UserOutlined, SearchOutlined, GlobalOutlined, PlusOutlined} from "@ant-design/icons/lib";
 
@@ -61,10 +62,10 @@ class App extends React.Component {
                                 {this.state.posts.map(post => <PostView post={post} />)}
                             </Route>
                             <Route path="/mine">
-                                <Boro />
+                                <Boro/>
                             </Route>
                             <Route path="/lost">
-                                TODO
+                                <OverlayVisible/>
                             </Route>
                             <Route path="/found">
                                 TODO
