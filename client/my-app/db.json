@@ -1,0 +1,22 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "user": {"name": "jan_pawel2"},
+            "description": "serwus, zgubiłem",
+            "imageID": "papiez.png"
+        },
+        {
+            "id": 2137,
+            "user": {"name": "alpinista2137"},
+            "description": "witam, zgubiłem czapkę ale mam zdjęcie tylko na głowie",
+            "imageID": "tso.png"
+        },
+        {
+            "id": 2,
+            "user": {"name": "kubicafan123"},
+            "description": "szukam: Artur Matyjasek; pic unrelated",
+            "imageID": "hamt.png"
+        }
+    ]
+}
