@@ -106,32 +106,17 @@ export class FoundOverlay extends React.Component<overlayProps> {
     }
 }
 
-export class LostOverlay extends React.Component {
+export class LostOverlay extends React.Component<overlayProps> {
 
     state = {
-        visible: true,
         radioValue: "choose"
     };
 
-    constructor(props : overlayProps) {
+    constructor(props: overlayProps) {
         super(props);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.state.radioValue = "choose";
     }
-
-    handleOk() {
-        this.setState({
-            visible: false,
-        });
-    };
-
-    handleCancel() {
-        this.setState({
-            visible: false,
-        });
-    };
 
     handleRadioChange(event : RadioChangeEvent) {
         this.setState({
@@ -144,11 +129,11 @@ export class LostOverlay extends React.Component {
             <div>
                 <Modal
                     title="Zgłoś zgubienie czapki"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
+                    visible={this.props.visible}
+                    onOk={this.props.handleOk}
+                    onCancel={this.props.handleCancel}
                     footer={[
-                        <Button key="back" onClick={this.handleCancel}>
+                        <Button key="back" onClick={this.props.handleCancel}>
                             Anuluj
                         </Button>,
                     ]}

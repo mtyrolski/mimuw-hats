@@ -12,7 +12,7 @@ import {FoundOverlay, LostOverlay} from "./Overlay"
 import  {Layout, Menu} from 'antd';
 import {UserOutlined, SearchOutlined, GlobalOutlined, PlusOutlined} from "@ant-design/icons/lib";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
     state = {
@@ -70,20 +70,15 @@ class App extends React.Component {
                             <Route path="/mine">
                                 <Boro/>
                             </Route>
-                            <Route path="/lost">
-                                <LostOverlay visible={this.state.popupVisible}
-                                                handleCancel={() => this.setState({popupVisible: false})}
-                                                handleOk={() => this.setState({popupVisible: false})}/>
-                    </Content>
-                            </Route>
-                            <Route path="/found">
-                                <FoundOverlay visible={this.state.popupVisible}
-                                                handleCancel={() => this.setState({popupVisible: false})}
-                                                handleOk={() => this.setState({popupVisible: false})}/>
-                    </Content>
-                            </Route>
                         </Switch>
-                    <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                        <LostOverlay visible={this.state.lostVisible}
+                                     handleCancel={() => this.setState({lostVisible: false})}
+                                     handleOk={() => this.setState({lostVisible: false})}/>
+                        <FoundOverlay visible={this.state.foundVisible}
+                                      handleCancel={() => this.setState({foundVisible: false})}
+                                      handleOk={() => this.setState({foundVisible: false})}/>
+                    </Content>
+                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
             </Layout>
         </Router>;
