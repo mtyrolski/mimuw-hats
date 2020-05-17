@@ -8,7 +8,7 @@ import {
 import './App.css';
 import {PostView} from "./PostView";
 import {Boro} from "./Boro";
-import {OverlayVisible} from "./Overlay"
+import {FoundOverlay, LostOverlay} from "./Overlay"
 import  {Layout, Menu} from 'antd';
 import {UserOutlined, SearchOutlined, GlobalOutlined, PlusOutlined} from "@ant-design/icons/lib";
 
@@ -18,7 +18,8 @@ class App extends React.Component {
     state = {
         posts: [],
         error: null,
-        popupVisible: false
+        lostVisible: false,
+        foundVisible: false
     };
 
     componentDidMount() {
@@ -50,13 +51,13 @@ class App extends React.Component {
                         </Menu.Item>
                         <Menu.Item key="3" icon={<PlusOutlined />}>
                             <a onClick={() => {
-                                console.log(this.state);
-                                this.setState({popupVisible: true});
-                                console.log(this.state);
-                            }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost haterino</a>
+                                this.setState({lostVisible: true});
+                            }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost hat</a>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<SearchOutlined />}>
-                            <Link to="/found" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</Link>
+                            <a onClick={() => {
+                                this.setState({foundVisible: true});
+                            }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</a>
                         </Menu.Item>
                     </Menu>
                 </Sider>
@@ -70,16 +71,18 @@ class App extends React.Component {
                                 <Boro/>
                             </Route>
                             <Route path="/lost">
-                                TODO
+                                <LostOverlay visible={this.state.popupVisible}
+                                                handleCancel={() => this.setState({popupVisible: false})}
+                                                handleOk={() => this.setState({popupVisible: false})}/>
+                    </Content>
                             </Route>
                             <Route path="/found">
-                                TODO
+                                <FoundOverlay visible={this.state.popupVisible}
+                                                handleCancel={() => this.setState({popupVisible: false})}
+                                                handleOk={() => this.setState({popupVisible: false})}/>
+                    </Content>
                             </Route>
                         </Switch>
-                        <OverlayVisible visible={this.state.popupVisible}
-                        handleCancel={() => this.setState({popupVisible: false})}
-                        handleOk={() => this.setState({popupVisible: false})}/>
-                    </Content>
                     <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
             </Layout>
