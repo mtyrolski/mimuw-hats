@@ -13,6 +13,7 @@ import {
     LoadingOutlined, SettingOutlined, AlertOutlined
 } from "@ant-design/icons/lib";
 import {AddHat, MineView} from "./HatView";
+import {RegisterView} from "./Register";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -62,6 +63,9 @@ class App extends React.Component {
 
     render() {
         return <Router>
+            <Switch>
+                <Route path={"/register"}> <RegisterView/> </Route>
+                 <Route path="/">
             <Layout>
                 <Sider
                     style={{
@@ -135,7 +139,8 @@ class App extends React.Component {
                     </Content>
                 <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
-            </Layout>
+            </Layout></Route>
+            </Switch>
         </Router>;
     }
 }
