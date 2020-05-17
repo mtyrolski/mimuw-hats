@@ -2,44 +2,18 @@ import {Modal, Button, Form, Input, Checkbox, Upload, Select, Radio} from 'antd'
 import { UploadOutlined } from '@ant-design/icons';
 import React, {ChangeEvent, Context} from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
+import {layout, optionLayout, tailLayout, uploadProps} from "./FormLayouts";
 
 const { Option } = Select;
 
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
 
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-};
-
-const optionLayout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16, offset: 4 },
-};
 
 interface overlayProps {
     visible: boolean;
+    content: boolean;
     handleOk: () => void;
     handleCancel: () => void;
 }
-
-const uploadProps = {
-    name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-        authorization: 'authorization-text',
-    },
-    onChange(info : Pick<Readonly<any>, any>) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-        } else if (info.file.status === 'error') {
-        }
-    },
-};
 
 export class FoundOverlay extends React.Component<overlayProps> {
     render() {
@@ -62,13 +36,13 @@ export class FoundOverlay extends React.Component<overlayProps> {
                         name="basic"
                         initialValues={{ remember: true }}
                     >
-                        <Form.Item
+                        { this.props.content ? <Form.Item
                             label="Content"
                             name="Treść"
-                            rules={[{ required: true, message: 'Dodaj opis czapki!' }]}
+                            rules={[{ required: this.props.content, message: 'Dodaj opis czapki!' }]}
                         >
                             <Input.TextArea />
-                        </Form.Item>
+                        </Form.Item> : null}
 
                         <Form.Item name="segment" label="piętro" rules={[{ required: true,  message: 'Podaj piętro!' }]}>
                             <Select
