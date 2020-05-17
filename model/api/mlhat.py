@@ -41,4 +41,5 @@ class HatClassifier(MLHat):
         Raises:
             Internal Keras Error if input is invalid
         """
-        return self._model.predict(input)
+        [hat, nothat] = self._model.predict(input)
+        return hat > nothat
