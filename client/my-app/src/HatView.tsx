@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {Post} from './Post';
-import {Button, Divider, Form, Input, Modal, Select, Slider, Upload} from "antd";
-import {ReactionBox} from "./ReactionBox";
+import {Button, Divider, Form, Input, Modal, Slider, Upload} from "antd";
 import {Hat} from "./Hat";
 import {User} from "./User";
-import {SliderMarks, SliderValue} from "antd/es/slider";
-import {FoundOverlay} from "./Overlay";
+import {SliderValue} from "antd/es/slider";
 import {layout, tailLayout, uploadProps} from "./FormLayouts";
 import {UploadOutlined} from "@ant-design/icons/lib";
-import {inspect} from "util";
 
 interface HatViewProps {
     hat: Hat;

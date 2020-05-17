@@ -1,6 +1,6 @@
-import {Modal, Button, Form, Input, Checkbox, Upload, Select, Radio} from 'antd';
+import {Modal, Button, Form, Input, Upload, Select, Radio} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import React, {ChangeEvent, Context} from 'react';
+import React from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
 import {layout, optionLayout, tailLayout, uploadProps} from "./FormLayouts";
 

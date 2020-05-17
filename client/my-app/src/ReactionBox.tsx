@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Post} from './Post';
 import {Reaction, reactions} from "./Reaction";
 import {Badge} from "antd";
-import assert from "assert";
 
 interface Props {
     post: Post;

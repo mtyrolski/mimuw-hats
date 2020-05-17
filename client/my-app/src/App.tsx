@@ -10,10 +10,9 @@ import {
     GlobalOutlined,
     PlusOutlined,
     LogoutOutlined,
-    LoadingOutlined, SettingOutlined
+    SettingOutlined
 } from "@ant-design/icons/lib";
 import {MineView} from "./HatView";
-import {User} from "./User";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -105,7 +104,7 @@ class App extends React.Component {
                         </Menu.Item>
                     </Menu>
                 </Sider>
-                <Layout className="site-layout" style={{ marginLeft: 200 }}>
+                <Layout className="site-layout" style={{ marginLeft: 200, minHeight: '100vh'}}>
                     <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: '50vw', marginLeft: 'auto', marginRight: 'auto' }}>
                         <Switch>
                             <Route path="/feed">
