@@ -1,6 +1,4 @@
-export interface User {
-    name: string;
-}
+import {User} from './User'
 
 export interface Post {
     user: User;

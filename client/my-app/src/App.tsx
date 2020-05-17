@@ -7,15 +7,51 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import {PostView} from "./PostView";
-import {Boro} from "./Boro";
 import {FoundOverlay, LostOverlay} from "./Overlay"
 import  {Layout, Menu} from 'antd';
-import {UserOutlined, SearchOutlined, GlobalOutlined, PlusOutlined} from "@ant-design/icons/lib";
+import {
+    UserOutlined,
+    SearchOutlined,
+    GlobalOutlined,
+    PlusOutlined,
+    LogoutOutlined,
+    LoadingOutlined, SettingOutlined
+} from "@ant-design/icons/lib";
+import {MineView} from "./HatView";
+import {User} from "./User";
 
 const { Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
     state = {
+        user: {
+                name: "Jan Paweł",
+                hats: [
+                    {
+                        id: 1,
+                        name: "czapka",
+                        imageID: "hamt.png"
+                    },
+
+                    {
+                        id: 2,
+                        name: "czapka",
+                        imageID: "hamt.png"
+                    },
+
+                    {
+                        id: 3,
+                        name: "czapka",
+                        imageID: "hamt.png"
+                    },
+
+                    {
+                        id: 4,
+                        name: "czapka",
+                        imageID: "hamt.png"
+                    }
+                ]
+        },
         posts: [],
         error: null,
         lostVisible: false,
@@ -31,6 +67,7 @@ class App extends React.Component {
 
     // TODO set selected to current route
     render() {
+
         return <Router>
             <Layout>
                 <Sider
@@ -41,7 +78,8 @@ class App extends React.Component {
                         left: 0,
                     }}
                 >
-                    <div className="logo" />
+
+                    <div className="logo"/>
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1" icon={<GlobalOutlined />}>
                             <Link to="/feed" style={{color: 'rgba(255, 255, 255, 0.65)'}}>All hats</Link>
@@ -59,6 +97,16 @@ class App extends React.Component {
                                 this.setState({foundVisible: true});
                             }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</a>
                         </Menu.Item>
+
+                        <Menu.Item key="5" icon={<SettingOutlined />}>
+
+                            <Link to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="6" icon={<LogoutOutlined />}>
+
+                            <Link to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Logout</Link>
+                        </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout className="site-layout" style={{ marginLeft: 200 }}>
@@ -68,15 +116,17 @@ class App extends React.Component {
                                 {this.state.posts.map(post => <PostView post={post} />)}
                             </Route>
                             <Route path="/mine">
-                                <Boro/>
+                                <MineView user={this.state.user}></MineView>
                             </Route>
                         </Switch>
                         <LostOverlay visible={this.state.lostVisible}
                                      handleCancel={() => this.setState({lostVisible: false})}
-                                     handleOk={() => this.setState({lostVisible: false})}/>
+                                     handleOk={() => this.setState({lostVisible: false})}
+                                     content={true}/>
                         <FoundOverlay visible={this.state.foundVisible}
                                       handleCancel={() => this.setState({foundVisible: false})}
-                                      handleOk={() => this.setState({foundVisible: false})}/>
+                                      handleOk={() => this.setState({foundVisible: false})}
+                                      content={true}/>
                     </Content>
                 <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
