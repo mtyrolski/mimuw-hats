@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {Button, Divider, Form, Input, Modal, Slider, Upload} from "antd";
-import {Popconfirm, message, Button, Divider, Form, Input, Modal, Select, Slider, Tooltip, Upload} from "antd";
+import {Popconfirm, message, Button, Divider, Form, Input, Modal, Slider, Upload} from "antd";
 import {Hat} from "./Hat";
 import {User} from "./User";
 import {SliderValue} from "antd/es/slider";
@@ -9,8 +8,6 @@ import {
     DeleteOutlined,
     MailOutlined,
     PlusOutlined,
-    RestOutlined,
-    SearchOutlined,
     UploadOutlined
 } from "@ant-design/icons/lib";
 

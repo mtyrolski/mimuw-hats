@@ -19,32 +19,32 @@ const { Content, Footer, Sider } = Layout;
 class App extends React.Component {
     state = {
         user: {
-                name: "Jan Paweł",
-                hats: [
-                    {
-                        id: 1,
-                        name: "czapka",
-                        imageID: "hamt.png"
-                    },
+            name: "Jan Paweł",
+            hats: [
+                {
+                    id: 1,
+                    name: "czapka",
+                    imageID: "hamt.png"
+                },
 
-                    {
-                        id: 2,
-                        name: "czapka",
-                        imageID: "hamt.png"
-                    },
+                {
+                    id: 2,
+                    name: "czapka",
+                    imageID: "hamt.png"
+                },
 
-                    {
-                        id: 3,
-                        name: "czapka",
-                        imageID: "hamt.png"
-                    },
+                {
+                    id: 3,
+                    name: "czapka",
+                    imageID: "hamt.png"
+                },
 
-                    {
-                        id: 4,
-                        name: "czapka",
-                        imageID: "hamt.png"
-                    }
-                ]
+                {
+                    id: 4,
+                    name: "czapka",
+                    imageID: "hamt.png"
+                }
+            ]
         },
         posts: [],
         error: null,
@@ -130,10 +130,10 @@ class App extends React.Component {
                                       handleOk={() => this.setState({foundVisible: false})}
                                       content={true}/>
                         <AddHat visible={this.state.addVisible}
-                                      handleCancel={() => this.setState({addVisible: false})}
-                                      handleOk={() => this.setState({addVisible: false})}/>
+                                handleCancel={() => this.setState({addVisible: false})}
+                                handleOk={() => this.setState({addVisible: false})}/>
                     </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                    <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
             </Layout>
         </Router>;
