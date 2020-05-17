@@ -3,20 +3,56 @@
         {
             "id": 1,
             "user": {"name": "jan_pawel2"},
-            "description": "serwus, zgubiłem",
-            "imageID": "papiez.png"
+            "description": "serwus, zgubiłem ajj",
+            "imageID": "papiez.png",
+            "reactions": [
+                {
+                    "reaction": {
+                        "imageID": "tso.png",
+                        "name": "tso",
+                        "id": 0
+                    },
+                    "user": {
+                        "name": "alpinista2137"
+                    }
+                }
+            ]
         },
         {
             "id": 2137,
             "user": {"name": "alpinista2137"},
             "description": "witam, zgubiłem czapkę ale mam zdjęcie tylko na głowie",
-            "imageID": "tso.png"
+            "imageID": "tso.png",
+            "reactions": [
+                {
+                    "reaction": {
+                        "imageID": "tso.png",
+                        "name": "tso",
+                        "id": 0
+                    },
+                    "user": {
+                        "name": "alpinista2137"
+                    }
+                }
+            ]
         },
         {
             "id": 2,
             "user": {"name": "kubicafan123"},
             "description": "szukam: Artur Matyjasek; pic unrelated",
-            "imageID": "hamt.png"
+            "imageID": "hamt.png",
+            "reactions": [
+                {
+                    "reaction": {
+                        "imageID": "tso.png",
+                        "name": "tso",
+                        "id": 0
+                    },
+                    "user": {
+                        "name": "alpinista2137"
+                    }
+                }
+            ]
         }
     ]
 }

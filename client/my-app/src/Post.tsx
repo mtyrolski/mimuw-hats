@@ -1,3 +1,5 @@
+import {ReactionInstance} from "./Reaction";
+
 export interface User {
     name: string;
 }
@@ -7,4 +9,5 @@ export interface Post {
     id: number;
     description: string;
     imageID: string;
+    reactions: Array<ReactionInstance>;
 }

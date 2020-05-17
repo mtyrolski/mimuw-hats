@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
 import './App.css';
 import {PostView} from "./PostView";
 import {Boro} from "./Boro";
@@ -22,14 +17,13 @@ class App extends React.Component {
         foundVisible: false
     };
 
+    // TODO change localhost:2137, handle error in fetch
     componentDidMount() {
-        fetch('http://localhost:2137/posts' )
+        fetch('http://localhost:2137/posts', {method: 'GET'})
             .then(res => res.json())
-            .then(json => this.setState({posts: json}),
-                error => this.setState({error: "error"}));
+            .then(json => this.setState({posts: json}));
     }
 
-    // TODO set selected to current route
     render() {
         return <Router>
             <Layout>
@@ -44,10 +38,10 @@ class App extends React.Component {
                     <div className="logo" />
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1" icon={<GlobalOutlined />}>
-                            <Link to="/feed" style={{color: 'rgba(255, 255, 255, 0.65)'}}>All hats</Link>
+                            <NavLink to="/feed" style={{color: 'rgba(255, 255, 255, 0.65)'}}>All hats</NavLink>
                         </Menu.Item>
                         <Menu.Item key="2" icon={<UserOutlined />}>
-                            <Link to="/mine" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My hats</Link>
+                            <NavLink to="/mine" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My hats</NavLink>
                         </Menu.Item>
                         <Menu.Item key="3" icon={<PlusOutlined />}>
                             <a onClick={() => {
