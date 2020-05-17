@@ -17,7 +17,8 @@ const { Header, Content, Footer, Sider } = Layout;
 class App extends React.Component {
     state = {
         posts: [],
-        error: null
+        error: null,
+        popupVisible: false
     };
 
     componentDidMount() {
@@ -48,7 +49,11 @@ class App extends React.Component {
                             <Link to="/mine" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My hats</Link>
                         </Menu.Item>
                         <Menu.Item key="3" icon={<PlusOutlined />}>
-                            <Link to="/lost" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost hat</Link>
+                            <a onClick={() => {
+                                console.log(this.state);
+                                this.setState({popupVisible: true});
+                                console.log(this.state);
+                            }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost haterino</a>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<SearchOutlined />}>
                             <Link to="/found" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</Link>
@@ -65,12 +70,15 @@ class App extends React.Component {
                                 <Boro/>
                             </Route>
                             <Route path="/lost">
-                                <OverlayVisible/>
+                                TODO
                             </Route>
                             <Route path="/found">
                                 TODO
                             </Route>
                         </Switch>
+                        <OverlayVisible visible={this.state.popupVisible}
+                        handleCancel={() => this.setState({popupVisible: false})}
+                        handleOk={() => this.setState({popupVisible: false})}/>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>

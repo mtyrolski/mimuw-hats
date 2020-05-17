@@ -14,7 +14,9 @@ const tailLayout = {
 };
 
 interface overlayProps {
-
+    visible: boolean;
+    handleOk: () => void;
+    handleCancel: () => void;
 }
 
 const uploadProps = {
@@ -33,38 +35,17 @@ const uploadProps = {
     },
 };
 
-export class OverlayVisible extends React.Component {
-
-    state = { visible: true };
-
-    constructor(props : overlayProps) {
-        super(props);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-    }
-
-    handleOk() {
-        this.setState({
-            visible: false,
-        });
-    };
-
-    handleCancel() {
-        this.setState({
-            visible: false,
-        });
-    };
-
+export class OverlayVisible extends React.Component<overlayProps> {
     render() {
         return (
             <div>
                 <Modal
                     title="Zgłoś czapkę"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
+                    visible={this.props.visible}
+                    onOk={this.props.handleOk}
+                    onCancel={this.props.handleCancel}
                     footer={[
-                        <Button key="back" onClick={this.handleCancel}>
+                        <Button key="back" onClick={this.props.handleCancel}>
                             Anuluj
                         </Button>,
                     ]}
@@ -109,8 +90,6 @@ export class OverlayVisible extends React.Component {
                                 Submit
                             </Button>
                         </Form.Item>
-
-
                     </Form>
                 </Modal>
             </div>
