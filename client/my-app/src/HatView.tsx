@@ -8,8 +8,6 @@ import {
     DeleteOutlined,
     MailOutlined,
     PlusOutlined,
-    RestOutlined,
-    SearchOutlined,
     UploadOutlined
 } from "@ant-design/icons/lib";
 
