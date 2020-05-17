@@ -10,9 +10,9 @@ import {
     GlobalOutlined,
     PlusOutlined,
     LogoutOutlined,
-    LoadingOutlined, SettingOutlined
+    LoadingOutlined, SettingOutlined, AlertOutlined
 } from "@ant-design/icons/lib";
-import {MineView} from "./HatView";
+import {AddHat, MineView} from "./HatView";
 import {User} from "./User";
 
 const { Content, Footer, Sider } = Layout;
@@ -50,7 +50,8 @@ class App extends React.Component {
         posts: [],
         error: null,
         lostVisible: false,
-        foundVisible: false
+        foundVisible: false,
+        addVisible: false
     };
 
     // TODO change localhost:2137, handle error in fetch
@@ -81,12 +82,13 @@ class App extends React.Component {
                         <Menu.Item key="2" icon={<UserOutlined />}>
                             <NavLink to="/mine" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My hats</NavLink>
                         </Menu.Item>
-                        <Menu.Item key="3" icon={<PlusOutlined />}>
+                        <Menu.Item key="3" icon={<AlertOutlined />}>
                             <a onClick={(e) => {
                                 e.stopPropagation();
                                 this.setState({lostVisible: true});
                             }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost hat</a>
                         </Menu.Item>
+
                         <Menu.Item key="4" icon={<SearchOutlined />}>
                             <a onClick={(e) => {
                                 e.stopPropagation();
@@ -94,12 +96,19 @@ class App extends React.Component {
                             }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</a>
                         </Menu.Item>
 
-                        <Menu.Item key="5" icon={<SettingOutlined />}>
+                        <Menu.Item key="5" icon={<PlusOutlined />}>
+                            <a onClick={(e) => {
+                                e.stopPropagation();
+                                this.setState({addVisible: true});
+                            }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Add new hat</a>
+                        </Menu.Item>
+
+                        <Menu.Item key="6" icon={<SettingOutlined />}>
 
                             <NavLink to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</NavLink>
                         </Menu.Item>
 
-                        <Menu.Item key="6" icon={<LogoutOutlined />}>
+                        <Menu.Item key="7" icon={<LogoutOutlined />}>
 
                             <NavLink to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Logout</NavLink>
                         </Menu.Item>
@@ -123,6 +132,9 @@ class App extends React.Component {
                                       handleCancel={() => this.setState({foundVisible: false})}
                                       handleOk={() => this.setState({foundVisible: false})}
                                       content={true}/>
+                        <AddHat visible={this.state.addVisible}
+                                      handleCancel={() => this.setState({addVisible: false})}
+                                      handleOk={() => this.setState({addVisible: false})}/>
                     </Content>
                 <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
                 </Layout>
