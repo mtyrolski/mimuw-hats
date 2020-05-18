@@ -12,7 +12,6 @@ import {
     LoadingOutlined, SettingOutlined, AlertOutlined
 } from "@ant-design/icons/lib";
 import {AddHat, MineView} from "./HatView";
-import {RegisterView} from "./Register";
 import {FeedView} from "./FeedView";
 import Landing from "./Landing";
 
