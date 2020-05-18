@@ -1,14 +1,14 @@
 from keras.utils.data_utils import get_file
 from tensorflow.keras.models import load_model
 from abc import ABC, abstractmethod
-import json
+import keras
+
 
 class MLHat(ABC):
     def __init__(self, url, arch_id):
-        print('build')
+        keras.backend.clear_session()
         self._model = load_model(get_file(arch_id, url))
         self._model._make_predict_function()
-        print('fajen')
 
     def len(self):
         return self._model.count_params()
