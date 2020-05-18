@@ -34,37 +34,42 @@ class HatView extends React.Component<HatViewProps> {
 
     state = {
         popupVisibility: false,
+        hatVisibility: true,
+    }
+
+    async deleteHat() {
+        await apiFetchAuth(true, `hats?_id=${this.props.hat.id}`, {method: 'DELETE'})
+            .then(json => {this.setState({hatVisibility: false})});
     }
 
     render() {
         return (
-            <div>
-            <div onClick={() => {this.setState({popupVisibility: true})}}
+            <div style={{display: this.state.hatVisibility ? "inline" : "none"}}>
+                <div onClick={() => {this.setState({popupVisibility: true})}}
                  className="site-layout-background" style={{ width: this.props.size.toString() + "%",
                 float: "left", border: "3px solid", borderColor: "dark-blue"}}
                 >
-                <b style={{fontSize: this.props.size}}>{this.props.hat.properties.name}
+                <b style={{fontSize: this.props.size}}>{this.props.hat.name}
                 </b>
-                <img style={{width: '100%'}} alt={this.props.hat.properties.imageUrl} src={"/images/" + this.props.hat.properties.imageUrl} />
-            </div>
+                <img style={{width: '100%'}} alt={this.props.hat.imageUrl} src={"/images/" + this.props.hat.imageUrl} />
+                </div>
 
                 <Modal
-                    title={[this.props.hat.properties.name]}
+                    title={[this.props.hat.name]}
                     visible={this.state.popupVisibility}
                     onOk={() => this.setState({popupVisibility: false})}
                     onCancel={() => this.setState({popupVisibility: false})}
                     footer={[
-                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.properties.name + "?"}
+                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
                                     onConfirm={() => {message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
-                        <Button type={"primary"} danger style={{paddingLeft: 5}}> <DeleteOutlined/>Delete </Button>
+                        <Button type={"primary"} danger style={{paddingLeft: 5}} onClick={this.deleteHat}> <DeleteOutlined/>Delete </Button>
                             </Popconfirm>
                     ]}
                 >
-                    <img style={{width: '100%', height: '100%'}} alt={this.props.hat.properties.imageUrl} src={"/images/" + this.props.hat.properties.imageUrl} />
+                    <img style={{width: '100%', height: '100%'}} alt={this.props.hat.imageUrl} src={"/images/" + this.props.hat.imageUrl} />
                 </Modal>
-
             </div>
-        )
+        );
     }
 }
 
@@ -119,7 +124,7 @@ export class MineView extends React.Component<MineViewProps> {
     }
 
     async getHats() {
-        await apiFetchAuth(true, `hats?_user=${this.props.user.id}`, {method: 'GET'})
+        await apiFetchAuth(true, `hats`, {method: 'GET'})
             .then(json => this.setState({
                 hats: [...json],
             }));
