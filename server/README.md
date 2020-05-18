@@ -9,8 +9,20 @@
 This is a Node.js back end web application written in TypeScript, which features REST API interface via Express.js, user JWT authentication via Passport.js, and MongoDB data storage via Mongoose.js.
 
 ## Deployment
+**Important!!! Before running the server, you have to create/update .env file in
+the project root directory (server/.env). This won't be staged on git since
+it contains secrets.**
 
-Hosted on local host.
+Node.js ^12 required.
+Go to the project root directory (server/) and execute the following commands:
+```bash
+npm install
+```
+
+To run and compile the server (default port 4000):
+```bash
+npm build
+```
 
 ## Built With
 
