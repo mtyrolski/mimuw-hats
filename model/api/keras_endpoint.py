@@ -11,18 +11,13 @@ import io
 import tensorflow as tf
 
 app = flask.Flask(__name__)
-#hatter = None
+hatter = None
 boxer = None
 
 def load_model():
-	#global hatter
-	#config = Cfg.get('classifier')
-	#global graph
-	#graph = tf.get_default_graph()
-	#tf.reset_default_graph()
-
-	#hatter = HatClassifier(config.url, config.arch_id)
-	pass
+	global hatter
+	config = Cfg.get('classifier')
+	hatter = HatClassifier(config.url, config.arch_id)
 
 @app.route("/predict_binary", methods=["POST"])
 def predict_binary():
@@ -31,12 +26,13 @@ def predict_binary():
 	if flask.request.method == "POST":
 		if flask.request.files.get("image"):
 			config = Cfg.get('classifier')
-
+			global hatter
 			image = flask.request.files["image"].read()
 			image = Image.open(io.BytesIO(image))
-			hatter = HatClassifier(config.url, config.arch_id)
 			image = prepare_image(image, config.target_size)
-			pred = hatter.predict(image)
+			graph = tf.Graph()
+			with graph.as_default():
+				pred = hatter.predict(image)
 			data = {**data, **pred}
 
 			data["success"] = True
