@@ -1,9 +1,13 @@
 from keras.utils.data_utils import get_file
 from tensorflow.keras.models import load_model
 from abc import ABC, abstractmethod
-import keras
-import tensorflow as tf
-from tensorflow.python.keras.backend import set_session
+
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import keras
+    import tensorflow as tf
+
 
 class MLHat(ABC):
     def __init__(self, url, arch_id):

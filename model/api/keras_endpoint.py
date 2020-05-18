@@ -8,7 +8,12 @@ from config import MLConfig
 from PIL import Image
 import flask
 import io
-import tensorflow as tf
+import warnings
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import tensorflow as tf
+
 
 app = flask.Flask(__name__)
 hatter = None
@@ -41,6 +46,11 @@ def predict_binary():
 if __name__ == "__main__":
 	print(("* Loading Keras model and Flask starting server..."
 		"please wait until server has fully started"))
+
+	import logging
+	import os
+	os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+	logging.getLogger('tensorflow').setLevel(logging.FATAL)
 	Cfg.push('classifier', MLConfig('mobile_ultra',(224,244), 'http://students.mimuw.edu.pl/~mt406390/machine_learning/mobilenet_ultra.h5'))
 	load_model()
 	app.run()

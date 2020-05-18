@@ -1,5 +1,10 @@
 import numpy as np
-from keras.preprocessing import image as imageK
+
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    from keras.preprocessing import image as imageK
+
 
 def load_image(img_path, shape):
     img = imageK.load_img(img_path, target_size=shape, color_mode='rgb')
