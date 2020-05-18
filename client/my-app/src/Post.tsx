@@ -6,5 +6,7 @@ export interface Post {
     id: number;
     description: string;
     imageID: string;
+    // TODO dates and JSON
+    // date: Date;
     reactions: Array<ReactionInstance>;
 }

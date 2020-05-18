@@ -10,7 +10,13 @@ const layout = {
     wrapperCol: { span: 16, offset: 8},
 }
 
-export class RegisterView extends React.Component{
+interface OverlayProps {
+    visible: boolean;
+    handleOk: () => void;
+    handleCancel: () => void;
+}
+
+export class RegisterView extends React.Component<OverlayProps> {
 
     state = {
         loading: false,
@@ -20,9 +26,9 @@ export class RegisterView extends React.Component{
         return (
             <Modal
                 title={["Register"]}
-                visible={true}
-                onOk={() => this.setState({popupVisibility: false})}
-                onCancel={() => this.setState({popupVisibility: false})}
+                visible={this.props.visible}
+                onOk={this.props.handleOk}
+                onCancel={this.props.handleCancel}
                 footer={[
                 ]}
             >
@@ -37,7 +43,7 @@ export class RegisterView extends React.Component{
 
 
                 <Form.Item name="mail" label={"E-mail"} rules={[{ required: true,  message: 'E-mail required'},
-                    {pattern: new RegExp("^[\\w.+\\-]+@(students.)?mimuw\\.edu\\.pl$"), message: 'Not correct gmail adress' }]}>
+                    {pattern: new RegExp("^[\\w.+\\-]+@(students.)?mimuw\\.edu\\.pl$"), message: 'Not correct MIMUW adress' }]}>
                     <Input/>
                 </Form.Item>
 
