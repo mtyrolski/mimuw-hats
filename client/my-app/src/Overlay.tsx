@@ -124,20 +124,22 @@ export class LostOverlay extends React.Component<overlayProps> {
                         {...layout}
                         name="basic"
                         initialValues={{ remember: true }}
-                        onFinish={(values) => {
+                        onFinish={async (values) => {
                             let formData = new FormData();
                             // Object.keys(values).map((item) => {
                             //     formData.append(item, values[item]);
                             // })
 
-                            formData.append('additionalMetadata', 'twoja stara to kopara');
-                            formData.append('file', this.state.fileList[0].originFileObj!);
+                            formData.append('metadata', 'twoja stara to kopara');
+                            formData.append('image', this.state.fileList[0].originFileObj!);
 
                             // apiFetchAuth(true, 'dupa', {
-                            fetch('http://localhost:2137/', {
+                            let response = await fetch('http://localhost:4000/api/hats', {
                                 method: 'POST',
                                 body: formData
-                            }).then((response) => console.log(response));
+                            });
+                            let result = await response.json();
+                            console.log(result);
                         }}
                     >
                         <Form.Item

@@ -53,7 +53,9 @@ class App extends React.Component {
                 }}
             >
 
-                <div className="logo"/>
+                <div style={{margin: '10px auto'}} className='logo'>
+                    <img src='/images/hamt.png' style={{ height: '64px' }} alt='logo' />
+                </div>
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                     <Menu.Item key="1" icon={<GlobalOutlined />}>
                         <NavLink to="/feed" style={{color: 'rgba(255, 255, 255, 0.65)'}}>All hats</NavLink>
