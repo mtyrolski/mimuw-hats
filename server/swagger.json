@@ -27,6 +27,10 @@
     {
       "name": "hats",
       "description": "Hat management endpoints"
+    },
+    {
+      "name": "posts",
+      "description": "Users posts, mostly describing some events of losing hats"
     }
   ],
   "schemes": [
@@ -124,6 +128,11 @@
         "produces": [
           "application/json"
         ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Collection of hat objects containing their metadata",
@@ -144,12 +153,20 @@
         "consumes": [
           "multipart/form-data"
         ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "formData",
             "name": "image",
             "type": "file",
             "description": "The new hat's image"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
           }
         ],
         "responses": {
@@ -159,11 +176,9 @@
               "$ref": "#/definitions/Hat"
             }
           },
-
           "422": {
             "description": "Item classified as non-hat uploaded"
           },
-
           "408": {
             "description": "Timeout - failed to upload/process hat"
           }
@@ -175,14 +190,21 @@
         "tags": [
           "hats"
         ],
-        "summary": "",
-        "operationId": "",
+        "summary": "Delete user's hat.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "type": "number",
             "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
           }
         ],
         "responses": {
@@ -194,6 +216,84 @@
           },
           "404": {
             "description": "No hat found with given ID"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Get a collection (maybe some fragment) of public posts, ordered from the newest",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts ordered by publication date",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Add a new event of losing / finding hat.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "payload",
+            "description": "Data for the new post to be added. You don't have to include the 'id' field",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added post, with a newly generated id.",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
           }
         }
       }
@@ -218,8 +318,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": "Unique hat ID"
         },
         "name": {
@@ -229,6 +328,29 @@
         "imageUrl": {
           "type": "string",
           "format": "uri"
+        }
+      }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "poster": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "hat": {
+          "type": "object",
+          "$ref": "#/definitions/Hat"
+        },
+        "metadata": {
+          "type": "string"
         }
       }
     }
