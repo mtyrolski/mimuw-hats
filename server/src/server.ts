@@ -4,7 +4,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-
+import swaggerUi from 'swagger-ui-express';
 require('dotenv').config();
 
 import {MONGODB_URI} from './util/secrets';
@@ -20,6 +20,7 @@ class Server {
     this.config();
     this.routes();
     this.mongo();
+    this.swagger();
   }
 
   public routes(): void {
@@ -39,6 +40,7 @@ class Server {
 
     this.app.use(
       cors({
+        // TODO: set to frontend
         origin: 'http://localhost:3000', // allow to server to accept request from different origin
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true, // allow session cookie from browser to pass through
@@ -80,6 +82,16 @@ class Server {
       });
     };
     run().catch(error => console.error(error));
+  }
+
+  public swagger() {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const swaggerDocument = require('../swagger.json');
+    this.app.use(
+      '/api-docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
   }
 
   public start(): void {

@@ -25,10 +25,6 @@ export class UserController {
   }
 
   public getUser(req: Request, res: Response) {
-    return res.status(200).json({
-      success: true,
-      message: 'user has successfully authenticated',
-      user: req.user,
-    });
+    return res.status(200).json(req.user);
   }
 }

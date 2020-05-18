@@ -1,0 +1,142 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is our REST API specification. You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
+    "version": "0.1.0",
+    "title": "Mimuw Hats",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Mainly user authentication",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged in",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirect to the home page",
+            "headers": {
+              "Location": {
+                "description": "Frontend homepage",
+                "type": "string",
+                "default": "http://localhost:3000"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/google": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Endpoint for Google API login/registration, in case of unauthorized user",
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to Google OAuth2",
+            "headers": {
+              "Location": {
+                "description": "Google OAuth2 link",
+                "type": "string"
+              },
+              "Set-Cookie": {
+                "description": "After successful external authentication, user is redirected to the frontend and a newly generated JWT token is stored in 'jwt' cookie",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Mimuw e-mail as a unique user ID."
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "User's photo URL."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
