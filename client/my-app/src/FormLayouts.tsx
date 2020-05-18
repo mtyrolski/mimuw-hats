@@ -1,18 +1,21 @@
-export const uploadProps = {
-    accept: ".png,.jpg",
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    name: 'file',
-    /*onChange(info : Pick<Readonly<any>, any>) {
-        let fileList = [...info.fileList];
-        fileList.slice(-1);
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-        } else if (info.file.status === 'error') {
-        }
-    },*/
-};
+import {Upload} from "antd";
+import React from "react";
+import {UploadChangeParam} from "antd/es/upload";
+import {UploadFile} from "antd/es/upload/interface";
+
+export function uploadProps(component : React.Component, list : UploadFile[]) {
+    return {
+        accept: ".png,.jpg",
+        action: "dummy",
+        name : 'file',
+        fileList : list,
+        onChange : (info : UploadChangeParam<UploadFile<any>>) => {
+            let fileList = [...info.fileList];
+                fileList = fileList.slice(-1);
+                component.setState({fileList: fileList});},
+        beforeUpload : () => false,
+    }
+}
 
 export const layout = {
     textAlign: "center",
