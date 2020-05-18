@@ -3,6 +3,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import {PostView} from "./PostView";
 import {Post} from "./Post";
 import {apiFetchAuth} from "./fetcher";
+import {Spin} from "antd";
 
 interface State {
     posts: Post[],
@@ -31,7 +32,9 @@ export class FeedView extends React.Component {
             loadMore = {() => this.loadMorePosts(this.state)}
             hasMore = {this.state.hasMore}
             loader={
-                <div>Loading...</div>
+                <div style={{display: 'flex'}}>
+                    <div style={{margin: 'auto'}}><Spin /></div>
+                </div>
             }
         >
             {this.state.posts.map(post => <PostView post={post} />)}

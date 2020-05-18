@@ -1,62 +1,71 @@
 {
-    "posts": [
+    "userlogin": {
+        "email": "robert.kubica@students.mimuw.edu.pl",
+        "photoUrl": "https://i.ytimg.com/vi/CnUT2KIvtSM/maxresdefault.jpg"
+    },
+    "hats": [
         {
-            "id": 1,
-            "user": {"name": "jan_pawel2"},
-            "description": "serwus, zgubiłem ajj",
-            "imageID": "papiez.png",
-            "reactions": [
-                {
-                    "id": 2,
-                    "user": {
-                        "name": "alpinista2137"
-                    }
-                }
-            ]
-        },
-        {
-            "id": 2137,
-            "user": {"name": "alpinista2137"},
-            "description": "witam, zgubiłem czapkę ale mam zdjęcie tylko na głowie",
-            "imageID": "tso.png",
-            "reactions": []
-        },
-        {
-            "id": 2,
-            "user": {"name": "kubicafan123"},
-            "description": "szukam: Artur Matyjasek; pic unrelated",
-            "imageID": "hamt.png",
-            "reactions": [
-                {
-                    "id": 1,
-                    "user": {
-                        "name": "alpinista2137"
-                    }
-                },
-                {
-                    "id": 1,
-                    "user": {
-                        "name": "jan_pawel2"
-                    }
-                }
-            ]
+            "id": "qwe",
+            "name": "robert",
+            "imageUrl": "https://i.ytimg.com/vi/CnUT2KIvtSM/maxresdefault.jpg"
         }
     ],
-    "reactions": [
+    "posts": [
         {
-            "imageID": "tso.png",
-            "name": "tso",
-            "id": 0
+            "id": "syzymon21",
+            "poster": {
+                "email": "szymon21@mimuw.edu.pl",
+                "photoUrl": "https://scontent-frt3-2.xx.fbcdn.net/v/t31.0-8/19264369_974404662717666_9219547436719669042_o.jpg?_nc_cat=101&_nc_sid=09cbfe&_nc_ohc=muXzOafdFDkAX_VWcfn&_nc_ht=scontent-frt3-2.xx&oh=8ec66abdadb7ec42857b0eca47ef96c3&oe=5EEA2D98"
+            },
+            "date": "2020-05-18T21:37:34.689Z",
+            "hat": {
+                "id": "qwe",
+                "name": "czerwona",
+                "imageUrl": "/images/post1.jpg"
+            },
+            "metadata": "Witam. Znalazłem takową czapkę koloru czarnego. Pozdrawiam"
         },
         {
-            "imageID": "hamt.png",
-            "name": "hamt",
-            "id": 1
+            "id": "boro42",
+            "poster": {
+                "email": "boro@mimuw.edu.pl",
+                "photoUrl": "https://scontent-frx5-1.xx.fbcdn.net/v/t1.0-9/38810453_2127523510837033_4047035580079407104_o.jpg?_nc_cat=105&_nc_sid=09cbfe&_nc_ohc=udrLiVjNbd4AX_C5GmA&_nc_ht=scontent-frx5-1.xx&oh=7c2c1689d6b649953df95bead473412e&oe=5EE75CFF"
+            },
+            "date": "2020-05-18T19:40:34.689Z",
+            "hat": {
+                "id": "qwe",
+                "name": "zielonawa",
+                "imageUrl": "/images/post2.jpg"
+            },
+            "metadata": "Serwus, ktoś zostawił na kanapie."
         },
         {
-            "imageID": "gigakubica.png",
-            "name": "gigakubica",
-            "id": 2
+            "id": "mako69",
+            "poster": {
+                "email": "mako@mimuw.edu.pl",
+                "photoUrl": "https://scontent-frx5-1.xx.fbcdn.net/v/t31.0-8/20626577_1462858223762515_3625467752254877988_o.jpg?_nc_cat=111&_nc_sid=09cbfe&_nc_ohc=kUy-njWfXgkAX-zXTt2&_nc_ht=scontent-frx5-1.xx&oh=f1e21dccc38a2965b41e597536fd5639&oe=5EE6CB93"
+            },
+            "date": "2020-05-14T11:20:34.689Z",
+            "hat": {
+                "id": "qwe",
+                "name": "szara",
+                "imageUrl": "/images/post3.jpg"
+            },
+            "metadata": "Witam, zlokalizowana czapka przy 5060."
+        },
+        {
+            "id": "tyrol37",
+            "poster": {
+                "email": "tyrol37@mimuw.edu.pl",
+                "photoUrl": "https://cdn.discordapp.com/avatars/550728685083426816/e713d7002e9bac0511115d44d3db96ba.png"
+            },
+            "date": "2020-05-16T17:40:34.689Z",
+            "hat": {
+                "id": "qwe",
+                "name": "czarna",
+                "imageUrl": "/images/post4.jpg"
+            },
+            "metadata": "Witam, czarna czapka leży na schodach na drugim piętrze."
         }
     ]
 }

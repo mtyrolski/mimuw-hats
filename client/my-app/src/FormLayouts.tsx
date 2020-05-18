@@ -10,10 +10,10 @@ export function uploadProps(component : React.Component, list : UploadFile[]) {
         fileList : list,
         onChange : (info : UploadChangeParam<UploadFile<any>>) => {
             let fileList = [...info.fileList];
-                fileList = fileList.slice(-1);
-                component.setState({fileList: fileList});},
+            fileList = fileList.slice(-1);
+            component.setState({fileList: fileList});},
         beforeUpload : () => false,
-    }
+    };
 }
 
 export const layout = {
