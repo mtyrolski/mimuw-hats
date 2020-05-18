@@ -31,6 +31,7 @@
     "@types/passport-jwt": "^3.0.1",
     "@types/uuid": "^3.4.4",
     "@types/swagger-ui-express": "^4.1.2",
+    "@types/multer": "^1.4.3",
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -44,7 +45,8 @@
     "passport-jwt": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "typescript": "^3.8.3",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",

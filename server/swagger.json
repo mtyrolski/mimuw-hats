@@ -159,6 +159,12 @@
         "parameters": [
           {
             "in": "formData",
+            "name": "metadata",
+            "type": "string",
+            "description": "Hat metadata"
+          },
+          {
+            "in": "formData",
             "name": "image",
             "type": "file",
             "description": "The new hat's image"
