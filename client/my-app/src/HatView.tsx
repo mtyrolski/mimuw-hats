@@ -41,15 +41,15 @@ export class HatView extends React.Component<HatViewProps> {
     }
 
     render() {
+        // TODO ugly switches with footerVisibility
         return (
             <div style={{display: this.state.hatVisibility ? "inline" : "none"}}>
                 <div onClick={() => {this.setState({popupVisibility: true})}}
                  className="site-layout-background" style={{ width: this.props.size.toString() + "%",
-                float: "left", border: "3px solid", borderColor: "dark-blue"}}
+                float: "left", border: this.props.footerVisibility ? "3px solid" : "none", borderColor: "dark-blue"}}
                 >
-                <b style={{fontSize: this.props.size}}>{this.props.hat.name}
-                </b>
-                <img style={{width: '100%'}} alt={this.props.hat.imageUrl} src={"/images/" + this.props.hat.imageUrl} />
+                    {this.props.footerVisibility && <b style={{fontSize: this.props.size}}>{this.props.hat.name}</b>}
+                <img style={{width: '100%'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
                 </div>
 
                 <Modal
@@ -64,7 +64,7 @@ export class HatView extends React.Component<HatViewProps> {
                             </Popconfirm>
                     ]}
                 >
-                    <img style={{width: '100%', height: '100%'}} alt={this.props.hat.imageUrl} src={"/images/" + this.props.hat.imageUrl} />
+                    <img style={{width: '100%', height: '100%'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
                 </Modal>
             </div>
         );
