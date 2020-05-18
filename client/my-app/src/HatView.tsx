@@ -27,7 +27,7 @@ interface HatAddProps {
     handleCancel: () => void;
 }
 
-class HatView extends React.Component<HatViewProps> {
+export class HatView extends React.Component<HatViewProps> {
 
     state = {
         popupVisibility: false,
