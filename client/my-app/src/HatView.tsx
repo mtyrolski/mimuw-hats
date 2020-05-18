@@ -10,6 +10,10 @@ import {
     PlusOutlined,
     UploadOutlined
 } from "@ant-design/icons/lib";
+import {FormEvent, useCallback} from "react";
+import {HeapProfiler} from "inspector";
+import {FormProps} from "antd/es/form";
+import {apiFetchAuth} from "./fetcher";
 
 interface HatViewProps {
     hat: Hat;
@@ -39,24 +43,24 @@ class HatView extends React.Component<HatViewProps> {
                  className="site-layout-background" style={{ width: this.props.size.toString() + "%",
                 float: "left", border: "3px solid", borderColor: "dark-blue"}}
                 >
-                <b style={{fontSize: this.props.size}}>{this.props.hat.name}
+                <b style={{fontSize: this.props.size}}>{this.props.hat.properties.name}
                 </b>
-                <img style={{width: '100%'}} alt={this.props.hat.imageID} src={"/images/" + this.props.hat.imageID} />
+                <img style={{width: '100%'}} alt={this.props.hat.properties.imageUrl} src={"/images/" + this.props.hat.properties.imageUrl} />
             </div>
 
                 <Modal
-                    title={[this.props.hat.name]}
+                    title={[this.props.hat.properties.name]}
                     visible={this.state.popupVisibility}
                     onOk={() => this.setState({popupVisibility: false})}
                     onCancel={() => this.setState({popupVisibility: false})}
                     footer={[
-                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
+                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.properties.name + "?"}
                                     onConfirm={() => {message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
                         <Button type={"primary"} danger style={{paddingLeft: 5}}> <DeleteOutlined/>Delete </Button>
                             </Popconfirm>
                     ]}
                 >
-                    <img style={{width: '100%', height: '100%'}} alt={this.props.hat.imageID} src={"/images/" + this.props.hat.imageID} />
+                    <img style={{width: '100%', height: '100%'}} alt={this.props.hat.properties.imageUrl} src={"/images/" + this.props.hat.properties.imageUrl} />
                 </Modal>
 
             </div>
@@ -111,11 +115,20 @@ export class MineView extends React.Component<MineViewProps> {
     state = {
         size: 20,
         addVisible: false,
+        hats: [],
     }
 
-    constructor(props : MineViewProps) {
+    async getHats() {
+        await apiFetchAuth(true, `hats?_user=${this.props.user.id}`, {method: 'GET'})
+            .then(json => this.setState({
+                hats: [...json],
+            }));
+    }
+
+    constructor(props: MineViewProps) {
         super(props);
         this.onSliderChange = this.onSliderChange.bind(this);
+        this.getHats();
     }
 
     onSliderChange(value: SliderValue) {
@@ -136,7 +149,7 @@ export class MineView extends React.Component<MineViewProps> {
                     }}
                 />
 
-                {this.props.user.hats.map(hat => <HatView hat={hat} size={this.state.size}/>)}
+                {this.state.hats.map(hat => <HatView hat={hat} size={this.state.size}/>)}
 
                 <Divider />
 
