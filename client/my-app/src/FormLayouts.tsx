@@ -2,14 +2,16 @@ export const uploadProps = {
     accept: ".png,.jpg",
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     name: 'file',
-    onChange(info : Pick<Readonly<any>, any>) {
+    /*onChange(info : Pick<Readonly<any>, any>) {
+        let fileList = [...info.fileList];
+        fileList.slice(-1);
         if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
         } else if (info.file.status === 'error') {
         }
-    },
+    },*/
 };
 
 export const layout = {

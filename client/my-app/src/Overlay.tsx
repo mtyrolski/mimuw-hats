@@ -81,7 +81,8 @@ export class FoundOverlay extends React.Component<overlayProps> {
 export class LostOverlay extends React.Component<overlayProps> {
 
     state = {
-        radioValue: "choose"
+        radioValue: "choose",
+        fileList: []
     };
 
     constructor(props: overlayProps) {
@@ -147,7 +148,13 @@ export class LostOverlay extends React.Component<overlayProps> {
 
                         {this.state.radioValue === "upload" ?
                             <Form.Item {...optionLayout} name="image" rules={[{ required: (this.state.radioValue === "upload"),  message: 'Image is required' }]}>
-                                <Upload {...uploadProps}>
+                                <Upload {...uploadProps}
+                                    fileList={this.state.fileList}
+                                     onChange={(info) =>
+                                     {   let fileList = [...info.fileList];
+                                         fileList = fileList.slice(-1);
+                                         this.setState({fileList: fileList})}}
+                                    beforeUpload={() => false}>
                                     <Button>
                                         <UploadOutlined /> Send image
                                     </Button>
@@ -156,7 +163,7 @@ export class LostOverlay extends React.Component<overlayProps> {
 
 
                         <Form.Item {...tailLayout}>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" onClick={() => console.log(this.state.fileList)}>
                                 <MailOutlined/>Submit
                             </Button>
                         </Form.Item>
