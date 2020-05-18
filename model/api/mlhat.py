@@ -47,4 +47,4 @@ class HatClassifier(MLHat):
         print(self._model.predict(input))
         [[hat, nothat]] = self._model.predict(input)
         model_out = {"pred":('hat' if hat > nothat else 'nothat')}
-        return json.dumps(model_out)
+        return model_out
