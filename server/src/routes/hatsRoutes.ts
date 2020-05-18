@@ -1,9 +1,14 @@
 import {Router} from 'express';
 import multer from 'multer';
-const upload = multer({dest: 'uploads/'});
+import {HatsController} from '../controllers/hatsController';
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+});
 
 export class HatsRoutes {
   router: Router;
+  public hatsController: HatsController = new HatsController();
 
   constructor() {
     this.router = Router();
@@ -11,8 +16,17 @@ export class HatsRoutes {
   }
 
   private routes() {
-    this.router.post('/', upload.single('image'), (req, res) => {
-      return res.status(200).json(req.body);
+    this.router.post(
+      '/',
+      upload.single('image'),
+      this.hatsController.uploadImage
+    );
+
+    this.router.post('/mockml', (req, res) => {
+      console.log(req.body);
+      return res.status(200).json({
+        pred: 'nonhat',
+      });
     });
   }
 }
