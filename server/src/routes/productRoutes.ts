@@ -1,11 +1,11 @@
 import {Router} from 'express';
 import {ProductController} from '../controllers/productController';
-import {AuthController} from '../controllers/authController';
+import {JWTController} from '../controllers/JWTController';
 
 export class ProductRoutes {
   public router: Router;
   public productController: ProductController = new ProductController();
-  public authController: AuthController = new AuthController();
+  public authController: JWTController = new JWTController();
 
   constructor() {
     this.router = Router();
@@ -13,7 +13,11 @@ export class ProductRoutes {
   }
 
   routes() {
-    this.router.get('/', this.productController.getProducts);
+    this.router.get(
+      '/',
+      this.authController.authenticateJWT,
+      this.productController.getProducts
+    );
     this.router.get('/:id', this.productController.getProduct);
     this.router.post(
       '/',

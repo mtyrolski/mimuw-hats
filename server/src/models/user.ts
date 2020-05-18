@@ -1,28 +1,32 @@
-import {Document, Schema, Model, model, Error} from 'mongoose';
+import {Document, Schema, Model, model} from 'mongoose';
 
-export interface Authorizable extends Document {
-  username: string;
-  password: string;
+export interface AuthMethod {
+  id: string;
 }
 
+export interface OAuth2Method extends AuthMethod {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface Authorizable extends Document {
+  email: string;
+  authMethods: Map<string, AuthMethod>;
+}
+
+export const authMethodSchema: Schema = new Schema({
+  id: String,
+  accessToken: String,
+  refreshToken: String,
+});
+
 export const userSchema: Schema = new Schema({
-  username: String,
-  password: String,
+  email: String,
+  authMethods: {
+    type: Map,
+    of: authMethodSchema,
+  },
 });
-
-userSchema.pre<Authorizable>('save', next => {
-  next();
-});
-
-userSchema.methods.comparePassword = function (
-  candidatePassword: string,
-  callback: any
-) {
-  // bcrypt.compare(candidatePassword, this.password, (err: Error, isMatch: boolean) => {
-  //   callback(err, isMatch);
-  // });
-  callback();
-};
 
 export const User: Model<Authorizable> = model<Authorizable>(
   'User',

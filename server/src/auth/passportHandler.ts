@@ -1,40 +1,78 @@
+import {Request} from 'express';
 import passport from 'passport';
-// import passportApiKey from "passport-headerapikey";
-import passportJwt from 'passport-jwt';
-import {User} from '../models/user';
-import {JWT_SECRET} from '../util/secrets';
+import {
+  Strategy as JwtStrategy,
+  ExtractJwt,
+  VerifiedCallback,
+} from 'passport-jwt';
+import {Profile} from 'passport-google-oauth';
 
-const JwtStrategy = passportJwt.Strategy;
-const ExtractJwt = passportJwt.ExtractJwt;
+import {Authorizable, User} from '../models/user';
+import {
+  JWT_SECRET,
+  GOOGLE_OAUTH2_CLIENT_ID,
+  GOOGLE_OAUTH2_CLIENT_SECRET,
+  GOOGLE_OAUTH2_CALLBACK_URL,
+} from '../util/secrets';
 
-/*passport.use(new LocalStrategy({ usernameField: "username" }, (username, password, done) => {
-  User.findOne({ username: username.toLowerCase() }, (err, user: any) => {
-    if (err) { return done(err); }
-    if (!user) {
-      return done(undefined, false, { message: `username ${username} not found.` });
-    }
-    user.comparePassword(password, (err: Error, isMatch: boolean) => {
-      if (err) { return done(err); }
-      if (isMatch) {
-        return done(undefined, user);
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: GOOGLE_OAUTH2_CLIENT_ID,
+      clientSecret: GOOGLE_OAUTH2_CLIENT_SECRET,
+      callbackURL: GOOGLE_OAUTH2_CALLBACK_URL,
+      passReqToCallback: true,
+    },
+    async (
+      req: Request,
+      accessToken: string,
+      refreshToken: string,
+      profile: Profile,
+      done: VerifiedCallback
+    ) => {
+      // find current user in UserModel
+      const currentUser = await User.findOne({
+        // TODO: hardcode auth name constant
+        'authMethods.google.id': profile.id,
+      });
+      // create new user if the database doesn't have this user
+      if (!currentUser) {
+        const newUser = await new User({
+          email: 'mock.mimuw.edu.pl',
+          authMethods: {
+            google: {
+              id: profile.id,
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+            },
+          },
+        }).save();
+        if (newUser) {
+          req.user = newUser;
+          done(null, newUser);
+        }
       }
-      return done(undefined, false, { message: "Invalid username or password." });
-    });
-  });
-}));*/
+      done(null, currentUser);
+    }
+  )
+);
 
 passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: JWT_SECRET,
+      passReqToCallback: true,
     },
-    (jwtToken, done) => {
-      User.findOne({username: jwtToken.username}, (err, user) => {
+    (req: Request, jwtToken: {data: Authorizable}, done: VerifiedCallback) => {
+      User.findOne({email: jwtToken.data.email}, (err, user) => {
         if (err) {
           return done(err, false);
         }
         if (user) {
+          req.user = user;
           return done(undefined, user, jwtToken);
         } else {
           return done(undefined, false);

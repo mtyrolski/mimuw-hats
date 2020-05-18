@@ -1,17 +1,32 @@
 import {Router} from 'express';
 import {UserController} from '../controllers/userController';
+import {GoogleOauthController} from '../controllers/googleOauthController';
+import {JWTController} from '../controllers/JWTController';
 
 export class UserRoutes {
   router: Router;
   public userController: UserController = new UserController();
+  public authController: JWTController = new JWTController();
 
   constructor() {
     this.router = Router();
     this.routes();
   }
+
   routes() {
-    // For TEST only ! In production, you should use an Identity Provider !!
-    this.router.post('/register', this.userController.registerUser);
-    this.router.post('/login', this.userController.authenticateUser);
+    this.router.get(
+      '/login',
+      this.authController.authenticateJWT,
+      this.userController.getUser
+    );
+
+    this.router.get('/logout', this.authController.logoutJWT);
+
+    this.router.get('/google', GoogleOauthController.loginRegisterMiddleware());
+    this.router.get(
+      '/google/redirect',
+      GoogleOauthController.authMiddleware(),
+      this.userController.localUserLogin
+    );
   }
 }

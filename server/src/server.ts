@@ -1,9 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
-require('dotenv').config();
-
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
+
+require('dotenv').config();
 
 import {MONGODB_URI} from './util/secrets';
 
@@ -30,7 +32,18 @@ class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({extended: false}));
     this.app.use(compression());
-    this.app.use(cors());
+
+    this.app.use(cookieParser());
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
+
+    this.app.use(
+      cors({
+        origin: 'http://localhost:3000', // allow to server to accept request from different origin
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true, // allow session cookie from browser to pass through
+      })
+    );
   }
 
   private mongo() {
