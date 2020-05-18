@@ -75,6 +75,10 @@ class HatView extends React.Component<HatViewProps> {
 
 export class AddHat extends React.Component<HatAddProps> {
 
+    state = {
+        fileList: []
+    }
+
     render() { return(
         <Modal
             title="Add new hat"
@@ -98,7 +102,7 @@ export class AddHat extends React.Component<HatAddProps> {
                 </Form.Item>
 
                 <Form.Item {...tailLayout} name="image" rules={[{ required: true,  message: 'Image is required' }]}>
-                    <Upload {...uploadProps}>
+                    <Upload {...uploadProps(this, this.state.fileList)}>
                         <Button>
                             <UploadOutlined /> Send image
                         </Button>
