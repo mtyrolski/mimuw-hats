@@ -310,6 +310,7 @@
         },
         "photoUrl": {
           "type": "string",
+          "format": "uri",
           "description": "User's photo URL."
         }
       }
