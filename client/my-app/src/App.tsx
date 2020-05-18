@@ -82,7 +82,6 @@ class App extends React.Component {
                     </Menu.Item>
 
                     <Menu.Item key="6" icon={<SettingOutlined />}>
-
                         <NavLink to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</NavLink>
                     </Menu.Item>
 
