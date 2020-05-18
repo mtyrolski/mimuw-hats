@@ -4,9 +4,7 @@ import React from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
 import {layout, optionLayout, tailLayout, uploadProps} from "./FormLayouts";
 import {MailOutlined} from "@ant-design/icons/lib";
-import {apiFetch, apiFetchAuth} from "./fetcher";
 import {UploadFile} from "antd/es/upload/interface";
-import {useForm} from "antd/es/form/util";
 
 const { Option } = Select;
 

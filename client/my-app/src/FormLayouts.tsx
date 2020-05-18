@@ -1,11 +1,10 @@
-import {Upload} from "antd";
 import React from "react";
 import {UploadChangeParam} from "antd/es/upload";
 import {UploadFile} from "antd/es/upload/interface";
 
 export function uploadProps(component : React.Component, list : UploadFile[]) {
     return {
-        accept: ".png,.jpg",
+        accept: ".png,.jpg,.jpeg",
         action: "dummy",
         name : 'file',
         fileList : list,
