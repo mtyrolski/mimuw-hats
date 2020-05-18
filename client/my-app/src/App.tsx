@@ -53,8 +53,8 @@ class App extends React.Component {
                 }}
             >
 
-                <div style={{margin: '10px auto'}} className='logo'>
-                    <img src='/images/hamt.png' style={{ height: '64px' }} alt='logo' />
+                <div style={{display: 'flex'}}>
+                    <img src='/images/hamt.png' className='logo' style={{ height: '64px' }} alt='logo' />
                 </div>
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                     <Menu.Item key="1" icon={<GlobalOutlined />}>

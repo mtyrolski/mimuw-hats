@@ -11,10 +11,10 @@ export class PostView extends React.Component<Props> {
     render() {
         return (
             <div className="site-layout-background" style={{ padding: 24, margin: 24 }}>
-                <b>{this.props.post.user.name}</b>
-                <p>{this.props.post.description}</p>
+                <b>{this.props.post.poster.email}</b>
+                <p>{this.props.post.metadata}</p>
                 <br />
-                <img style={{width: '100%'}} alt={this.props.post.imageID} src={"/images/" + this.props.post.imageID} />
+                <img style={{width: '100%'}} alt={this.props.post.hat.name} src={this.props.post.hat.imageUrl} />
                 <Divider />
                 <ReactionBox post={this.props.post} />
             </div>

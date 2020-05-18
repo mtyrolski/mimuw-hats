@@ -35,7 +35,7 @@ class HatView extends React.Component<HatViewProps> {
     }
 
     async deleteHat() {
-        await apiFetchAuth(true, `hats?_id=${this.props.hat.id}`, {method: 'DELETE'})
+        await apiFetchAuth(true, `hats/${this.props.hat.id}`, {method: 'DELETE'})
             .then(json => {this.setState({hatVisibility: false})});
     }
 
