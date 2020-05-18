@@ -4,6 +4,7 @@ import {Avatar, Divider} from "antd";
 import {ReactionBox} from "./ReactionBox";
 import {getName} from "./User";
 import moment from 'moment';
+import {HatView} from "./HatView";
 
 interface Props {
     post: Post;
@@ -19,8 +20,9 @@ export class PostView extends React.Component<Props> {
                     <b style={{marginLeft: '1em'}} >{getName(this.props.post.poster)}</b>
                 </div>
                 <p>{this.props.post.metadata}</p>
-                <img style={{width: '100%'}} alt={this.props.post.hat.name} src={this.props.post.hat.imageUrl} />
+                <HatView hat={this.props.post.hat} size={20} footerVisibility={false}/>
                 <ReactionBox post={this.props.post} />
+
             </div>
         )
     }
