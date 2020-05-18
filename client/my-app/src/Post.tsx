@@ -1,5 +1,6 @@
 import {User} from './User'
 import {Hat} from "./Hat";
+import {ReactionInstance} from "./Reaction";
 
 export interface Post {
     id: string;
@@ -7,4 +8,5 @@ export interface Post {
     date: string;
     hat: Hat;
     metadata: string;
+    reactions: ReactionInstance[];
 }

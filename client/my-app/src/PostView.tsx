@@ -20,6 +20,8 @@ export class PostView extends React.Component<Props> {
                 </div>
                 <p>{this.props.post.metadata}</p>
                 <img style={{width: '100%'}} alt={this.props.post.hat.name} src={this.props.post.hat.imageUrl} />
+                <br />
+                <br />
                 <ReactionBox post={this.props.post} />
             </div>
         )

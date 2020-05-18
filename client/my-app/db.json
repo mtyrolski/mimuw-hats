@@ -23,7 +23,25 @@
                 "name": "czerwona",
                 "imageUrl": "/images/post1.jpg"
             },
-            "metadata": "Witam. Znalazłem takową czapkę koloru czarnego. Pozdrawiam"
+            "metadata": "Witam. Znalazłem takową czapkę koloru czarnego. Pozdrawiam",
+            "reactions": [
+                {
+                    "id": 0,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 0,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 0,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 1,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                }
+            ]
         },
         {
             "id": "boro42",
@@ -65,7 +83,33 @@
                 "name": "czarna",
                 "imageUrl": "/images/post4.jpg"
             },
-            "metadata": "Witam, czarna czapka leży na schodach na drugim piętrze."
+            "metadata": "Witam, czarna czapka leży na schodach na drugim piętrze.",
+            "reactions": [
+                {
+                    "id": 1,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 1,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                }
+            ]
         }
     ]
 }

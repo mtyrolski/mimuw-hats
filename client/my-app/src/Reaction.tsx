@@ -29,17 +29,17 @@ export interface ReactionInstance {
 
 export const reactions: Map<number, Reaction> = new Map([
     [0, {
-        imageID: 'hamt.png',
+        imageID: 'cry.png',
         name: 'cheems',
         id: 0
     }],
     [1, {
-        imageID: 'tso.png',
+        imageID: 'rage.png',
         name: 'tso',
         id: 1
     }],
     [2, {
-        imageID: 'papiez.png',
+        imageID: 'sumport.png',
         name: 'papiez',
         id: 2
     }]
