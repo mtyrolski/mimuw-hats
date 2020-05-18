@@ -6,6 +6,7 @@ import {
   JWT_EXPIRATION_SECS,
   CLIENT_HOME_PAGE_URL,
 } from '../util/secrets';
+import {Authorizable} from '../models/user';
 
 export class UserController {
   public localUserLogin(req: Request, res: Response) {
@@ -25,6 +26,10 @@ export class UserController {
   }
 
   public getUser(req: Request, res: Response) {
-    return res.status(200).json(req.user);
+    const user = req.user as Authorizable;
+    return res.status(200).json({
+      email: user.email,
+      pictureUrl: user.authMethods.get('google')!.pictureUrl,
+    });
   }
 }

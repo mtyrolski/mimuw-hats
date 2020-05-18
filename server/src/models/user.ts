@@ -2,6 +2,7 @@ import {Document, Schema, Model, model} from 'mongoose';
 
 export interface AuthMethod {
   id: string;
+  pictureUrl: string;
 }
 
 export interface OAuth2Method extends AuthMethod {
@@ -18,6 +19,7 @@ export const authMethodSchema: Schema = new Schema({
   id: String,
   accessToken: String,
   refreshToken: String,
+  pictureUrl: String,
 });
 
 export const userSchema: Schema = new Schema({

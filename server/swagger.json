@@ -43,7 +43,7 @@
         "parameters": [],
         "security": [
           {
-            "bearerAuth": []
+            "Bearer": []
           }
         ],
         "responses": {

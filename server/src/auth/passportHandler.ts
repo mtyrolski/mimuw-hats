@@ -39,13 +39,20 @@ passport.use(
       });
       // create new user if the database doesn't have this user
       if (!currentUser) {
+        const getImageFromProfile = () => {
+          if (!profile.photos) return '';
+          else return profile.photos[0].value;
+        };
+
         const newUser = await new User({
+          // TODO: how to get email? from link URL? (probably)
           email: 'mock.mimuw.edu.pl',
           authMethods: {
             google: {
               id: profile.id,
               accessToken: accessToken,
               refreshToken: refreshToken,
+              pictureUrl: getImageFromProfile(),
             },
           },
         }).save();
