@@ -4,6 +4,9 @@ import React from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
 import {layout, optionLayout, tailLayout, uploadProps} from "./FormLayouts";
 import {MailOutlined} from "@ant-design/icons/lib";
+import {apiFetch, apiFetchAuth} from "./fetcher";
+import {UploadFile} from "antd/es/upload/interface";
+import {useForm} from "antd/es/form/util";
 
 const { Option } = Select;
 
@@ -80,7 +83,7 @@ export class FoundOverlay extends React.Component<overlayProps> {
 
 export class LostOverlay extends React.Component<overlayProps> {
 
-    state = {
+    state: {radioValue: string, fileList: UploadFile[]} = {
         radioValue: "choose",
         fileList: []
     };
@@ -116,6 +119,21 @@ export class LostOverlay extends React.Component<overlayProps> {
                         {...layout}
                         name="basic"
                         initialValues={{ remember: true }}
+                        onFinish={(values) => {
+                            let formData = new FormData();
+                            // Object.keys(values).map((item) => {
+                            //     formData.append(item, values[item]);
+                            // })
+
+                            formData.append('additionalMetadata', 'twoja stara to kopara');
+                            formData.append('file', this.state.fileList[0].originFileObj!);
+
+                            // apiFetchAuth(true, 'dupa', {
+                            fetch('http://localhost:2137/', {
+                                method: 'POST',
+                                body: formData
+                            }).then((response) => console.log(response));
+                        }}
                     >
                         <Form.Item
                             label="description"
@@ -163,7 +181,7 @@ export class LostOverlay extends React.Component<overlayProps> {
 
 
                         <Form.Item {...tailLayout}>
-                            <Button type="primary" htmlType="submit" onClick={() => console.log(this.state.fileList)}>
+                            <Button type="primary" htmlType="submit">
                                 <MailOutlined/>Submit
                             </Button>
                         </Form.Item>
