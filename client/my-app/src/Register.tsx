@@ -1,9 +1,9 @@
-import {Modal, Button, Form, Input, Upload, Select, Radio, Card, Row} from 'antd';
+import {Modal, Button, Form, Input, Upload, Select, Radio, Card, Row, Popconfirm, message, Spin} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
 import {optionLayout, tailLayout, uploadProps} from "./FormLayouts";
-import {GoogleOutlined, MailOutlined} from "@ant-design/icons/lib";
+import {DeleteOutlined, GoogleOutlined, LoadingOutlined, MailOutlined} from "@ant-design/icons/lib";
 
 const layout = {
     labelCol: { span: 8 },
@@ -18,16 +18,26 @@ export class RegisterView extends React.Component{
 
     render() {
         return (
-            <Row justify="center">
-            <Card title="Register" style={{ width: 300, objectPosition: "center"}} loading={this.state.loading} >
+            <Modal
+                title={["Register"]}
+                visible={true}
+                onOk={() => this.setState({popupVisibility: false})}
+                onCancel={() => this.setState({popupVisibility: false})}
+                footer={[
+                ]}
+            >
+
+                <Card loading={this.state.loading}>
+
             <Form
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish={() => this.setState({loading: true})}
             >
 
+
                 <Form.Item name="mail" label={"E-mail"} rules={[{ required: true,  message: 'E-mail required'},
-                    {pattern: new RegExp("^[\\w.+\\-]+@gmail\\.com$"), message: 'Not correct gmail adress' }]}>
+                    {pattern: new RegExp("^[\\w.+\\-]+@(students.)?mimuw\\.edu\\.pl$"), message: 'Not correct gmail adress' }]}>
                     <Input/>
                 </Form.Item>
 
@@ -38,8 +48,8 @@ export class RegisterView extends React.Component{
                 </Form.Item>
 
                 </Form>
-            </Card>
-            </Row>
+                </Card>
+            </Modal>
         )
     }
 }
