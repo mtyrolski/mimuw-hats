@@ -23,6 +23,10 @@
         "description": "Find out more",
         "url": "http://swagger.io"
       }
+    },
+    {
+      "name": "hats",
+      "description": "Hat management endpoints"
     }
   ],
   "schemes": [
@@ -110,6 +114,87 @@
           }
         }
       }
+    },
+    "/hats": {
+      "get": {
+        "tags": [
+          "hats"
+        ],
+        "summary": "Return all user's hats",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Collection of hat objects containing their metadata",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Hat"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "hats"
+        ],
+        "summary": "Upload a new hat along with form data to the server.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "description": "The new hat's image"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added hat object with metadata",
+            "schema": {
+              "$ref": "#/definitions/Hat"
+            }
+          },
+
+          "422": {
+            "description": "Item classified as non-hat uploaded"
+          },
+
+          "408": {
+            "description": "Timeout - failed to upload/process hat"
+          }
+        }
+      }
+    },
+    "hats/{id}": {
+      "delete": {
+        "tags": [
+          "hats"
+        ],
+        "summary": "",
+        "operationId": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hat has been successfully deleted.",
+            "schema": {
+              "$ref": "#/definitions/Hat"
+            }
+          },
+          "404": {
+            "description": "No hat found with given ID"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -124,6 +209,24 @@
         "photoUrl": {
           "type": "string",
           "description": "User's photo URL."
+        }
+      }
+    },
+    "Hat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique hat ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Hat name given by owner"
+        },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri"
         }
       }
     }
