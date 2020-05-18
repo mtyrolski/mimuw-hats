@@ -5,7 +5,10 @@ import json
 
 class MLHat(ABC):
     def __init__(self, url, arch_id):
+        print('build')
         self._model = load_model(get_file(arch_id, url))
+        self._model._make_predict_function()
+        print('fajen')
 
     def len(self):
         return self._model.count_params()
@@ -44,7 +47,13 @@ class HatClassifier(MLHat):
         Raises:
             Internal Keras Error if input is invalid
         """
+        print('DEBUG')
         print(self._model.predict(input))
+        print('DEBUG2')
+
         [[hat, nothat]] = self._model.predict(input)
+        print('DEBUG3')
+
         model_out = {"pred":('hat' if hat > nothat else 'nothat')}
+        print('DEBUG4')
         return model_out

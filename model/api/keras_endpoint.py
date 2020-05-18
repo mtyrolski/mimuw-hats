@@ -2,13 +2,14 @@
 from loader import prepare_image
 from mlhat import HatClassifier
 from config import Configurator as Cfg
-from confing import MLConfig
+from config import MLConfig
 
 # Others improts
 from PIL import Image
 import numpy as np
 import flask
 import io
+import tensorflow as tf
 
 app = flask.Flask(__name__)
 hatter = None
@@ -18,19 +19,24 @@ def load_model():
 	global hatter
 	config = Cfg.get('classifier')
 	hatter = HatClassifier(config.url, config.arch_id)
+	global graph
+	graph = tf.get_default_graph()
 
 @app.route("/predict_binary", methods=["POST"])
 def predict_binary():
 	data = {"success": False}
+	config = Cfg.get('classifier')
 
 	if flask.request.method == "POST":
 		if flask.request.files.get("image"):
+			global hatter
+
 			image = flask.request.files["image"].read()
 			image = Image.open(io.BytesIO(image))
 
-			image = prepare_image(image,(224, 224))
+			image = prepare_image(image, config.target_size)
 
-			pred = model.predict(image)	
+			pred = hatter.predict(image)
 			data.append(pred)
 
 			data["success"] = True

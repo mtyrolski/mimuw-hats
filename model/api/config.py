@@ -12,11 +12,11 @@ class Configurator(object):
     configs = {}
 
     @classmethod
-    def push(label, item):
+    def push(cls, label, item):
         cls.configs[label] = item
 
     @classmethod
-    def get(label):
+    def get(cls, label):
         return cls.configs[label]
 
 if __name__ == "__main__":
