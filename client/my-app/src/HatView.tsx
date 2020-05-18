@@ -10,9 +10,6 @@ import {
     PlusOutlined,
     UploadOutlined
 } from "@ant-design/icons/lib";
-import {FormEvent, useCallback} from "react";
-import {HeapProfiler} from "inspector";
-import {FormProps} from "antd/es/form";
 import {apiFetchAuth} from "./fetcher";
 
 interface HatViewProps {

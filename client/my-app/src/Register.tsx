@@ -1,9 +1,6 @@
-import {Modal, Button, Form, Input, Upload, Select, Radio, Card, Row, Popconfirm, message, Spin} from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import {Modal, Button, Form, Input, Card} from 'antd';
 import React from 'react';
-import {RadioChangeEvent} from "antd/es/radio";
-import {optionLayout, tailLayout, uploadProps} from "./FormLayouts";
-import {DeleteOutlined, GoogleOutlined, LoadingOutlined, MailOutlined} from "@ant-design/icons/lib";
+import {GoogleOutlined} from "@ant-design/icons/lib";
 
 const layout = {
     labelCol: { span: 8 },

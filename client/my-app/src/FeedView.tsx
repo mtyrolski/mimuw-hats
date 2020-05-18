@@ -2,7 +2,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {PostView} from "./PostView";
 import {Post} from "./Post";
-import {apiFetch, apiFetchAuth} from "./fetcher";
+import {apiFetchAuth} from "./fetcher";
 
 interface State {
     posts: Post[],
