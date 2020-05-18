@@ -1,4 +1,4 @@
-const API: string = 'http://localhost:2137';
+const API: string = 'http://localhost:4000/api';
 
 function getJWT(cookies = document.cookie) {
     const cookiesObj = Object.fromEntries(cookies.split('; ').map(c => {
@@ -13,7 +13,8 @@ export function apiFetch(endpoint: RequestInfo, config: RequestInit = {}) {
         .then(response => response.json());
 }
 
-export function apiFetchAuth(endpoint: RequestInfo, {body, ...customConfig}: RequestInit = {}) {
+export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...customConfig}: RequestInit = {}) {
+    // FIXME bearer undefined?
     const headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -23,6 +24,7 @@ export function apiFetchAuth(endpoint: RequestInfo, {body, ...customConfig}: Req
     const config: RequestInit = {
         method: body ? 'POST' : 'GET',
         ...customConfig,
+        credentials: 'include',
         headers: {
             ...headers,
             ...customConfig.headers,
@@ -37,7 +39,7 @@ export function apiFetchAuth(endpoint: RequestInfo, {body, ...customConfig}: Req
         .then(async response => {
             if (response.status === 401) {
                 // TODO?
-                logOut();
+                if (logout) logOut();
             }
 
             const data = await response.json();
