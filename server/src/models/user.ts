@@ -16,14 +16,14 @@ export interface Authorizable extends Document {
 }
 
 export const authMethodSchema: Schema = new Schema({
-  id: String,
+  id: {type: String, unique: true},
   accessToken: String,
   refreshToken: String,
   pictureUrl: String,
 });
 
 export const userSchema: Schema = new Schema({
-  email: String,
+  email: {type: String, unique: true},
   authMethods: {
     type: Map,
     of: authMethodSchema,
