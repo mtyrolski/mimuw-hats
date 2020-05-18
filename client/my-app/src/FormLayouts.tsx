@@ -1,9 +1,7 @@
 export const uploadProps = {
-    name: 'file',
+    accept: ".png,.jpg",
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-        authorization: 'authorization-text',
-    },
+    name: 'file',
     onChange(info : Pick<Readonly<any>, any>) {
         if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);
