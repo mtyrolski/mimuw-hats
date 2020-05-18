@@ -15,6 +15,7 @@ import {apiFetchAuth} from "./fetcher";
 interface HatViewProps {
     hat: Hat;
     size: number;
+    footerVisibility: boolean;
 }
 
 interface MineViewProps {
@@ -57,9 +58,9 @@ export class HatView extends React.Component<HatViewProps> {
                     onOk={() => this.setState({popupVisibility: false})}
                     onCancel={() => this.setState({popupVisibility: false})}
                     footer={[
-                        <Popconfirm placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
+                        <Popconfirm style={{display: this.props.footerVisibility ? "inline" : "none"}} placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
                                     onConfirm={() => {message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
-                        <Button type={"primary"} danger style={{paddingLeft: 5}} onClick={this.deleteHat}> <DeleteOutlined/>Delete </Button>
+                        <Button style={{display: this.props.footerVisibility ? "inline" : "none", paddingLeft: 5}} type={"primary"} danger onClick={this.deleteHat}> <DeleteOutlined/>Delete </Button>
                             </Popconfirm>
                     ]}
                 >
@@ -155,7 +156,7 @@ export class MineView extends React.Component<MineViewProps> {
                     }}
                 />
 
-                {this.state.hats.map(hat => <HatView hat={hat} size={this.state.size}/>)}
+                {this.state.hats.map(hat => <HatView hat={hat} size={this.state.size} footerVisibility={true}/>)}
 
                 <Divider />
 

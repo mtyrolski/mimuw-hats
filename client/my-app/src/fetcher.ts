@@ -1,4 +1,4 @@
-const API: string = 'http://localhost:2137';
+const API: string = 'http://localhost:4000';
 
 function getJWT(cookies = document.cookie) {
     const cookiesObj = Object.fromEntries(cookies.split('; ').map(c => {
