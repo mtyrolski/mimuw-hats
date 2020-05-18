@@ -21,7 +21,7 @@ npm install
 
 To run and compile the server (default port 4000):
 ```bash
-npm build
+npm run build
 ```
 
 ## Built With
