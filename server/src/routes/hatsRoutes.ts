@@ -19,11 +19,12 @@ export class HatsRoutes {
     this.router.post(
       '/',
       upload.single('image'),
-      this.hatsController.uploadImage
+      this.hatsController.verifyHatImage,
+      this.hatsController.createValidHat
     );
 
     this.router.post('/mockml', (req, res) => {
-      console.log(req.body);
+      console.log(req.file.size);
       return res.status(200).json({
         pred: 'nonhat',
       });

@@ -183,7 +183,7 @@
             }
           },
           "422": {
-            "description": "Item classified as non-hat uploaded"
+            "description": "Uploaded item classified as a non-hat."
           },
           "408": {
             "description": "Timeout - failed to upload/process hat"

@@ -73,8 +73,12 @@ passport.use(
       secretOrKey: JWT_SECRET,
       passReqToCallback: true,
     },
-    (req: Request, jwtToken: {data: Authorizable}, done: VerifiedCallback) => {
-      User.findOne({email: jwtToken.data.email}, (err, user) => {
+    async (
+      req: Request,
+      jwtToken: {data: Authorizable},
+      done: VerifiedCallback
+    ) => {
+      await User.findOne({email: jwtToken.data.email}, (err, user) => {
         if (err) {
           return done(err, false);
         }

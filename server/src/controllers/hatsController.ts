@@ -1,49 +1,39 @@
-import stream from 'stream';
-import http from 'http';
-import {Request, Response} from 'express';
+import got from 'got';
+import FormData from 'formdata-node';
+import {NextFunction, Request, Response} from 'express';
 
 export class HatsController {
-  public uploadImage(req: Request, res: Response) {
-    if (!('file' in req))
-      return res.status(400).json({
-        message: 'No file provided',
+  public async verifyHatImage(req: Request, res: Response, next: NextFunction) {
+    if (!('file' in req)) {
+      // TODO: custom error handler
+      return res.status(408).json({
+        error: 'No file provided',
       });
+    }
 
-    const bufferStream = new stream.PassThrough();
-    bufferStream.end(req.file.buffer);
-    const clientReq = http
-      .request(
-        {
-          host: '0.0.0.0',
-          port: 4000,
-          path: '/api/hats/mockml',
-          method: 'POST',
-          headers: {
-            'content-type': 'multipart/form-data',
-          },
-        },
-        mlResp => {
-          let data = '';
-          mlResp.on('data', (chunk: string) => (data += chunk));
-          mlResp.on('end', () => {
-            const dataJson = JSON.parse(data);
-            if (dataJson.pred === 'hat')
-              return res.status(200).json({
-                message: 'TODO',
-              });
-            else
-              return res.status(422).json({
-                message: 'Invalid hat',
-              });
-          });
-        }
-      )
-      .on('error', err => {
-        console.error(err);
-        return res.status(404);
+    try {
+      const fd = new FormData();
+      fd.append('image', req.file.buffer);
+
+      const response = await got.post('http://0.0.0.0:4000/api/hats/mockml', {
+        body: fd.stream,
+        headers: fd.headers,
       });
-    bufferStream.pipe(clientReq);
-    return res.status(400);
-    // return res.status(200).json(req.body);
+      const prediction = JSON.parse(response.body).pred as string;
+
+      if (prediction !== 'hat') {
+        return res.status(422).json({
+          error: 'Non-hat',
+        });
+      }
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+
+    return next();
+  }
+
+  public async createValidHat(req: Request, res: Response, next: NextFunction) {
+    next();
   }
 }
