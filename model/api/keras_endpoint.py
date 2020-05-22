@@ -3,6 +3,7 @@ from loader import prepare_image
 from mlhat import HatClassifier
 from config import Configurator as Cfg
 from config import MLConfig
+from similarity import sim
 
 # Others improts
 from PIL import Image
@@ -41,6 +42,19 @@ def predict_binary():
 			data = {**data, **pred}
 
 			data["success"] = True
+	return flask.jsonify(data)
+
+@app.route("/similarity", methods=["POST"])
+def similarity():
+	data = {"success": False}
+	if flask.request.method == "POST":
+		if flask.request.files.get("img1") and flask.request.files.get("img2"):
+			a = flask.request.files["im1"].read()
+			b = flask.request.files["im2"].read()
+			similarity_result = sim(io.BytesIO(a), io.BytesIO(b))
+			data = {**data, **similarity_result}
+			data["success"] = True
+			
 	return flask.jsonify(data)
 
 if __name__ == "__main__":
