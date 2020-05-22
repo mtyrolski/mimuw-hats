@@ -33,6 +33,7 @@
     "@types/swagger-ui-express": "^4.1.2",
     "@types/multer": "^1.4.3",
     "@types/got": "^9.6.11",
+    "@types/morgan": "^1.9.0",
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -49,7 +50,9 @@
     "uuid": "^3.3.2",
     "multer": "^1.4.2",
     "formdata-node": "^2.1.2",
-    "got": "9.6.0"
+    "got": "9.6.0",
+    "morgan": "^1.10.0",
+    "@tsed/exceptions": "^5.54.3"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",

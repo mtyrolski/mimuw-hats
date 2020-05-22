@@ -24,7 +24,7 @@ export class HatsRoutes {
     );
 
     this.router.post('/mockml', (req, res) => {
-      console.log(req.file.size);
+      // console.log(req.file.size);
       return res.status(200).json({
         pred: 'nonhat',
       });

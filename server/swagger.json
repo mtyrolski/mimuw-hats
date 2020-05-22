@@ -182,11 +182,14 @@
               "$ref": "#/definitions/Hat"
             }
           },
-          "422": {
-            "description": "Uploaded item classified as a non-hat."
+          "400": {
+            "description": "No picture provided."
           },
           "408": {
-            "description": "Timeout - failed to upload/process hat"
+            "description": "Timeout - failed to upload/process hat."
+          },
+          "422": {
+            "description": "Uploaded item classified as a non-hat."
           }
         }
       }

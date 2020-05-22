@@ -5,10 +5,12 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
+import morgan from 'morgan';
 require('dotenv').config();
 
 import {MONGODB_URI} from './util/secrets';
 
+import {errorHandler} from './util/errorHandler';
 import {ProductRoutes} from './routes/productRoutes';
 import {UserRoutes} from './routes/userRoutes';
 import {HatsRoutes} from './routes/hatsRoutes';
@@ -18,8 +20,10 @@ class Server {
 
   constructor() {
     this.app = express();
+    this.logger();
     this.config();
     this.routes();
+    this.errorHandler();
     this.mongo();
     this.swagger();
   }
@@ -94,6 +98,14 @@ class Server {
       swaggerUi.serve,
       swaggerUi.setup(swaggerDocument)
     );
+  }
+
+  public logger() {
+    this.app.use(morgan('tiny'));
+  }
+
+  public errorHandler() {
+    this.app.use(errorHandler);
   }
 
   public start(): void {
