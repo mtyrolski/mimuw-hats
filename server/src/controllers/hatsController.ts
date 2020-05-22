@@ -1,5 +1,7 @@
+// eslint-disable-next-line node/no-extraneous-import
+import FormData from 'form-data';
 import got from 'got';
-import FormData from 'formdata-node';
+
 import {
   BadRequest,
   UnprocessableEntity,
@@ -13,15 +15,19 @@ export class HatsController {
 
     try {
       const fd = new FormData();
-      fd.append('image', req.file.buffer);
+      fd.append('image', req.file.buffer, {filename: 'image.jpg'});
 
-      const response = await got.post('http://0.0.0.0:4000/api/hats/mockml', {
-        body: fd.stream,
-        headers: fd.headers,
-      });
-      const prediction = JSON.parse(response.body).pred as string;
+      const response = await got.post(
+        'http://students.mimuw.edu.pl:5000/predict_binary',
+        {
+          body: fd,
+        }
+      );
+      const predictionObj = JSON.parse(response.body);
+      if (!('pred' in predictionObj))
+        return next(new BadRequest('Model didnt want to predict.'));
 
-      if (prediction !== 'hat') {
+      if (predictionObj.pred !== 'hat') {
         return next(new UnprocessableEntity('Provided item is not a hat.'));
       }
     } catch (err) {
@@ -32,6 +38,8 @@ export class HatsController {
   }
 
   public async createValidHat(req: Request, res: Response, next: NextFunction) {
-    next();
+    return res.status(200).json({
+      succ: 'ok',
+    });
   }
 }

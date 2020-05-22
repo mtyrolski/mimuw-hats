@@ -46,10 +46,9 @@ class Server {
 
     this.app.use(
       cors({
-        // TODO: set to frontend
-        origin: 'http://localhost:3000', // allow to server to accept request from different origin
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true, // allow session cookie from browser to pass through
+        // // TODO: set to frontend and local in debug
+        // origin: 'http://localhost:3000', // allow to server to accept request from different origin
+        // credentials: true, // allow session cookie from browser to pass through
       })
     );
   }
@@ -101,7 +100,7 @@ class Server {
   }
 
   public logger() {
-    this.app.use(morgan('tiny'));
+    this.app.use(morgan('dev'));
   }
 
   public errorHandler() {
