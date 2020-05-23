@@ -1,6 +1,8 @@
 // eslint-disable-next-line node/no-extraneous-import
 import FormData from 'form-data';
+import {writeFile} from 'fs';
 import got from 'got';
+import {v4 as uuidv4} from 'uuid';
 
 import {
   BadRequest,
@@ -8,6 +10,7 @@ import {
   GatewayTimeout,
 } from '@tsed/exceptions';
 import {NextFunction, Request, Response} from 'express';
+import {HATS_STORAGE_DIR, ML_BINARY_CLASSIFIER_URL} from '../util/secrets';
 
 export class HatsController {
   public async verifyHatImage(req: Request, res: Response, next: NextFunction) {
@@ -17,12 +20,9 @@ export class HatsController {
       const fd = new FormData();
       fd.append('image', req.file.buffer, {filename: 'image.jpg'});
 
-      const response = await got.post(
-        'http://students.mimuw.edu.pl:5000/predict_binary',
-        {
-          body: fd,
-        }
-      );
+      const response = await got.post(ML_BINARY_CLASSIFIER_URL, {
+        body: fd,
+      });
       const predictionObj = JSON.parse(response.body);
       if (!('pred' in predictionObj))
         return next(new BadRequest('Model didnt want to predict.'));
@@ -37,9 +37,14 @@ export class HatsController {
     return next();
   }
 
-  public async createValidHat(req: Request, res: Response, next: NextFunction) {
+  public async saveHat(req: Request, res: Response, next: NextFunction) {
+    // TODO: include email in uuid
+    // const newFilename = uuidv4();
+    // writeFile(`${HATS_STORAGE_DIR}/${newFilename}`, req.file.buffer, err => {
+    //   throw new Error(err?.message);
+    // });
     return res.status(200).json({
-      succ: 'ok',
+      ok: 'yup',
     });
   }
 }

@@ -1,3 +1,4 @@
+import {resolve} from 'path';
 export const MONGODB_URI = process.env['MONGODB_URI'] as string;
 
 if (!MONGODB_URI) {
@@ -29,4 +30,12 @@ export const GOOGLE_OAUTH2_CALLBACK_URL = process.env[
 
 export const CLIENT_HOME_PAGE_URL = process.env[
   'CLIENT_HOME_PAGE_URL'
+] as string;
+
+export const HATS_STORAGE_DIR = resolve(
+  process.env['HATS_STORAGE_DIR'] as string
+);
+
+export const ML_BINARY_CLASSIFIER_URL = process.env[
+  'ML_BINARY_CLASSIFIER_URL'
 ] as string;

@@ -20,7 +20,7 @@ export class HatsRoutes {
       '/',
       upload.single('image'),
       this.hatsController.verifyHatImage,
-      this.hatsController.createValidHat
+      this.hatsController.saveHat
     );
 
     this.router.post('/mockml', (req, res) => {
