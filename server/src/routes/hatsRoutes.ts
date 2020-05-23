@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import {Router, Request} from 'express';
 import multer from 'multer';
 import {HatsController} from '../controllers/hatsController';
 

@@ -23,6 +23,7 @@ class Server {
     this.logger();
     this.config();
     this.routes();
+    this.static();
     this.errorHandler();
     this.mongo();
     this.swagger();
@@ -32,6 +33,13 @@ class Server {
     this.app.use('/api/user', new UserRoutes().router);
     this.app.use('/api/products', new ProductRoutes().router);
     this.app.use('/api/hats', new HatsRoutes().router);
+  }
+
+  public static() {
+    this.app.use(
+      process.env.HATS_STORAGE_ENDPOINT as string,
+      express.static(process.env.HATS_STORAGE_DIR as string)
+    );
   }
 
   public config(): void {

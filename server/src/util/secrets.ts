@@ -36,6 +36,10 @@ export const HATS_STORAGE_DIR = resolve(
   process.env['HATS_STORAGE_DIR'] as string
 );
 
+export const HATS_STORAGE_ENDPOINT = resolve(
+  process.env['HATS_STORAGE_ENDPOINT'] as string
+);
+
 export const ML_BINARY_CLASSIFIER_URL = process.env[
   'ML_BINARY_CLASSIFIER_URL'
 ] as string;

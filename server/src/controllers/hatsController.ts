@@ -39,10 +39,11 @@ export class HatsController {
 
   public async saveHat(req: Request, res: Response, next: NextFunction) {
     // TODO: include email in uuid
-    // const newFilename = uuidv4();
-    // writeFile(`${HATS_STORAGE_DIR}/${newFilename}`, req.file.buffer, err => {
-    //   throw new Error(err?.message);
-    // });
+    const newFilename = uuidv4() + '.jpg';
+    writeFile(`${HATS_STORAGE_DIR}/${newFilename}`, req.file.buffer, err => {
+      // TODO: better error handling, maybe sync write?
+      if (err) console.error(err);
+    });
     return res.status(200).json({
       ok: 'yup',
     });
