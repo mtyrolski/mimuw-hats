@@ -46,6 +46,7 @@ passport.use(
 
         const newUser = await new User({
           // TODO: how to get email? from link URL? (probably)
+          // TODO: finding by email - assert uniqueness!!!
           email: 'mock.mimuw.edu.pl',
           authMethods: {
             google: {

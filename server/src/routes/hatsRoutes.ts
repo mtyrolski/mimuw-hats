@@ -20,14 +20,16 @@ export class HatsRoutes {
       '/',
       upload.single('image'),
       this.hatsController.verifyHatImage,
-      this.hatsController.saveHat
+      this.hatsController.saveHat.bind(this.hatsController)
     );
 
-    this.router.post('/mockml', (req, res) => {
-      // console.log(req.file.size);
-      return res.status(200).json({
-        pred: 'nonhat',
-      });
-    });
+    this.router.get(
+      '/',
+      this.hatsController.getUsersHats.bind(this.hatsController)
+    );
+    this.router.delete(
+      '/:id',
+      this.hatsController.deleteUsersHat.bind(this.hatsController)
+    );
   }
 }

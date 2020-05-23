@@ -1,18 +1,35 @@
 // eslint-disable-next-line node/no-extraneous-import
 import FormData from 'form-data';
-import {writeFile} from 'fs';
 import got from 'got';
-import {v4 as uuidv4} from 'uuid';
 
 import {
   BadRequest,
   UnprocessableEntity,
   GatewayTimeout,
+  NotFound,
+  InternalServerError,
 } from '@tsed/exceptions';
 import {NextFunction, Request, Response} from 'express';
-import {HATS_STORAGE_DIR, ML_BINARY_CLASSIFIER_URL} from '../util/secrets';
+
+import {Hat, LosableItem} from '../models/hat';
+import {
+  HATS_STORAGE_DIR,
+  HATS_STORAGE_ENDPOINT,
+  ML_BINARY_CLASSIFIER_URL,
+} from '../util/secrets';
+
+import {getUserIdFromRequest} from './userController';
+import {FileStorage} from '../util/FileStorage';
 
 export class HatsController {
+  #hatsFileManager: FileStorage;
+  constructor() {
+    this.#hatsFileManager = new FileStorage(
+      HATS_STORAGE_DIR,
+      HATS_STORAGE_ENDPOINT
+    );
+  }
+
   public async verifyHatImage(req: Request, res: Response, next: NextFunction) {
     if (!('file' in req)) return next(new BadRequest('No file specified.'));
 
@@ -38,14 +55,49 @@ export class HatsController {
   }
 
   public async saveHat(req: Request, res: Response, next: NextFunction) {
-    // TODO: include email in uuid
-    const newFilename = uuidv4() + '.jpg';
-    writeFile(`${HATS_STORAGE_DIR}/${newFilename}`, req.file.buffer, err => {
-      // TODO: better error handling, maybe sync write?
-      if (err) console.error(err);
+    const newFilename = this.#hatsFileManager.saveAndReturnFilename(
+      req.file.buffer
+    );
+
+    // TODO: remove mock
+    const userId = getUserIdFromRequest(req);
+    await new Hat({
+      owner: userId,
+      name: req.body.metadata || '',
+      fileName: newFilename,
+      imageUrl: this.#hatsFileManager.getFileUrl(newFilename),
+    }).save((err, hat) => {
+      if (err) return next(new InternalServerError('DB error: ' + err));
+      return res.status(200).json(hat);
     });
-    return res.status(200).json({
-      ok: 'yup',
+  }
+
+  public async getUsersHats(req: Request, res: Response, next: NextFunction) {
+    const userId = getUserIdFromRequest(req);
+    await Hat.find({owner: userId}, (err, hats: LosableItem[]) => {
+      if (err) return next(new Error('DB error'));
+      return res.status(200).json(hats);
     });
+  }
+
+  public async deleteUsersHat(req: Request, res: Response, next: NextFunction) {
+    const userId = getUserIdFromRequest(req);
+    const hatId = req.params.id;
+    const hatToDelete = await Hat.findById(hatId, (err, hat) => {
+      err =
+        err || hat?.owner.toString() !== userId
+          ? err
+            ? new InternalServerError('DB error')
+            : new NotFound('No hat with given ID.')
+          : null;
+      if (err) return next(err);
+    });
+    if (!hatToDelete) return next(new NotFound('No hat with given ID.'));
+
+    // TODO: catch
+    hatToDelete.remove().then(() => {
+      this.#hatsFileManager.deleteFileByName(hatToDelete.fileName);
+    });
+    return res.status(200).json(hatToDelete);
   }
 }
