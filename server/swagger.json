@@ -37,6 +37,40 @@
     "http"
   ],
   "paths": {
+    "/user/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "First user registration step - sends verification URL to given email.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "emailPayload",
+            "schema": {
+              "$ref": "#/definitions/Email"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email successfully sent."
+          },
+          "422": {
+            "description": "Incorrect email (probably not a MIMUW one)."
+          },
+          "503": {
+            "description": "Email correct, problem with sending it, try again."
+          }
+        }
+      }
+    },
     "/user/login": {
       "get": {
         "tags": [
@@ -309,6 +343,16 @@
     }
   },
   "definitions": {
+    "Email": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User's MIMUW e-mail for registration."
+        }
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
