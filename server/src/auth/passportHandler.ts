@@ -32,22 +32,34 @@ passport.use(
       profile: Profile,
       done: VerifiedCallback
     ) => {
-      // find current user in UserModel
-      const currentUser = await User.findOne({
-        // TODO: hardcode auth name constant
-        'authMethods.google.id': profile.id,
-      });
-      // create new user if the database doesn't have this user
-      if (!currentUser) {
+      const email = req.query.state as string;
+      if (!email) {
+        User.findOne(
+          {
+            // TODO: hardcode auth name constant
+            'authMethods.google.id': profile.id,
+          },
+          (err, user) => {
+            return done(err, user);
+          }
+        );
+      } else {
+        const alreadyRegistered = await User.exists({
+          $or: [{'authMethods.google.id': profile.id}, {email: email}],
+        });
+
+        if (alreadyRegistered)
+          return done(null, false, {
+            message: 'Cannot register - email/google acc reserved.',
+          });
+
         const getImageFromProfile = () => {
           if (!profile.photos) return '';
           else return profile.photos[0].value;
         };
 
         const newUser = await new User({
-          // TODO: how to get email? from link URL? (probably)
-          // TODO: finding by email - assert uniqueness!!!
-          email: 'mock.mimuw.edu.pl',
+          email: email,
           authMethods: {
             google: {
               id: profile.id,
@@ -59,10 +71,9 @@ passport.use(
         }).save();
         if (newUser) {
           req.user = newUser;
-          done(null, newUser);
+          return done(null, newUser);
         }
       }
-      done(null, currentUser);
     }
   )
 );

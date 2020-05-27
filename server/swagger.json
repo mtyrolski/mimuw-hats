@@ -62,6 +62,9 @@
           "200": {
             "description": "Email successfully sent."
           },
+          "409": {
+            "description": "Unable to register - user with given email already exists."
+          },
           "422": {
             "description": "Incorrect email (probably not a MIMUW one)."
           },
