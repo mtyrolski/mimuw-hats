@@ -1,5 +1,6 @@
 export interface User {
     email: string;
+    id: string;
     pictureUrl: string;
 }
 

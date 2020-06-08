@@ -73,7 +73,7 @@ state : {fileList: UploadFile[], image?: string, crop?: any, rotation: number} =
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    poster: this.props.user.email,
+                                    poster: this.props.user.id,
                                     hat: hat.id,
                                     textContent: metadata,
                                     eventType: 'found'
@@ -212,7 +212,7 @@ export class LostOverlay extends React.Component<overlayProps> {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    poster: this.props.user.email,
+                                    poster: this.props.user.id,
                                     hat: hat.id,
                                     textContent: metadata,
                                     eventType: 'lost'
