@@ -24,7 +24,7 @@ import {
 } from '../auth/emailHandler';
 
 export const getUserIdFromRequest = (req: Request) =>
-  req.user ? req.user._id : '5ec2a82761d31b7dda7910c7';
+  req.user ? req.user._id : '5ede43ffd8a37e4d8e83adbe';
 
 export class UserController {
   public afterExternalAuth(req: Request, res: Response) {
