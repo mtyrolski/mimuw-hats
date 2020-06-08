@@ -108,10 +108,9 @@ export class HatsController {
 
     const ourFileName = currentHat.fileName;
 
-    const allFoundHats = await Post.find(
-      {eventType: 'found'},
-      {hat: 1, _id: 0}
-    ).populate('hat');
+    const allFoundHats = await Post.find({eventType: 'found'})
+      .populate('poster')
+      .populate('hat');
 
     const ourHatImage = this.#hatsFileManager.readFromFileName(ourFileName);
 
