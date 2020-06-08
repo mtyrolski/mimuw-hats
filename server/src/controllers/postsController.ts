@@ -32,6 +32,21 @@ export class PostsController {
       });
   }
 
+  public async getUsersLostPosts(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const userId = getUserIdFromRequest(req);
+    await Post.find({poster: userId, eventType: 'lost'})
+      .populate('poster')
+      .populate('hat')
+      .exec((err, posts) => {
+        if (err) return next(new InternalServerError('DB error'));
+        return res.json(posts);
+      });
+  }
+
   public async deletePost(req: Request, res: Response, next: NextFunction) {
     const hatId = req.params.id;
     await Post.findByIdAndDelete(hatId);

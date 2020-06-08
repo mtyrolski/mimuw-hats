@@ -12,6 +12,7 @@ export class PostsRoutes {
 
   private routes() {
     this.router.get('/', this.postsController.getPosts);
+    this.router.get('/lost', this.postsController.getUsersLostPosts);
     this.router.post('/', this.postsController.createPost);
   }
 }

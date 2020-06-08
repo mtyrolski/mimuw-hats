@@ -30,6 +30,16 @@ export const userSchema: Schema = new Schema({
   },
 });
 
+userSchema.set('toJSON', {
+  virtuals: true,
+  transform: (doc, ret) => {
+    delete ret._id;
+    delete ret.__v;
+    ret.pictureUrl = ret.authMethods['google'].pictureUrl;
+    delete ret.authMethods;
+  },
+});
+
 export const User: Model<Authorizable> = model<Authorizable>(
   'User',
   userSchema

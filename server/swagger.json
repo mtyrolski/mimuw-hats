@@ -349,6 +349,33 @@
           }
         }
       }
+    },
+    "/posts/lost": {
+      "get": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Get a collection of post representing user's lost hats.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts ordered by publication date",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

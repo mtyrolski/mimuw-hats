@@ -27,6 +27,12 @@ export class HatsRoutes {
       '/',
       this.hatsController.getUsersHats.bind(this.hatsController)
     );
+
+    this.router.get(
+      '/:id/similar',
+      this.hatsController.getSimilarHats.bind(this.hatsController)
+    );
+
     this.router.delete(
       '/:id',
       this.hatsController.deleteUsersHat.bind(this.hatsController)

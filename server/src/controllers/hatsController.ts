@@ -12,6 +12,7 @@ import {
 import {NextFunction, Request, Response} from 'express';
 
 import {Hat, LosableItem} from '../models/hat';
+import {Post} from '../models/post';
 import {
   HATS_STORAGE_DIR,
   HATS_STORAGE_ENDPOINT,
@@ -29,6 +30,22 @@ export class HatsController {
       HATS_STORAGE_DIR,
       HATS_STORAGE_ENDPOINT
     );
+  }
+
+  private static async findUsersHat(
+    hatId: string,
+    userId: string,
+    next: NextFunction
+  ) {
+    return Hat.findById(hatId, (err, hat) => {
+      err =
+        err || hat?.owner.toString() !== userId
+          ? err
+            ? new InternalServerError('DB error')
+            : new NotFound('No hat with given ID.')
+          : null;
+      if (err) return next(err);
+    });
   }
 
   public async verifyHatImage(req: Request, res: Response, next: NextFunction) {
@@ -82,18 +99,19 @@ export class HatsController {
     });
   }
 
+  public async getSimilarHats(req: Request, res: Response, next: NextFunction) {
+    const userId = getUserIdFromRequest(req);
+    const hatId = req.params.id;
+    const currentHat = await HatsController.findUsersHat(hatId, userId, next);
+    if (!currentHat) return next(new NotFound('No hat with given ID.'));
+
+    // const allLostHats = await Post.find({eventType: 'found'}).populate('hat')
+  }
+
   public async deleteUsersHat(req: Request, res: Response, next: NextFunction) {
     const userId = getUserIdFromRequest(req);
     const hatId = req.params.id;
-    const hatToDelete = await Hat.findById(hatId, (err, hat) => {
-      err =
-        err || hat?.owner.toString() !== userId
-          ? err
-            ? new InternalServerError('DB error')
-            : new NotFound('No hat with given ID.')
-          : null;
-      if (err) return next(err);
-    });
+    const hatToDelete = await HatsController.findUsersHat(hatId, userId, next);
     if (!hatToDelete) return next(new NotFound('No hat with given ID.'));
 
     // TODO: catch
