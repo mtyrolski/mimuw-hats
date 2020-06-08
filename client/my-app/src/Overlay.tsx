@@ -6,6 +6,8 @@ import {layout, optionLayout, tailLayout, uploadProps} from "./FormLayouts";
 import {MailOutlined} from "@ant-design/icons/lib";
 import {UploadFile} from "antd/es/upload/interface";
 import {apiFetchAuth} from "./fetcher";
+import {User} from "./User";
+import {Hat} from "./Hat";
 
 const { Option } = Select;
 
@@ -14,6 +16,7 @@ interface overlayProps {
     content: boolean;
     handleOk: () => void;
     handleCancel: () => void;
+    user: User;
 }
 
 export class FoundOverlay extends React.Component<overlayProps> {
@@ -124,25 +127,37 @@ export class LostOverlay extends React.Component<overlayProps> {
                         name="basic"
                         initialValues={{ remember: true }}
                         onFinish={async (values) => {
+                            let metadata='qweqweqwe'; // TODO
+
                             let formData = new FormData();
-                            Object.keys(values).map((item) => {
-                                formData.append(item, values[item]);
-                            })
 
-                            // formData.append('metadata', 'twoja stara to kopara');
+                            // TODO metadata
+                            // TODO select registered hat
+                            formData.append('metadata', metadata);
                             formData.append('image', this.state.fileList[0].originFileObj!);
-
-                            // apiFetchAuth(true, 'dupa', {
-                            // let response = await fetch('http://localhost:4000/api/hats', {
-                            //     method: 'POST',
-                            //     body: formData
-                            // });
-                            // let result = await response.json();
-                            // console.log(result);
-
-                            await apiFetchAuth(true, 'hats', {
+                            let json: Hat = await apiFetchAuth(true, 'hats?lost=1', {
                                 method: 'POST',
                                 body: formData
+                            }).then(response => {
+                                // TODO error
+                                if (response.status != 200) {
+                                    console.log('Coś się popsuło');
+                                }
+
+                                return response.json();
+                            });
+
+                            // TODO error handling
+                            await apiFetchAuth(true, 'posts', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    poster: this.props.user,
+                                    hat: json,
+                                    metadata: metadata
+                                })
                             });
                         }}
                     >

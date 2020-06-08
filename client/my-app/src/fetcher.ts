@@ -17,18 +17,18 @@ export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...c
     // FIXME bearer undefined?
     const headers = {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getJWT()}`
+        Authorization: `Bearer ${getJWT()}`
     };
 
+
     const config: RequestInit = {
-        method: body ? 'POST' : 'GET',
         ...customConfig,
         credentials: 'include',
         headers: {
             ...headers,
             ...customConfig.headers,
-        }
+        },
+        body: body
     };
 
     // if (body) {
@@ -42,12 +42,13 @@ export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...c
                 if (logout) logOut();
             }
 
-            const data = await response.json();
-            if (response.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
+            return response;
+            // const data = await response.json();
+            // if (response.ok) {
+            //     return data;
+            // } else {
+            //     return Promise.reject(data);
+            // }
         });
 }
 

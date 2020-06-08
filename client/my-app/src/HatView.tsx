@@ -13,6 +13,7 @@ import {
     UploadOutlined
 } from "@ant-design/icons/lib";
 import {apiFetchAuth} from "./fetcher";
+import {UploadFile} from "antd/es/upload/interface";
 
 interface HatViewProps {
     hat: Hat;
@@ -51,7 +52,7 @@ export class HatView extends React.Component<HatViewProps> {
                 float: "left", border: this.props.footerVisibility ? "3px solid" : "none", borderColor: "dark-blue"}}
                 >
                     {this.props.footerVisibility && <b style={{fontSize: this.props.size}}>{this.props.hat.name}</b>}
-                    <img style={this.props.footerVisibility ? {width: '100%'} : {width: '100%', height: '40em', objectFit: 'cover'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
+                    <img style={this.props.footerVisibility ? {width: '100%'} : {width: '100%', height: '40em', objectFit: 'cover'}} alt={this.props.hat.imageUrl} src={'http://' + this.props.hat.imageUrl} />
                 </div>
 
                 <Modal
@@ -61,8 +62,8 @@ export class HatView extends React.Component<HatViewProps> {
                     onCancel={() => this.setState({popupVisibility: false})}
                     footer={[
                         <Popconfirm style={{display: this.props.footerVisibility ? "inline" : "none"}} placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
-                                    onConfirm={() => {message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
-                        <Button style={{display: this.props.footerVisibility ? "inline" : "none", paddingLeft: 5}} type={"primary"} danger onClick={this.deleteHat}> <DeleteOutlined/>Delete </Button>
+                                    onConfirm={() => {this.deleteHat(); message.info("Hat deleted succesfully"); this.setState({popupVisibility: false});}} okText="Yes" cancelText="No">
+                        <Button style={{display: this.props.footerVisibility ? "inline" : "none", paddingLeft: 5}} type={"primary"} danger > <DeleteOutlined/>Delete </Button>
                             </Popconfirm>
                     ]}
                 >
@@ -75,7 +76,7 @@ export class HatView extends React.Component<HatViewProps> {
 
 export class AddHat extends React.Component<HatAddProps> {
 
-    state = {
+    state: {fileList: UploadFile[]} = {
         fileList: []
     }
 
@@ -96,6 +97,33 @@ export class AddHat extends React.Component<HatAddProps> {
                 {...layout}
                 name="basic"
                 initialValues={{ remember: true }}
+                onFinish = {async values => {
+                    let metadata = values.name;
+                    let formData = new FormData();
+
+                    console.log(this.state.fileList);
+
+                    formData.append('metadata', metadata);
+                    formData.append('image', this.state.fileList[0].originFileObj!);
+
+                    // await apiFetchAuth(true, 'hats?lost=1', {
+                    await apiFetchAuth(true, 'hats', {
+                        method: 'POST',
+                        // headers: {
+                        //     'Content-Type': 'multipart/form-data'
+                        // },
+                        body: formData
+                    // await fetch('http://localhost:4000/api/hats', {
+                    //     method: 'POST',
+                    //     body: formData
+                    }).then(response => {
+                        // TODO error
+                        if (response.status != 200) {
+                            console.log('Coś się popsuło');
+                        }
+                    });
+                }
+                }
             >
                 <Form.Item name="name" label={"hat name"} rules={[{ required: true,  message: 'Name is required' }]}>
                     <Input/>
@@ -129,6 +157,7 @@ export class MineView extends React.Component<MineViewProps> {
 
     async getHats() {
         await apiFetchAuth(true, `hats`, {method: 'GET'})
+            .then(response => response.json())
             .then(json => this.setState({
                 hats: [...json],
             }));

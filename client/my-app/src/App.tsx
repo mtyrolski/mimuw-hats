@@ -36,6 +36,7 @@ class App extends React.Component {
 
     componentDidMount() {
         apiFetchAuth(false, 'user/login')
+            .then(response => response.json())
             .then((json: User) => this.setState({user: json}))
             .catch(error => this.setState({user: undefined}));
     }
@@ -110,11 +111,13 @@ class App extends React.Component {
                     <LostOverlay visible={this.state.lostVisible}
                                  handleCancel={() => this.setState({lostVisible: false})}
                                  handleOk={() => this.setState({lostVisible: false})}
-                                 content={true}/>
+                                 content={true}
+                                 user={this.state.user}/>
                     <FoundOverlay visible={this.state.foundVisible}
                                   handleCancel={() => this.setState({foundVisible: false})}
                                   handleOk={() => this.setState({foundVisible: false})}
-                                  content={true}/>
+                                  content={true}
+                                  user={this.state.user}/>
                     <AddHat visible={this.state.addVisible}
                             handleCancel={() => this.setState({addVisible: false})}
                             handleOk={() => this.setState({addVisible: false})}/>
