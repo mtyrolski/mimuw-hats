@@ -23,6 +23,7 @@ import {FileStorage} from '../util/FileStorage';
 
 export class HatsController {
   #hatsFileManager: FileStorage;
+
   constructor() {
     this.#hatsFileManager = new FileStorage(
       HATS_STORAGE_DIR,
@@ -59,8 +60,9 @@ export class HatsController {
       req.file.buffer
     );
 
+    const lost = (req.query.lost === 'true') as boolean;
     // TODO: remove mock
-    const userId = getUserIdFromRequest(req);
+    const userId = lost ? null : getUserIdFromRequest(req);
     await new Hat({
       owner: userId,
       name: req.body.metadata || '',

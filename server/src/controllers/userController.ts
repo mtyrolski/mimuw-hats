@@ -83,6 +83,7 @@ export class UserController {
       return next(new GatewayTimeout(error.response.body));
     }
 
+    // TODO: return 200 without any payload (remove token)
     return res.status(200).json({
       token: tokenWrapper.token,
     });

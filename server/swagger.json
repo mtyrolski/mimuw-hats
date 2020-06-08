@@ -195,6 +195,12 @@
         ],
         "parameters": [
           {
+            "in": "query",
+            "name": "lost",
+            "type": "boolean",
+            "description": "Type of upload - registration: 0, lost: 1"
+          },
+          {
             "in": "formData",
             "name": "metadata",
             "type": "string",
