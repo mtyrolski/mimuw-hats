@@ -36,6 +36,7 @@ class App extends React.Component {
 
     componentDidMount() {
         apiFetchAuth(false, 'user/login')
+            .then(response => response.ok ? response : Promise.reject(response))
             .then(response => response.json())
             .then((json: User) => this.setState({user: json}))
             .catch(error => this.setState({user: undefined}));
