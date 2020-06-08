@@ -196,7 +196,7 @@ export class LostOverlay extends React.Component<overlayProps> {
 
                                 formData.append('metadata', metadata);
                                 formData.append('image', await getCroppedImg(this.state.image, this.state.crop, this.state.rotation));
-                                hat = await apiFetchAuth(true, 'hats?lost=true', {
+                                hat = await apiFetchAuth(true, 'hats', {
                                     method: 'POST',
                                     body: formData
                                 }).then(response => {
