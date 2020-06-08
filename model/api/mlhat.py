@@ -10,6 +10,8 @@ with warnings.catch_warnings():
 
 
 class MLHat(ABC):
+    """Machine Learning hat algorithm base
+    """
     def __init__(self, url, arch_id):
         self._session = tf.Session(graph=tf.Graph())
         with self._session.graph.as_default():
@@ -17,14 +19,29 @@ class MLHat(ABC):
             self._model = load_model(get_file(arch_id, url))
 
     def len(self):
+        """Returns number of params
+
+        Returns:
+            int : params
+        """
         return self._model.count_params()
 
     @property
     def model(self):
+        """Get raw model
+
+        Returns:
+            keras/tensorflow model: model
+        """
         return self._model
 
     @property
     def data_size(self):
+        """Returns size
+
+        Returns:
+            int: model length
+        """
         return len(self._model)
 
     @abstractmethod
