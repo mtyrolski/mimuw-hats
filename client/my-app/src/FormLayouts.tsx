@@ -2,20 +2,6 @@ import React from "react";
 import {UploadChangeParam} from "antd/es/upload";
 import {UploadFile} from "antd/es/upload/interface";
 
-export function uploadProps(component : React.Component, list : UploadFile[]) {
-    return {
-        accept: ".png,.jpg,.jpeg",
-        action: "dummy",
-        name : 'file',
-        fileList : list,
-        onChange : (info : UploadChangeParam<UploadFile<any>>) => {
-            let fileList = [...info.fileList];
-            fileList = fileList.slice(-1);
-            component.setState({fileList: fileList});},
-        beforeUpload : () => false,
-    };
-}
-
 function getBase64(file : Blob) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -25,7 +11,7 @@ function getBase64(file : Blob) {
     });
 }
 
-export function tempUploadProps(component : React.Component, list : UploadFile[]) {
+export function uploadProps(component : React.Component, list : UploadFile[]) {
     return {
         accept: ".png,.jpg,.jpeg",
         action: "dummy",

@@ -3,7 +3,7 @@ import {Popconfirm, message, Button, Divider, Form, Input, Modal, Select, Slider
 import {Hat} from "./Hat";
 import {User} from "./User";
 import {SliderValue} from "antd/es/slider";
-import {layout, tailLayout, tempUploadProps, uploadProps} from "./FormLayouts";
+import {layout, tailLayout, uploadProps} from "./FormLayouts";
 import 'react-image-crop/dist/ReactCrop.css';
 import ReactCrop, {makeAspectCrop} from 'react-image-crop';
 import {
@@ -87,16 +87,6 @@ export class AddHat extends React.Component<HatAddProps> {
         rotation: 0
     }
 
-    handlePreview = async (file : UploadFile<any>) => {
-        if (!file.url && !file.preview) {
-            //file.preview = await getBase64(file.originFileObj);
-        }
-
-        this.setState({
-            image: file.url || file.preview,
-        });
-    }
-
     render() { return(
         <Modal
             title="Add new hat"
@@ -115,6 +105,8 @@ export class AddHat extends React.Component<HatAddProps> {
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish = {async values => {
+                    this.props.handleCancel();
+
                     let metadata = values.name;
                     let formData = new FormData();
 
@@ -138,7 +130,7 @@ export class AddHat extends React.Component<HatAddProps> {
                 </Form.Item>
 
                 <Form.Item {...tailLayout} name="image" rules={[{ required: true,  message: 'Image is required' }]}>
-                    <Upload {...tempUploadProps(this, this.state.fileList)} onPreview={this.handlePreview}>
+                    <Upload {...uploadProps(this, this.state.fileList)}>
                         <Button>
                             <UploadOutlined /> Send image
                         </Button>

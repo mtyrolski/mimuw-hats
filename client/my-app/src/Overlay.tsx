@@ -8,6 +8,7 @@ import {UploadFile} from "antd/es/upload/interface";
 import {apiFetchAuth} from "./fetcher";
 import {User} from "./User";
 import {Hat} from "./Hat";
+import {BoundingBox} from "./BoundingBox";
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ export class FoundOverlay extends React.Component<overlayProps> {
 
     state = {
         fileList: [],
+        image: undefined,
     }
 
     render() {
@@ -74,6 +76,9 @@ export class FoundOverlay extends React.Component<overlayProps> {
                         </Upload>
                             </Form.Item>
 
+                        { this.state.fileList[0] ? <BoundingBox imageUrl={this.state.image!}
+                                                                onUpdate={(area, rotation) => {this.setState({crop: area, rotation: rotation})}} /> : null }
+
                         <Form.Item {...tailLayout}>
                             <Button type="primary" htmlType="submit">
                                 <MailOutlined/>Submit
@@ -90,9 +95,10 @@ export class FoundOverlay extends React.Component<overlayProps> {
 
 export class LostOverlay extends React.Component<overlayProps> {
 
-    state: {radioValue: string, fileList: UploadFile[]} = {
+    state: {radioValue: string, fileList: UploadFile[], image: string | undefined} = {
         radioValue: "choose",
-        fileList: []
+        fileList: [],
+        image: undefined,
     };
 
     constructor(props: overlayProps) {
@@ -127,6 +133,8 @@ export class LostOverlay extends React.Component<overlayProps> {
                         name="basic"
                         initialValues={{ remember: true }}
                         onFinish={async (values) => {
+                            this.props.handleCancel();
+
                             let metadata='qweqweqwe'; // TODO
 
                             let formData = new FormData();
@@ -191,14 +199,21 @@ export class LostOverlay extends React.Component<overlayProps> {
                             </Form.Item> : null}
 
                         {this.state.radioValue === "upload" ?
+
+                            <div>
+
                             <Form.Item {...optionLayout} name="image" rules={[{ required: (this.state.radioValue === "upload"),  message: 'Image is required' }]}>
                                 <Upload {...uploadProps(this, this.state.fileList)}>
                                     <Button>
                                         <UploadOutlined /> Send image
                                     </Button>
                                 </Upload>
-                            </Form.Item> : null}
+                            </Form.Item>
 
+                            { this.state.fileList[0] ? <BoundingBox imageUrl={this.state.image!}
+                                                                    onUpdate={(area, rotation) => {this.setState({crop: area, rotation: rotation})}} /> : null }
+                            </div>
+                            : null}
 
                         <Form.Item {...tailLayout}>
                             <Button type="primary" htmlType="submit">
