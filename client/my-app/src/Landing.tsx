@@ -38,7 +38,6 @@ export default class Landing extends React.Component {
                 </Col>
             </Row>
             <RegisterView visible={this.state.registerVisible} handleOk={() => this.toggleRegister(this.state)} handleCancel={() => this.toggleRegister(this.state)} />
-            <BoundingBox visible={true} imageUrl="https://cdn.galleries.smcloud.net/t/galleries/gf-o39q-Qz8j-zb7d_robert-kubica-664x442-nocrop.jpg" endpoint="" handleCancel={() => {return;}} />
         </div>;
     }
 }

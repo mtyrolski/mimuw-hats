@@ -7,10 +7,7 @@ import {Area, Point} from "react-easy-crop/types";
 import getCroppedImg from './cropImage';
 
 interface BoundingBoxProps {
-    visible: boolean;
     imageUrl: string;
-    endpoint: string;
-    handleCancel: () => void;
 }
 
 export class BoundingBox extends React.Component<BoundingBoxProps> {
@@ -44,21 +41,6 @@ export class BoundingBox extends React.Component<BoundingBoxProps> {
     }
 
     render() { return(
-        <Modal
-            title="Bounding box"
-            visible={this.props.visible}
-            onOk={this.handleOk}
-            onCancel={this.props.handleCancel}
-            footer={[
-                <Button key="OK" onClick={this.handleOk}>
-                        OK
-                    </Button>,
-
-                <Button key="back" onClick={this.props.handleCancel}>
-                    Cancel
-                </Button>,
-            ]}
-        >
 
             <div>
                 <div className="crop-container" style={{width: "100%", position: "relative", height: 400}}>
@@ -95,6 +77,6 @@ export class BoundingBox extends React.Component<BoundingBoxProps> {
                 </div>
             </div>
 
-            </Modal>)
+            )
             }
 }

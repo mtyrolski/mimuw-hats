@@ -13,6 +13,8 @@ import {
     UploadOutlined
 } from "@ant-design/icons/lib";
 import {apiFetchAuth} from "./fetcher";
+import {BoundingBox} from "./BoundingBox";
+import {UploadFile} from "antd/es/upload/interface";
 
 interface HatViewProps {
     hat: Hat;
@@ -67,16 +69,37 @@ export class HatView extends React.Component<HatViewProps> {
                     ]}
                 >
                     <img style={{width: '100%', height: '100%'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
+
                 </Modal>
             </div>
         );
     }
 }
 
+function getBase64(file : Blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 export class AddHat extends React.Component<HatAddProps> {
 
-    state = {
-        fileList: []
+    state : {fileList: UploadFile[], image: string | undefined} = {
+        fileList: [],
+        image: undefined,
+    }
+
+    handlePreview = async (file : UploadFile<any>) => {
+        if (!file.url && !file.preview) {
+            //file.preview = await getBase64(file.originFileObj);
+        }
+
+        this.setState({
+            image: file.url || file.preview,
+        });
     }
 
     render() { return(
@@ -102,12 +125,14 @@ export class AddHat extends React.Component<HatAddProps> {
                 </Form.Item>
 
                 <Form.Item {...tailLayout} name="image" rules={[{ required: true,  message: 'Image is required' }]}>
-                    <Upload {...uploadProps(this, this.state.fileList)}>
+                    <Upload {...uploadProps(this, this.state.fileList)} onPreview={this.handlePreview} listType="picture-card">
                         <Button>
                             <UploadOutlined /> Send image
                         </Button>
                     </Upload>
                 </Form.Item>
+
+                { this.state.fileList[0] ? <BoundingBox imageUrl="1" /> : null }
 
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit">
