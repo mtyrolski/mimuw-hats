@@ -20,7 +20,7 @@ export class Preferences extends React.Component {
                 <Divider />
 
                 <div>
-                    Enable Kubica
+                    Remove Kebab
                     <Switch checkedChildren={"ON"} unCheckedChildren={"OFF"} style={{marginLeft: "50px"}} />
                 </div>
             </div>

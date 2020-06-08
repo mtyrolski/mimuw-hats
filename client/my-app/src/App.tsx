@@ -128,7 +128,7 @@ class App extends React.Component {
                             <MineView user={this.state.user}></MineView>
                         </Route>
                         <Route path="/losted">
-                            <LostedHats></LostedHats>
+                            <LostedHats user={this.state.user}></LostedHats>
                         </Route>
                         <Route path="/preferences">
                             <Preferences />
