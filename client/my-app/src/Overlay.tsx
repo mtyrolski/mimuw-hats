@@ -159,8 +159,8 @@ export class LostOverlay extends React.Component<overlayProps> {
         let hats: Hat[] = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
         let lostHats: Hat[] = await apiFetchAuth(true, `posts/lost`, {method: 'GET'})
             .then(response => response.json())
-            .then(json => json.forEach((post: Post) => post.hat));
-        hats = hats.filter((el: Hat) => !lostHats.includes(el));
+            .then(json => json.map((post: Post) => post.hat));
+        hats = hats.filter((el: Hat) => !(lostHats || []).includes(el));
 
         this.setState({hatList: hats});
     };
