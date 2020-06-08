@@ -61,9 +61,9 @@ def similarity():
 	data = {"success": False}
 	if flask.request.method == "POST":
 		if flask.request.files.get("img1") and flask.request.files.get("img2"):
-			a = flask.request.files["im1"].read()
-			b = flask.request.files["im2"].read()
-			similarity_result = sim(io.BytesIO(a), io.BytesIO(b))
+			a = flask.request.files["img1"].read()
+			b = flask.request.files["img2"].read()
+			similarity_result = sim(Image.open(io.BytesIO(a)), Image.open(io.BytesIO(b)))
 			data = {**data, **similarity_result}
 			data["success"] = True
 			

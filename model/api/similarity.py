@@ -4,7 +4,7 @@ import imageio
 from PIL import Image
 import math
 
-BEGIN = 0.35
+BEGIN = 0.25
 END = 1 - BEGIN
 WASSERT_DIST_TRASHHOLD = 130
 COLOR_DIST_DIFF = 200
@@ -45,6 +45,8 @@ def get_histogram(img):
         hist[c] = np.array(hist[c]) / (h * w)
     return hist
 
+from PIL import Image
+import skimage.transform as st
 
 def sim(a, b):
     """Decides if two images are similar
@@ -56,10 +58,12 @@ def sim(a, b):
     Returns:
         dict: json-like dictionary 'similar': TRUE|FALSE
     """
-    a=imageio.imread(a, as_gray=False, pilmode="RGB")
-    b=imageio.imread(b, as_gray=False, pilmode="RGB")
+    a,b = np.asarray(a), np.asarray(b)
+    a = st.resize(a, (128, 128))
+    b = st.resize(b, (128, 128))
+
     d = rgb_wasserstein_distance(a,b)
-    h, w, _ = a.shape
+    h, w = 128, 128
     a = np.moveaxis(a, -1, 0)
     b = np.moveaxis(b, -1, 0)
     mean1 = [a[i, int(BEGIN*w):int(END*w), int(BEGIN*h):int(END*h)].mean() for i in range(3)]
@@ -68,7 +72,7 @@ def sim(a, b):
     for k in range(CHANNELS):
         acc += (mean1[k] - mean2[k])**2
     acc = math.sqrt(acc)
-    return {'similar', acc < COLOR_DIST_DIFF and d < WASSERT_DIST_TRASHHOLD}
+    return {'similar' : acc < COLOR_DIST_DIFF and d < WASSERT_DIST_TRASHHOLD}
 
 
 
