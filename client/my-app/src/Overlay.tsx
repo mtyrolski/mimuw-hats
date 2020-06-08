@@ -1,4 +1,4 @@
-import {Modal, Button, Form, Input, Upload, Select, Radio} from 'antd';
+import {Modal, Button, Form, Input, Upload, Select, Radio, message} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
@@ -22,30 +22,65 @@ interface overlayProps {
 
 export class FoundOverlay extends React.Component<overlayProps> {
 
-    state = {
-        fileList: [],
-        image: undefined,
-    }
+state : {fileList: UploadFile[], image?: string} = {
+    fileList: [],
+    image: undefined,
+}
 
-    render() {
-        return (
-            <div>
-                <Modal
-                    title="Found hat"
-                    visible={this.props.visible}
-                    onOk={this.props.handleOk}
-                    onCancel={this.props.handleCancel}
-                    footer={[
-                        <Button key="back" onClick={this.props.handleCancel}>
-                            Cancel
-                        </Button>,
-                    ]}
-                >
+render() {
+    return (
+        <div>
+            <Modal
+                title="Found hat"
+                visible={this.props.visible}
+                onOk={this.props.handleOk}
+                onCancel={this.props.handleCancel}
+                footer={[
+                    <Button key="back" onClick={this.props.handleCancel}>
+                        Cancel
+                    </Button>,
+                ]}
+            >
 
-                    <Form
-                        {...layout}
-                        name="basic"
-                        initialValues={{ remember: true }}
+                <Form
+                    {...layout}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={async (values) => {
+                        this.props.handleCancel();
+
+                        let metadata = 'Floor ' + values['floor'] + ' ' + values['content'];
+                        let hat: Hat;
+                        let formData = new FormData();
+
+                        formData.append('metadata', metadata);
+                        formData.append('image', this.state.fileList[0].originFileObj!);
+                        hat = await apiFetchAuth(true, 'hats?lost=true', {
+                                method: 'POST',
+                                body: formData
+                            }).then(response => {
+                                return response.ok ? response.json() : null;
+                            });
+
+                        await apiFetchAuth(true, 'posts', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                poster: this.props.user.email,
+                                hat: hat.id,
+                                textContent: metadata,
+                                eventType: 'found'
+                            })
+                        }).then(response => {
+                            if (!response.ok) {
+                                message.error('Error while posting.');
+                            } else {
+                                message.info('Posted successfully.');
+                            }
+                        })
+                    }}
                     >
                         { this.props.content ? <Form.Item
                             label="description"
@@ -146,37 +181,36 @@ export class LostOverlay extends React.Component<overlayProps> {
 
                                 let formData = new FormData();
 
-                                // TODO metadata
-                                // TODO select registered hat
                                 formData.append('metadata', metadata);
                                 formData.append('image', this.state.fileList[0].originFileObj!);
                                 hat = await apiFetchAuth(true, 'hats?lost=true', {
                                     method: 'POST',
                                     body: formData
                                 }).then(response => {
-                                    // TODO error
-                                    if (response.status != 200) {
-                                        console.log('Coś się popsuło');
-                                    }
-
-                                    return response.json();
+                                    return response.ok ? response.json() : null;
                                 });
                             } else {
                                 hat = {id: values['hat'], imageUrl: '', name: ''};
                             }
 
-                            // TODO error handling
                             await apiFetchAuth(true, 'posts', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    poster: this.props.user,
-                                    hat: hat,
-                                    metadata: metadata
+                                    poster: this.props.user.email,
+                                    hat: hat.id,
+                                    textContent: metadata,
+                                    eventType: 'lost'
                                 })
-                            });
+                            }).then(response => {
+                                if (!response.ok) {
+                                    message.error('Error while posting.');
+                                } else {
+                                    message.info('Posted successfully.');
+                                }
+                            })
                         }}
                     >
                         <Form.Item
