@@ -9,6 +9,7 @@ import {apiFetchAuth} from "./fetcher";
 import {User} from "./User";
 import {Hat} from "./Hat";
 import {BoundingBox} from "./BoundingBox";
+import getCroppedImg from "./cropImage";
 
 const { Option } = Select;
 
@@ -22,12 +23,14 @@ interface overlayProps {
 
 export class FoundOverlay extends React.Component<overlayProps> {
 
-state : {fileList: UploadFile[], image?: string} = {
+state : {fileList: UploadFile[], image?: string, crop?: any, rotation: number} = {
     fileList: [],
     image: undefined,
+    crop: null,
+    rotation: 0
 }
 
-render() {
+    render() {
     return (
         <div>
             <Modal
@@ -54,7 +57,7 @@ render() {
                         let formData = new FormData();
 
                         formData.append('metadata', metadata);
-                        formData.append('image', this.state.fileList[0].originFileObj!);
+                        formData.append('image', await getCroppedImg(this.state.image, this.state.crop, this.state.rotation));
                         hat = await apiFetchAuth(true, 'hats?lost=true', {
                                 method: 'POST',
                                 body: formData
@@ -62,24 +65,28 @@ render() {
                                 return response.ok ? response.json() : null;
                             });
 
-                        await apiFetchAuth(true, 'posts', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                poster: this.props.user.email,
-                                hat: hat.id,
-                                textContent: metadata,
-                                eventType: 'found'
+                        if (hat) {
+                            await apiFetchAuth(true, 'posts', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    poster: this.props.user.email,
+                                    hat: hat.id,
+                                    textContent: metadata,
+                                    eventType: 'found'
+                                })
+                            }).then(response => {
+                                if (!response.ok) {
+                                    message.error('Error while posting.');
+                                } else {
+                                    message.info('Posted successfully.');
+                                }
                             })
-                        }).then(response => {
-                            if (!response.ok) {
-                                message.error('Error while posting.');
-                            } else {
-                                message.info('Posted successfully.');
-                            }
-                        })
+                        } else {
+                            message.error('Error while posting.');
+                        }
                     }}
                     >
                         { this.props.content ? <Form.Item
@@ -130,11 +137,13 @@ render() {
 
 export class LostOverlay extends React.Component<overlayProps> {
 
-    state: {radioValue: string, fileList: UploadFile[], image: string | undefined, hatList: Hat[]} = {
+    state: {radioValue: string, fileList: UploadFile[], image: string | undefined, hatList: Hat[], crop?: any, rotation: number} = {
         radioValue: "choose",
         fileList: [],
         hatList: [],
         image: undefined,
+        crop: null,
+        rotation: 0,
     };
 
     constructor(props: overlayProps) {
@@ -182,7 +191,7 @@ export class LostOverlay extends React.Component<overlayProps> {
                                 let formData = new FormData();
 
                                 formData.append('metadata', metadata);
-                                formData.append('image', this.state.fileList[0].originFileObj!);
+                                formData.append('image', await getCroppedImg(this.state.image, this.state.crop, this.state.rotation));
                                 hat = await apiFetchAuth(true, 'hats?lost=true', {
                                     method: 'POST',
                                     body: formData
