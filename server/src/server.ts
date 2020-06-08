@@ -14,6 +14,7 @@ import {errorHandler} from './util/errorHandler';
 import {ProductRoutes} from './routes/productRoutes';
 import {UserRoutes} from './routes/userRoutes';
 import {HatsRoutes} from './routes/hatsRoutes';
+import {PostsRoutes} from './routes/postsRoutes';
 
 class Server {
   public app: express.Application;
@@ -33,6 +34,7 @@ class Server {
     this.app.use('/api/user', new UserRoutes().router);
     this.app.use('/api/products', new ProductRoutes().router);
     this.app.use('/api/hats', new HatsRoutes().router);
+    this.app.use('/api/posts', new PostsRoutes().router);
   }
 
   public static() {
