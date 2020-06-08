@@ -21,10 +21,9 @@ export class FeedView extends React.Component {
     }
 
     async loadMorePosts(state: State) {
-        // FIXME hasMore
         await apiFetchAuth(true, `posts?page=${state.pageNr}&perPage=${state.perPage}`, {method: 'GET'})
             .then(response => response.json())
-            .then(json => this.setState({hasMore: json.length !== state.perPage, posts: [...state.posts, ...json], pageNr: state.pageNr + 1}));
+            .then(json => this.setState({hasMore: json.length == state.perPage, posts: [...state.posts, ...json], pageNr: state.pageNr + 1}));
     }
 
     render() {

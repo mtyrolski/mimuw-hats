@@ -26,7 +26,8 @@ interface AppState {
     lostVisible: boolean
     foundVisible: boolean,
     addVisible: boolean,
-    loading: boolean
+    loading: boolean,
+    broken: boolean
 }
 
 class App extends React.Component {
@@ -34,7 +35,8 @@ class App extends React.Component {
         lostVisible: false,
         foundVisible: false,
         addVisible: false,
-        loading: true
+        loading: true,
+        broken: false
     };
 
     componentDidMount() {
@@ -57,11 +59,13 @@ class App extends React.Component {
             <Layout>
             <Sider
                 style={{
-                    overflow: 'auto',
-                    height: '100vh',
-                    position: 'fixed',
-                    left: 0,
+                        height: '100vh',
+                        position: 'fixed',
+                        zIndex: 99
                 }}
+                breakpoint="lg"
+                collapsedWidth="0"
+                onBreakpoint={broken => this.setState({broken: broken})}
             >
 
                 <div style={{display: 'flex'}}>
@@ -106,8 +110,9 @@ class App extends React.Component {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Layout className="site-layout" style={{ marginLeft: 200, minHeight: '100vh'}}>
-                <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: 'min(50em, 100%)', marginLeft: 'auto', marginRight: 'auto' }}>
+            <Layout className="site-layout" style={{ minHeight: '100vh'}}>
+                <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: 'min(50em, 100%)', marginLeft: 'auto',
+                                    marginRight: 'auto', left: this.state.broken ? '0' : '100px', position: 'relative'}}>
                     <Switch>
                         <Route path="/feed">
                             <FeedView />
