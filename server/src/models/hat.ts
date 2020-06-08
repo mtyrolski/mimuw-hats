@@ -12,7 +12,6 @@ export const hatSchema: Schema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     name: String,
     fileName: {type: String, unique: true, required: true},
