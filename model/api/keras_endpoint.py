@@ -3,6 +3,7 @@ from loader import prepare_image
 from mlhat import HatClassifier
 from config import Configurator as Cfg
 from config import MLConfig
+from similarity import sim
 
 # Others improts
 from PIL import Image
@@ -20,12 +21,19 @@ hatter = None
 boxer = None
 
 def load_model():
+	"""loads model with architecture & weights
+	"""
 	global hatter
 	config = Cfg.get('classifier')
 	hatter = HatClassifier(config.url, config.arch_id)
 
 @app.route("/predict_binary", methods=["POST"])
 def predict_binary():
+	"""Predicts if image is hat or not.
+
+	Returns:
+		dict: json-like dictionary
+	"""
 	data = {"success": False}
 
 	if flask.request.method == "POST":
@@ -41,6 +49,24 @@ def predict_binary():
 			data = {**data, **pred}
 
 			data["success"] = True
+	return flask.jsonify(data)
+
+@app.route("/similarity", methods=["POST"])
+def similarity():
+	"""Predicts if images are similar or not.
+
+	Returns:
+		dict: json-like dictionary
+	"""
+	data = {"success": False}
+	if flask.request.method == "POST":
+		if flask.request.files.get("img1") and flask.request.files.get("img2"):
+			a = flask.request.files["img1"].read()
+			b = flask.request.files["img2"].read()
+			similarity_result = sim(Image.open(io.BytesIO(a)), Image.open(io.BytesIO(b)))
+			data = {**data, **similarity_result}
+			data["success"] = True
+			
 	return flask.jsonify(data)
 
 if __name__ == "__main__":
