@@ -136,7 +136,7 @@ export class AddHat extends React.Component<HatAddProps> {
                 }
             }
             >
-                <Form.Item name="name" label={"hat name"} rules={[{ required: true,  message: 'Name is required' }, {max: 20, message: 'Maximum 20 characters'}]}>
+                <Form.Item name="name" label={"hat name"} rules={[{ required: true,  message: 'Name is required' }, {max: 12, message: 'Maximum 12 characters'}]}>
                     <Input/>
                 </Form.Item>
 

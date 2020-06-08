@@ -1,5 +1,5 @@
 import React from "react";
-import {Switch} from "antd";
+import {Divider, Switch} from "antd";
 
 export class Preferences extends React.Component {
     render() {
@@ -10,10 +10,14 @@ export class Preferences extends React.Component {
                 <Switch checkedChildren={"ON"} unCheckedChildren={"OFF"} defaultChecked style={{marginLeft: "50px"}}/>
                 </div>
 
+                <Divider />
+
                 <div>
                     Send diagnostic
                     <Switch checkedChildren={"ON"} unCheckedChildren={"OFF"} defaultChecked style={{marginLeft: "50px"}} />
                 </div>
+
+                <Divider />
 
                 <div>
                     Enable Kubica
