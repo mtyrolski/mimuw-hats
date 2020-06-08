@@ -44,8 +44,8 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
     const data = ctx.getImageData(0, 0, safeArea, safeArea)
 
     // set canvas width to final desired crop size - this will clear existing context
-    canvas.width = pixelCrop.width
-    canvas.height = pixelCrop.height
+    canvas.width = pixelCrop.width === null ? image.width : pixelCrop.width;
+    canvas.height = pixelCrop.height === null ? image.height : pixelCrop.height;
 
     // paste generated rotate image with correct offsets for x,y crop values.
     ctx.putImageData(

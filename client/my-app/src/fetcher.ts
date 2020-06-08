@@ -10,16 +10,13 @@ function getJWT(cookies = document.cookie) {
 
 export function apiFetch(endpoint: RequestInfo, config: RequestInit = {}) {
     return fetch(`${API}/${endpoint}`, config);
-        // .then(response => response.json());
 }
 
 export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...customConfig}: RequestInit = {}) {
-    // FIXME bearer undefined?
     const headers = {
         Accept: 'application/json',
         Authorization: `Bearer ${getJWT()}`
     };
-
 
     const config: RequestInit = {
         ...customConfig,
@@ -31,24 +28,13 @@ export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...c
         body: body
     };
 
-    // if (body) {
-    //     config.body = JSON.stringify(body);
-    // }
-
     return fetch(`${API}/${endpoint}`, config)
         .then(async response => {
             if (response.status === 401) {
-                // TODO?
                 if (logout) logOut();
             }
 
             return response;
-            // const data = await response.json();
-            // if (response.ok) {
-            //     return data;
-            // } else {
-            //     return Promise.reject(data);
-            // }
         });
 }
 
