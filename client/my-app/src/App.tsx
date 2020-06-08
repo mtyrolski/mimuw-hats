@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Switch, Route, NavLink } from 'react-router-dom';
 import './App.css';
 import {FoundOverlay, LostOverlay} from "./Overlay"
 import  {Layout, Menu, Spin} from 'antd';
@@ -72,7 +72,7 @@ class App extends React.Component {
                 <div style={{display: 'flex'}}>
                     <img src='/images/hamt.png' className='logo' style={{ height: '64px' }} alt='logo' />
                 </div>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                <Menu theme="dark" mode="inline" >
                     <Menu.Item key="1" icon={<GlobalOutlined />}>
                         <NavLink to="/feed" style={{color: 'rgba(255, 255, 255, 0.65)'}}>All hats</NavLink>
                     </Menu.Item>
@@ -121,8 +121,8 @@ class App extends React.Component {
                         <Route path="/feed">
                             <FeedView />
                         </Route>
-                        <Route path="/" exact={true}>
-                            <FeedView />
+                        <Route exact path="/" >
+                            <Redirect to="/feed?" />
                         </Route>
                         <Route path="/mine">
                             <MineView user={this.state.user}></MineView>
