@@ -17,6 +17,7 @@ import {
   HATS_STORAGE_DIR,
   HATS_STORAGE_ENDPOINT,
   ML_BINARY_CLASSIFIER_URL,
+  ML_BOUNDING_COMPARE_URL,
 } from '../util/secrets';
 
 import {getUserIdFromRequest} from './userController';
@@ -105,7 +106,37 @@ export class HatsController {
     const currentHat = await HatsController.findUsersHat(hatId, userId, next);
     if (!currentHat) return next(new NotFound('No hat with given ID.'));
 
-    // const allLostHats = await Post.find({eventType: 'found'}).populate('hat')
+    const ourFileName = currentHat.fileName;
+
+    const allFoundHats = await Post.find(
+      {eventType: 'found'},
+      {hat: 1, _id: 0}
+    ).populate('hat');
+
+    const theirHats = allFoundHats.map(x => x.hat);
+    const ourHatImage = this.#hatsFileManager.readFromFileName(ourFileName);
+
+    const compareHats = (theirHat: any) => {
+      const fd = new FormData();
+      fd.append('img1', ourHatImage, {filename: 'image1.jpg'});
+      const theirHatImage = this.#hatsFileManager.readFromFileName(
+        theirHat.fileName
+      );
+      fd.append('img2', theirHatImage, {filename: 'image2.jpg'});
+      return got
+        .post(ML_BOUNDING_COMPARE_URL, {
+          body: fd,
+        })
+        .then(response => {
+          const respJson = JSON.parse(response.body);
+          return respJson.similar ? theirHat : null;
+        });
+    };
+
+    const similarityResults = await Promise.all(theirHats.map(compareHats));
+    const similarHats = similarityResults.filter(val => val !== null);
+
+    return res.status(200).json(similarHats.slice(0, 5));
   }
 
   public async deleteUsersHat(req: Request, res: Response, next: NextFunction) {

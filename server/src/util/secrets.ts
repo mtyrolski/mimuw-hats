@@ -44,4 +44,8 @@ export const ML_BINARY_CLASSIFIER_URL = process.env[
   'ML_BINARY_CLASSIFIER_URL'
 ] as string;
 
+export const ML_BOUNDING_COMPARE_URL = process.env[
+  'ML_BOUNDING_COMPARE_URL'
+] as string;
+
 export const SENDGRID_API_KEY = process.env['SENDGRID_API_KEY'] as string;

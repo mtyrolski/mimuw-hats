@@ -1,4 +1,4 @@
-import {writeFile, unlink} from 'fs';
+import {writeFile, unlink, readFileSync} from 'fs';
 import {v4 as uuidv4} from 'uuid';
 
 export class FileStorage {
@@ -30,5 +30,9 @@ export class FileStorage {
 
   public getFileUrl(fileName: string): string {
     return `http://0.0.0.0:4000${this.#endpoint}/${fileName}`;
+  }
+
+  public readFromFileName(fileName: string): Buffer {
+    return readFileSync(this._storageLocation(fileName));
   }
 }
