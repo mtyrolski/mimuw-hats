@@ -10,7 +10,7 @@ import {
     GlobalOutlined,
     PlusOutlined,
     LogoutOutlined,
-    LoadingOutlined, SettingOutlined, AlertOutlined
+    LoadingOutlined, SettingOutlined, AlertOutlined, FrownOutlined
 } from "@ant-design/icons/lib";
 import {AddHat, MineView} from "./HatView";
 import {FeedView} from "./FeedView";
@@ -18,6 +18,7 @@ import Landing from "./Landing";
 import {User} from "./User";
 import {apiFetchAuth, logIn, logOut} from "./fetcher";
 import {Preferences} from "./Preferences";
+import {LostedHats} from "./LostedHats";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -68,31 +69,34 @@ class App extends React.Component {
                     <Menu.Item key="2" icon={<UserOutlined />}>
                         <NavLink to="/mine" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My hats</NavLink>
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<AlertOutlined />}>
+                    <Menu.Item key="3" icon={<FrownOutlined />}>
+                        <NavLink to="/losted" style={{color: 'rgba(255, 255, 255, 0.65)'}}>My lost hats</NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="4" icon={<AlertOutlined />}>
                         <a onClick={(e) => {
                             e.stopPropagation();
                             this.setState({lostVisible: true});
                         }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a lost hat</a>
                     </Menu.Item>
-                    <Menu.Item key="4" icon={<SearchOutlined />}>
+                    <Menu.Item key="5" icon={<SearchOutlined />}>
                         <a onClick={(e) => {
                             e.stopPropagation();
                             this.setState({foundVisible: true});
                         }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Report a found hat</a>
                     </Menu.Item>
 
-                    <Menu.Item key="5" icon={<PlusOutlined />}>
+                    <Menu.Item key="6" icon={<PlusOutlined />}>
                         <a onClick={(e) => {
                             e.stopPropagation();
                             this.setState({addVisible: true});
                         }} style={{color: 'rgba(255, 255, 255, 0.65)'}}>Add new hat</a>
                     </Menu.Item>
 
-                    <Menu.Item key="6" icon={<SettingOutlined />}>
+                    <Menu.Item key="7" icon={<SettingOutlined />}>
                         <NavLink to="/preferences" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</NavLink>
                     </Menu.Item>
 
-                    <Menu.Item key="7" icon={<LogoutOutlined />}>
+                    <Menu.Item key="8" icon={<LogoutOutlined />}>
                         <a onClick={(e) => {
                             e.stopPropagation();
                             logOut();
@@ -108,6 +112,9 @@ class App extends React.Component {
                         </Route>
                         <Route path="/mine">
                             <MineView user={this.state.user}></MineView>
+                        </Route>
+                        <Route path="/losted">
+                            <LostedHats></LostedHats>
                         </Route>
                         <Route path="/preferences">
                             <Preferences />
