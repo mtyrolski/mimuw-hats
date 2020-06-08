@@ -64,13 +64,10 @@ export class UserController {
     if (alreadyExists) return next(new Conflict('User already exists'));
 
     const tokenWrapper = new EmailToken(payload);
-    // TODO: remove mock email
-    const mockEmail = 'st406386@students.mimuw.edu.pl';
 
-    // TODO: generate URL for route
     sgMail.setApiKey(SENDGRID_API_KEY);
     const msg = {
-      to: mockEmail,
+      to: payload.email,
       from: 'kkrecikov@yandex.com',
       subject: 'Mimuw-hats: continue your registration',
       text:
