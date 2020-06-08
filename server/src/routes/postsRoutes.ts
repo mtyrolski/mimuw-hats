@@ -14,5 +14,6 @@ export class PostsRoutes {
     this.router.get('/', this.postsController.getPosts);
     this.router.get('/lost', this.postsController.getUsersLostPosts);
     this.router.post('/', this.postsController.createPost);
+    this.router.delete('/:id', this.postsController.deletePost);
   }
 }
