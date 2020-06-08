@@ -3,7 +3,7 @@ import {Popconfirm, message, Button, Divider, Form, Input, Modal, Select, Slider
 import {Hat} from "./Hat";
 import {User} from "./User";
 import {SliderValue} from "antd/es/slider";
-import {layout, tailLayout, uploadProps} from "./FormLayouts";
+import {layout, tailLayout, tempUploadProps, uploadProps} from "./FormLayouts";
 import 'react-image-crop/dist/ReactCrop.css';
 import ReactCrop, {makeAspectCrop} from 'react-image-crop';
 import {
@@ -15,6 +15,7 @@ import {
 import {apiFetchAuth} from "./fetcher";
 import {BoundingBox} from "./BoundingBox";
 import {UploadFile} from "antd/es/upload/interface";
+import getCroppedImg from "./cropImage";
 
 interface HatViewProps {
     hat: Hat;
@@ -41,6 +42,7 @@ export class HatView extends React.Component<HatViewProps> {
 
     async deleteHat() {
         await apiFetchAuth(true, `hats/${this.props.hat.id}`, {method: 'DELETE'})
+            .then(response => response.json())
             .then(json => {this.setState({hatVisibility: false})});
     }
 
@@ -63,8 +65,8 @@ export class HatView extends React.Component<HatViewProps> {
                     onCancel={() => this.setState({popupVisibility: false})}
                     footer={[
                         <Popconfirm style={{display: this.props.footerVisibility ? "inline" : "none"}} placement="topLeft" title={"Are you sure you want to delete " + this.props.hat.name + "?"}
-                                    onConfirm={() => {message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
-                        <Button style={{display: this.props.footerVisibility ? "inline" : "none", paddingLeft: 5}} type={"primary"} danger onClick={this.deleteHat}> <DeleteOutlined/>Delete </Button>
+                                    onConfirm={() => {this.deleteHat(); this.setState({popupVisibility: false}); message.info("Hat deleted succesfully")}} okText="Yes" cancelText="No">
+                        <Button style={{display: this.props.footerVisibility ? "inline" : "none", paddingLeft: 5}} type={"primary"} danger> <DeleteOutlined/>Delete </Button>
                             </Popconfirm>
                     ]}
                 >
@@ -76,20 +78,13 @@ export class HatView extends React.Component<HatViewProps> {
     }
 }
 
-function getBase64(file : Blob) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-
 export class AddHat extends React.Component<HatAddProps> {
 
-    state : {fileList: UploadFile[], image: string | undefined} = {
+    state : {fileList: UploadFile[], image: string | undefined, crop: any, rotation: number} = {
         fileList: [],
         image: undefined,
+        crop: null,
+        rotation: 0
     }
 
     handlePreview = async (file : UploadFile<any>) => {
@@ -119,20 +114,39 @@ export class AddHat extends React.Component<HatAddProps> {
                 {...layout}
                 name="basic"
                 initialValues={{ remember: true }}
+                onFinish = {async values => {
+                    let metadata = values.name;
+                    let formData = new FormData();
+
+                    formData.append('metadata', metadata);
+                    formData.append('image', await getCroppedImg(this.state.image, this.state.crop, this.state.rotation));
+
+                    await apiFetchAuth(true, 'hats', {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => {
+                            // TODO error
+                        if (response.status != 200) {
+                            console.log('Coś się popsuło');
+                        }
+                    });
+                }
+            }
             >
                 <Form.Item name="name" label={"hat name"} rules={[{ required: true,  message: 'Name is required' }]}>
                     <Input/>
                 </Form.Item>
 
                 <Form.Item {...tailLayout} name="image" rules={[{ required: true,  message: 'Image is required' }]}>
-                    <Upload {...uploadProps(this, this.state.fileList)} onPreview={this.handlePreview} listType="picture-card">
+                    <Upload {...tempUploadProps(this, this.state.fileList)} onPreview={this.handlePreview}>
                         <Button>
                             <UploadOutlined /> Send image
                         </Button>
                     </Upload>
                 </Form.Item>
 
-                { this.state.fileList[0] ? <BoundingBox imageUrl="1" /> : null }
+                { this.state.fileList[0] ? <BoundingBox imageUrl={this.state.image!}
+                            onUpdate={(area, rotation) => {this.setState({crop: area, rotation: rotation})}} /> : null }
 
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit">
@@ -154,6 +168,7 @@ export class MineView extends React.Component<MineViewProps> {
 
     async getHats() {
         await apiFetchAuth(true, `hats`, {method: 'GET'})
+            .then(response => response.json())
             .then(json => this.setState({
                 hats: [...json],
             }));

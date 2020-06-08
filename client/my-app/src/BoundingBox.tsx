@@ -8,36 +8,37 @@ import getCroppedImg from './cropImage';
 
 interface BoundingBoxProps {
     imageUrl: string;
+    onUpdate: (croppedArea: any, rotation: number) => void;
 }
 
 export class BoundingBox extends React.Component<BoundingBoxProps> {
 
     state = {
-        crop: { x: 0, y: 0 },
+        crop: {x: 0, y: 0},
         zoom: 1,
         aspect: 1 / 1,
         rotation: 0,
         croppedArea: 0
     }
 
-    onCropChange = (crop : Point) => {
-        this.setState({ crop })
+    onCropChange = (crop: Point) => {
+        this.setState({crop: crop})
+        this.props.onUpdate(this.state.croppedArea, this.state.rotation);
     }
 
-    onCropComplete = (croppedArea : Area, croppedAreaPixels : Area) => {
-        this.setState({croppedArea: croppedArea});
+    onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
+        this.setState({croppedArea: croppedAreaPixels});
+        this.props.onUpdate(this.state.croppedArea, this.state.rotation);
     }
 
-    onZoomChange = (zoom : number) => {
-        this.setState({ zoom })
+    onZoomChange = (zoom: number) => {
+        this.setState({zoom: zoom})
+        this.props.onUpdate(this.state.croppedArea, this.state.rotation);
     }
 
-    onRotationChange = (rotation : number) => {
-        this.setState({ rotation })
-    }
-
-    handleOk = () => {
-        const croppedImage = getCroppedImg(this.props.imageUrl, this.state.croppedArea, this.state.rotation);
+    onRotationChange = (rotation: number) => {
+        this.setState({rotation: rotation})
+        this.props.onUpdate(this.state.croppedArea, this.state.rotation);
     }
 
     render() { return(
