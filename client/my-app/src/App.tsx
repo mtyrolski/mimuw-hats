@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
 import './App.css';
 import {FoundOverlay, LostOverlay} from "./Overlay"
-import  {Layout, Menu} from 'antd';
+import  {Layout, Menu, Spin} from 'antd';
 import DocumentTitle from 'react-document-title';
 import {
     UserOutlined,
@@ -25,14 +25,16 @@ interface AppState {
     user?: User,
     lostVisible: boolean
     foundVisible: boolean,
-    addVisible: boolean
+    addVisible: boolean,
+    loading: boolean
 }
 
 class App extends React.Component {
     state: AppState = {
         lostVisible: false,
         foundVisible: false,
-        addVisible: false
+        addVisible: false,
+        loading: true
     };
 
     componentDidMount() {
@@ -40,10 +42,14 @@ class App extends React.Component {
             .then(response => response.ok ? response : Promise.reject(response))
             .then(response => response.json())
             .then((json: User) => this.setState({user: json}))
-            .catch(error => this.setState({user: undefined}));
+            .catch(error => this.setState({user: undefined}))
+            .finally(() => this.setState({loading: false}))
     }
 
     render() {
+        if (this.state.loading)
+            return <div style={{margin: 'auto auto'}}><Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>} /></div>;
+
         if (!this.state.user) return <Landing />;
 
         return <Router>
@@ -106,6 +112,9 @@ class App extends React.Component {
                         <Route path="/feed">
                             <FeedView />
                         </Route>
+                        <Route path="/" exact={true}>
+                            <FeedView />
+                        </Route>
                         <Route path="/mine">
                             <MineView user={this.state.user}></MineView>
                         </Route>
@@ -125,7 +134,8 @@ class App extends React.Component {
                                   user={this.state.user}/>
                     <AddHat visible={this.state.addVisible}
                             handleCancel={() => this.setState({addVisible: false})}
-                            handleOk={() => this.setState({addVisible: false})}/>
+                            handleOk={() => this.setState({addVisible: false})}
+                            handleUpdate={()=>{}}/>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
             </Layout>

@@ -30,6 +30,7 @@ interface HatAddProps {
     visible: boolean;
     handleOk: () => void;
     handleCancel: () => void;
+    handleUpdate: () => void;
 }
 
 export class HatView extends React.Component<HatViewProps> {
@@ -119,6 +120,7 @@ export class AddHat extends React.Component<HatAddProps> {
                             switch (response.status) {
                                 case 200:
                                     message.info('Your hat was uploaded successfully.');
+                                    this.props.handleUpdate();
                                     break;
                                 case 400:
                                     message.error('Error while uploading hat: no image found.');
@@ -205,7 +207,8 @@ export class MineView extends React.Component<MineViewProps> {
 
                 <button onClick={() => this.setState({addVisible: true})}> <PlusOutlined/> Add new hat </button>
                 <AddHat visible={this.state.addVisible} handleOk={() => {this.setState({addVisible: false})}}
-                        handleCancel={() => {this.setState({addVisible: false})}}/>
+                        handleCancel={() => {this.setState({addVisible: false})}}
+                        handleUpdate={() => this.getHats()}/>
 
             </div>
         )
