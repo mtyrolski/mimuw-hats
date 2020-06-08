@@ -19,7 +19,10 @@ export default class Landing extends React.Component {
 
     render() {
         return <div style={{height: '100vh'}}>
-            <Row justify='center' align='middle'>
+            <Row justify='center' align='middle' style={{paddingTop: '10em'}}>
+                <Col>
+                    <img src='images/hat.svg' style={{margin: '0 3em 2em 0', height: '40vh'}} alt="hat" />
+                </Col>
                 <Col>
                 <h1 style={{color: '#13a9cf'}}>Hats. Redefined.</h1>
                 <h2>No more hat spam on your social media.</h2>
@@ -32,9 +35,6 @@ export default class Landing extends React.Component {
                             Log in
                         </Button>
                     </div>
-                </Col>
-                <Col>
-                    <img src='images/hat.svg' style={{margin: '10em', height: '40vh'}} alt="hat" />
                 </Col>
             </Row>
             <RegisterView visible={this.state.registerVisible} handleOk={() => this.toggleRegister(this.state)} handleCancel={() => this.toggleRegister(this.state)} />
