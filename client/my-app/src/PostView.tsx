@@ -16,7 +16,7 @@ export class PostView extends React.Component<Props> {
             <div className="site-layout-background" style={{ padding: 24, margin: 24 }}>
                 <p style={{float: 'right', color: '#aaaaaa'}}>{moment(new Date(this.props.post.date)).fromNow()}</p>
                 {this.props.post.poster && <div style={{marginBottom: '1em'}}>
-                    <Avatar size='large' src={this.props.post.poster.photoUrl} />
+                    <Avatar size='large' src={this.props.post.poster.pictureUrl} />
                     <b style={{marginLeft: '1em'}} >{getName(this.props.post.poster)}</b>
                 </div>}
                 <p>{this.props.post.textContent}</p>

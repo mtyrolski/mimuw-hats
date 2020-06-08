@@ -1,6 +1,6 @@
 export interface User {
     email: string;
-    photoUrl: string;
+    pictureUrl: string;
 }
 
 export function getName(user: User): string {
