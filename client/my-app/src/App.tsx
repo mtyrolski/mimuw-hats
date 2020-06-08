@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
 import './App.css';
 import {FoundOverlay, LostOverlay} from "./Overlay"
-import  {Layout, Menu} from 'antd';
+import  {Layout, Menu, Spin} from 'antd';
 import DocumentTitle from 'react-document-title';
 import {
     UserOutlined,
@@ -26,14 +26,18 @@ interface AppState {
     user?: User,
     lostVisible: boolean
     foundVisible: boolean,
-    addVisible: boolean
+    addVisible: boolean,
+    loading: boolean,
+    broken: boolean
 }
 
 class App extends React.Component {
     state: AppState = {
         lostVisible: false,
         foundVisible: false,
-        addVisible: false
+        addVisible: false,
+        loading: true,
+        broken: false
     };
 
     componentDidMount() {
@@ -41,10 +45,14 @@ class App extends React.Component {
             .then(response => response.ok ? response : Promise.reject(response))
             .then(response => response.json())
             .then((json: User) => this.setState({user: json}))
-            .catch(error => this.setState({user: undefined}));
+            .catch(error => this.setState({user: undefined}))
+            .finally(() => this.setState({loading: false}))
     }
 
     render() {
+        if (this.state.loading)
+            return <div style={{margin: 'auto auto'}}><Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>} /></div>;
+
         if (!this.state.user) return <Landing />;
 
         return <Router>
@@ -52,11 +60,13 @@ class App extends React.Component {
             <Layout>
             <Sider
                 style={{
-                    overflow: 'auto',
-                    height: '100vh',
-                    position: 'fixed',
-                    left: 0,
+                        height: '100vh',
+                        position: 'fixed',
+                        zIndex: 99
                 }}
+                breakpoint="lg"
+                collapsedWidth="0"
+                onBreakpoint={broken => this.setState({broken: broken})}
             >
 
                 <div style={{display: 'flex'}}>
@@ -104,10 +114,14 @@ class App extends React.Component {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Layout className="site-layout" style={{ marginLeft: 200, minHeight: '100vh'}}>
-                <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: 'min(50em, 100%)', marginLeft: 'auto', marginRight: 'auto' }}>
+            <Layout className="site-layout" style={{ minHeight: '100vh'}}>
+                <Content style={{ margin: '24px 16px 0', overflow: 'initial', width: 'min(50em, 100%)', marginLeft: 'auto',
+                                    marginRight: 'auto', left: this.state.broken ? '0' : '100px', position: 'relative'}}>
                     <Switch>
                         <Route path="/feed">
+                            <FeedView />
+                        </Route>
+                        <Route path="/" exact={true}>
                             <FeedView />
                         </Route>
                         <Route path="/mine">
@@ -132,7 +146,8 @@ class App extends React.Component {
                                   user={this.state.user}/>
                     <AddHat visible={this.state.addVisible}
                             handleCancel={() => this.setState({addVisible: false})}
-                            handleOk={() => this.setState({addVisible: false})}/>
+                            handleOk={() => this.setState({addVisible: false})}
+                            handleUpdate={()=>{}}/>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
             </Layout>

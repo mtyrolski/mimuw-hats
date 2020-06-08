@@ -1,4 +1,4 @@
-import {Modal, Button, Form, Input, Upload, Select, Radio} from 'antd';
+import {Modal, Button, Form, Input, Upload, Select, Radio, message} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React from 'react';
 import {RadioChangeEvent} from "antd/es/radio";
@@ -9,6 +9,8 @@ import {apiFetchAuth} from "./fetcher";
 import {User} from "./User";
 import {Hat} from "./Hat";
 import {BoundingBox} from "./BoundingBox";
+import getCroppedImg from "./cropImage";
+import {Post} from "./Post";
 
 const { Option } = Select;
 
@@ -22,30 +24,71 @@ interface overlayProps {
 
 export class FoundOverlay extends React.Component<overlayProps> {
 
-    state = {
-        fileList: [],
-        image: undefined,
-    }
+state : {fileList: UploadFile[], image?: string, crop?: any, rotation: number} = {
+    fileList: [],
+    image: undefined,
+    crop: null,
+    rotation: 0
+}
 
     render() {
-        return (
-            <div>
-                <Modal
-                    title="Found hat"
-                    visible={this.props.visible}
-                    onOk={this.props.handleOk}
-                    onCancel={this.props.handleCancel}
-                    footer={[
-                        <Button key="back" onClick={this.props.handleCancel}>
-                            Cancel
-                        </Button>,
-                    ]}
-                >
+    return (
+        <div>
+            <Modal
+                title="Found hat"
+                visible={this.props.visible}
+                onOk={this.props.handleOk}
+                onCancel={this.props.handleCancel}
+                footer={[
+                    <Button key="back" onClick={this.props.handleCancel}>
+                        Cancel
+                    </Button>,
+                ]}
+            >
 
-                    <Form
-                        {...layout}
-                        name="basic"
-                        initialValues={{ remember: true }}
+                <Form
+                    {...layout}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={async (values) => {
+                        this.props.handleCancel();
+
+                        let metadata = 'Floor ' + values['floor'] + ' ' + values['content'];
+                        let hat: Hat;
+                        let formData = new FormData();
+
+                        formData.append('metadata', metadata);
+                        formData.append('image', await getCroppedImg(this.state.image, this.state.crop, this.state.rotation));
+                        hat = await apiFetchAuth(true, 'hats?lost=true', {
+                                method: 'POST',
+                                body: formData
+                            }).then(response => {
+                                return response.ok ? response.json() : null;
+                            });
+
+                        if (hat) {
+                            await apiFetchAuth(true, 'posts', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    poster: this.props.user.email,
+                                    hat: hat.id,
+                                    textContent: metadata,
+                                    eventType: 'found'
+                                })
+                            }).then(response => {
+                                if (!response.ok) {
+                                    message.error('Error while posting.');
+                                } else {
+                                    message.info('Posted successfully.');
+                                }
+                            })
+                        } else {
+                            message.error('Error while posting.');
+                        }
+                    }}
                     >
                         { this.props.content ? <Form.Item
                             label="description"
@@ -95,11 +138,13 @@ export class FoundOverlay extends React.Component<overlayProps> {
 
 export class LostOverlay extends React.Component<overlayProps> {
 
-    state: {radioValue: string, fileList: UploadFile[], image: string | undefined, hatList: Hat[]} = {
+    state: {radioValue: string, fileList: UploadFile[], image: string | undefined, hatList: Hat[], crop?: any, rotation: number} = {
         radioValue: "choose",
         fileList: [],
         hatList: [],
         image: undefined,
+        crop: null,
+        rotation: 0,
     };
 
     constructor(props: overlayProps) {
@@ -109,12 +154,15 @@ export class LostOverlay extends React.Component<overlayProps> {
     }
 
     async handleRadioChange(event : RadioChangeEvent) {
-        let hats = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
+        this.setState({radioValue: event.target.value});
 
-        this.setState({
-            radioValue: event.target.value,
-            hatList: hats
-        });
+        let hats: Hat[] = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
+        let lostHats: Hat[] = await apiFetchAuth(true, `posts/lost`, {method: 'GET'})
+            .then(response => response.json())
+            .then(json => json.forEach((post: Post) => post.hat));
+        hats = hats.filter((el: Hat) => !lostHats.includes(el));
+
+        this.setState({hatList: hats});
     };
 
     render() {
@@ -146,37 +194,36 @@ export class LostOverlay extends React.Component<overlayProps> {
 
                                 let formData = new FormData();
 
-                                // TODO metadata
-                                // TODO select registered hat
                                 formData.append('metadata', metadata);
-                                formData.append('image', this.state.fileList[0].originFileObj!);
+                                formData.append('image', await getCroppedImg(this.state.image, this.state.crop, this.state.rotation));
                                 hat = await apiFetchAuth(true, 'hats?lost=true', {
                                     method: 'POST',
                                     body: formData
                                 }).then(response => {
-                                    // TODO error
-                                    if (response.status != 200) {
-                                        console.log('Coś się popsuło');
-                                    }
-
-                                    return response.json();
+                                    return response.ok ? response.json() : null;
                                 });
                             } else {
                                 hat = {id: values['hat'], imageUrl: '', name: ''};
                             }
 
-                            // TODO error handling
                             await apiFetchAuth(true, 'posts', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    poster: this.props.user,
-                                    hat: hat,
-                                    metadata: metadata
+                                    poster: this.props.user.email,
+                                    hat: hat.id,
+                                    textContent: metadata,
+                                    eventType: 'lost'
                                 })
-                            });
+                            }).then(response => {
+                                if (!response.ok) {
+                                    message.error('Error while posting.');
+                                } else {
+                                    message.info('Posted successfully.');
+                                }
+                            })
                         }}
                     >
                         <Form.Item
