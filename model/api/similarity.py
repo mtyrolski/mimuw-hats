@@ -58,16 +58,16 @@ def sim(a, b):
     Returns:
         dict: json-like dictionary 'similar': TRUE|FALSE
     """
+    SIZE=224
     a,b = np.asarray(a), np.asarray(b)
-    a=st.resize(a, (224, 224)).copy().astype(int)
-    b=st.resize(b, (224, 224)).copy().astype(int)
-
+    a=st.resize(a, (SIZE, SIZE)).copy()
+    b=st.resize(b, (SIZE, SIZE)).copy()
+    a,b = a*255, b*255
+    a,b = a.astype(int), b.astype(int)
     d = rgb_wasserstein_distance(a,b)
-    h, w = 224, 224
-    a = np.moveaxis(a, -1, 0)
-    b = np.moveaxis(b, -1, 0)
-    mean1 = [a[i, int(BEGIN*w):int(END*w), int(BEGIN*h):int(END*h)].mean() for i in range(3)]
-    mean2 = [b[i,int(BEGIN*w):int(END*w), int(BEGIN*h):int(END*h)].mean() for i in range(3)]
+    h, w = SIZE, SIZE
+    mean1 = [a[int(BEGIN*w):int(END*w), int(BEGIN*h):int(END*h), i].mean() for i in range(3)]
+    mean2 = [b[int(BEGIN*w):int(END*w), int(BEGIN*h):int(END*h), i].mean() for i in range(3)]
     acc = 0.0 
     for k in range(CHANNELS):
         acc += (mean1[k] - mean2[k])**2
