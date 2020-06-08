@@ -18,7 +18,7 @@ export class BoundingBox extends React.Component<BoundingBoxProps> {
         zoom: 1,
         aspect: 1 / 1,
         rotation: 0,
-        croppedArea: 0
+        croppedArea: {x: 0, y: 0, width: null, height: null}
     }
 
     onCropChange = (crop: Point) => {
