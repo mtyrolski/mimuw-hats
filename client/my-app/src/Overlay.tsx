@@ -10,6 +10,7 @@ import {User} from "./User";
 import {Hat} from "./Hat";
 import {BoundingBox} from "./BoundingBox";
 import getCroppedImg from "./cropImage";
+import {Post} from "./Post";
 
 const { Option } = Select;
 
@@ -153,12 +154,15 @@ export class LostOverlay extends React.Component<overlayProps> {
     }
 
     async handleRadioChange(event : RadioChangeEvent) {
-        let hats = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
+        this.setState({radioValue: event.target.value});
 
-        this.setState({
-            radioValue: event.target.value,
-            hatList: hats
-        });
+        let hats: Hat[] = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
+        let lostHats: Hat[] = await apiFetchAuth(true, `posts/lost`, {method: 'GET'})
+            .then(response => response.json())
+            .then(json => json.forEach((post: Post) => post.hat));
+        hats = hats.filter((el: Hat) => !lostHats.includes(el));
+
+        this.setState({hatList: hats});
     };
 
     render() {
