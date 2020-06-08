@@ -17,6 +17,7 @@ import {FeedView} from "./FeedView";
 import Landing from "./Landing";
 import {User} from "./User";
 import {apiFetchAuth, logIn, logOut} from "./fetcher";
+import {Preferences} from "./Preferences";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -88,7 +89,7 @@ class App extends React.Component {
                     </Menu.Item>
 
                     <Menu.Item key="6" icon={<SettingOutlined />}>
-                        <NavLink to="/" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</NavLink>
+                        <NavLink to="/preferences" style={{color: 'rgba(255, 255, 255, 0.65)'}}>Preferences</NavLink>
                     </Menu.Item>
 
                     <Menu.Item key="7" icon={<LogoutOutlined />}>
@@ -107,6 +108,9 @@ class App extends React.Component {
                         </Route>
                         <Route path="/mine">
                             <MineView user={this.state.user}></MineView>
+                        </Route>
+                        <Route path="/preferences">
+                            <Preferences />
                         </Route>
                     </Switch>
                     <LostOverlay visible={this.state.lostVisible}
