@@ -5,7 +5,6 @@ import {User} from "./User";
 import {SliderValue} from "antd/es/slider";
 import {layout, tailLayout, uploadProps} from "./FormLayouts";
 import 'react-image-crop/dist/ReactCrop.css';
-import ReactCrop, {makeAspectCrop} from 'react-image-crop';
 import {
     DeleteOutlined,
     MailOutlined,
@@ -117,10 +116,20 @@ export class AddHat extends React.Component<HatAddProps> {
                             method: 'POST',
                             body: formData
                         }).then(response => {
-                            // TODO error
-                        if (response.status != 200) {
-                            console.log('Coś się popsuło');
-                        }
+                            switch (response.status) {
+                                case 200:
+                                    message.info('Your hat was uploaded successfully.');
+                                    break;
+                                case 400:
+                                    message.error('Error while uploading hat: no image found.');
+                                    break;
+                                case 408:
+                                    message.error('Error while uploading hat: timed out.');
+                                    break;
+                                case 422:
+                                    message.warning('The image you uploaded has been classified as not containing a hat.');
+                                    break;
+                            }
                     });
                 }
             }

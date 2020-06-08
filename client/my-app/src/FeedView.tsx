@@ -16,15 +16,15 @@ export class FeedView extends React.Component {
     state = {
         posts: [],
         pageNr: 0,
-        perPage: 20,
+        perPage: 5,
         hasMore: true
     }
 
     async loadMorePosts(state: State) {
         // FIXME hasMore
-        await apiFetchAuth(true, `posts?_page=${state.pageNr}&_limit=${state.perPage}`, {method: 'GET'})
+        await apiFetchAuth(true, `posts?page=${state.pageNr}&perPage=${state.perPage}`, {method: 'GET'})
             .then(response => response.json())
-            .then(json => this.setState({hasMore: json !== [], posts: [...state.posts, ...json], pageNr: state.pageNr + 1}));
+            .then(json => this.setState({hasMore: json.length !== state.perPage, posts: [...state.posts, ...json], pageNr: state.pageNr + 1}));
     }
 
     render() {

@@ -95,9 +95,10 @@ export class FoundOverlay extends React.Component<overlayProps> {
 
 export class LostOverlay extends React.Component<overlayProps> {
 
-    state: {radioValue: string, fileList: UploadFile[], image: string | undefined} = {
+    state: {radioValue: string, fileList: UploadFile[], image: string | undefined, hatList: Hat[]} = {
         radioValue: "choose",
         fileList: [],
+        hatList: [],
         image: undefined,
     };
 
@@ -107,9 +108,12 @@ export class LostOverlay extends React.Component<overlayProps> {
         this.state.radioValue = "choose";
     }
 
-    handleRadioChange(event : RadioChangeEvent) {
+    async handleRadioChange(event : RadioChangeEvent) {
+        let hats = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
+
         this.setState({
             radioValue: event.target.value,
+            hatList: hats
         });
     };
 
@@ -135,25 +139,31 @@ export class LostOverlay extends React.Component<overlayProps> {
                         onFinish={async (values) => {
                             this.props.handleCancel();
 
-                            let metadata='qweqweqwe'; // TODO
+                            let metadata = values['content'];
 
-                            let formData = new FormData();
+                            let hat: Hat;
+                            if (this.state.radioValue == 'upload') {
 
-                            // TODO metadata
-                            // TODO select registered hat
-                            formData.append('metadata', metadata);
-                            formData.append('image', this.state.fileList[0].originFileObj!);
-                            let json: Hat = await apiFetchAuth(true, 'hats?lost=1', {
-                                method: 'POST',
-                                body: formData
-                            }).then(response => {
-                                // TODO error
-                                if (response.status != 200) {
-                                    console.log('Coś się popsuło');
-                                }
+                                let formData = new FormData();
 
-                                return response.json();
-                            });
+                                // TODO metadata
+                                // TODO select registered hat
+                                formData.append('metadata', metadata);
+                                formData.append('image', this.state.fileList[0].originFileObj!);
+                                hat = await apiFetchAuth(true, 'hats?lost=true', {
+                                    method: 'POST',
+                                    body: formData
+                                }).then(response => {
+                                    // TODO error
+                                    if (response.status != 200) {
+                                        console.log('Coś się popsuło');
+                                    }
+
+                                    return response.json();
+                                });
+                            } else {
+                                hat = {id: values['hat'], imageUrl: '', name: ''};
+                            }
 
                             // TODO error handling
                             await apiFetchAuth(true, 'posts', {
@@ -163,7 +173,7 @@ export class LostOverlay extends React.Component<overlayProps> {
                                 },
                                 body: JSON.stringify({
                                     poster: this.props.user,
-                                    hat: json,
+                                    hat: hat,
                                     metadata: metadata
                                 })
                             });
@@ -193,8 +203,7 @@ export class LostOverlay extends React.Component<overlayProps> {
                         {this.state.radioValue === "choose" ?
                             <Form.Item {...optionLayout} name="hat" rules={[{ required: (this.state.radioValue === "choose"),  message: 'Hat is required' }]}>
                                 <Select placeholder="Choose a hat..." allowClear>
-                                    <Option value="czapka1">czapka1</Option>
-                                    <Option value="czapka2">czapka2</Option>
+                                    {this.state.hatList.map(hat => <Option value={hat.id}>{hat.name}</Option>)}
                                 </Select>
                             </Form.Item> : null}
 

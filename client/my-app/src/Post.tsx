@@ -4,9 +4,10 @@ import {ReactionInstance} from "./Reaction";
 
 export interface Post {
     id: string;
+    eventType: string;
     poster: User;
     date: string;
     hat: Hat;
-    metadata: string;
+    textContent: string;
     reactions: ReactionInstance[];
 }
