@@ -29,6 +29,6 @@ export class FileStorage {
   }
 
   public getFileUrl(fileName: string): string {
-    return `0.0.0.0:4000${this.#endpoint}/${fileName}`;
+    return `http://0.0.0.0:4000${this.#endpoint}/${fileName}`;
   }
 }
