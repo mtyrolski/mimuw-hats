@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Col, Row} from "antd";
 import {RegisterView} from "./Register";
 import {logIn} from "./fetcher";
+import {BoundingBox} from "./BoundingBox";
 
 interface State {
     registerVisible: boolean
