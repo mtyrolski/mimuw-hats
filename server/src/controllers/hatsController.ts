@@ -113,14 +113,13 @@ export class HatsController {
       {hat: 1, _id: 0}
     ).populate('hat');
 
-    const theirHats = allFoundHats.map(x => x.hat);
     const ourHatImage = this.#hatsFileManager.readFromFileName(ourFileName);
 
-    const compareHats = (theirHat: any) => {
+    const compareHats = (theirHatPost: any) => {
       const fd = new FormData();
       fd.append('img1', ourHatImage, {filename: 'image1.jpg'});
       const theirHatImage = this.#hatsFileManager.readFromFileName(
-        theirHat.fileName
+        theirHatPost.hat.fileName
       );
       fd.append('img2', theirHatImage, {filename: 'image2.jpg'});
       return got
@@ -129,11 +128,11 @@ export class HatsController {
         })
         .then(response => {
           const respJson = JSON.parse(response.body);
-          return respJson.similar ? theirHat : null;
+          return respJson.similar ? theirHatPost : null;
         });
     };
 
-    const similarityResults = await Promise.all(theirHats.map(compareHats));
+    const similarityResults = await Promise.all(allFoundHats.map(compareHats));
     const similarHats = similarityResults.filter(val => val !== null);
 
     return res.status(200).json(similarHats.slice(0, 5));
