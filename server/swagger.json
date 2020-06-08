@@ -291,7 +291,7 @@
           },
           {
             "in": "query",
-            "name": "limit",
+            "name": "perPage",
             "type": "integer"
           }
         ],
@@ -333,7 +333,7 @@
             "description": "Data for the new post to be added. You don't have to include the 'id' field",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Post"
+              "$ref": "#/definitions/PostPost"
             }
           }
         ],
@@ -394,10 +394,39 @@
         }
       }
     },
+    "PostPost": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": [
+            "lost", "found"
+          ]
+        },
+        "poster": {
+          "type": "string"
+        },
+        "textContent": {
+          "type": "string"
+        },
+        "hat": {
+          "type": "string"
+        }
+      }
+    },
     "Post": {
       "type": "object",
       "properties": {
         "id": {
+          "type": "string"
+        },
+        "eventType": {
+          "type": "string",
+          "enum": [
+            "lost", "found"
+          ]
+        },
+        "textContent": {
           "type": "string"
         },
         "poster": {
@@ -411,9 +440,6 @@
         "hat": {
           "type": "object",
           "$ref": "#/definitions/Hat"
-        },
-        "metadata": {
-          "type": "string"
         }
       }
     }
