@@ -53,10 +53,8 @@ passport.use(
             message: 'Cannot register - email/google acc reserved.',
           });
 
-        const getImageFromProfile = () => {
-          if (!profile.photos) return '';
-          else return profile.photos[0].value;
-        };
+        const getImageFromProfile = (profile: Profile) =>
+          profile.photos ? profile.photos[0].value : '';
 
         const newUser = await new User({
           email: email,
@@ -65,7 +63,7 @@ passport.use(
               id: profile.id,
               accessToken: accessToken,
               refreshToken: refreshToken,
-              pictureUrl: getImageFromProfile(),
+              pictureUrl: getImageFromProfile(profile),
             },
           },
         }).save();
