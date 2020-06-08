@@ -6,8 +6,23 @@
     "hats": [
         {
             "id": "qwe",
-            "name": "robert",
-            "imageUrl": "https://i.ytimg.com/vi/CnUT2KIvtSM/maxresdefault.jpg"
+            "name": "ulubiona",
+            "imageUrl": "http://localhost:3000/images/hat1.jpg"
+        },
+        {
+            "id": "qwe",
+            "name": "czerwona",
+            "imageUrl": "http://localhost:3000/images/post1.jpg"
+        },
+        {
+            "id": "qwe",
+            "name": "z pomponem",
+            "imageUrl": "http://localhost:3000/images/post2.jpg"
+        },
+        {
+            "id": "qwe",
+            "name": "szara",
+            "imageUrl": "http://localhost:3000/images/post3.jpg"
         }
     ],
     "posts": [
@@ -23,7 +38,7 @@
                 "name": "czerwona",
                 "imageUrl": "/images/post1.jpg"
             },
-            "metadata": "Witam. Znalazłem takową czapkę koloru czarnego. Pozdrawiam",
+            "metadata": "Witam. Znalazłem takową czapkę koloru czerwonego. Pozdrawiam",
             "reactions": [
                 {
                     "id": 0,
@@ -55,7 +70,25 @@
                 "name": "zielonawa",
                 "imageUrl": "/images/post2.jpg"
             },
-            "metadata": "Serwus, ktoś zostawił na kanapie."
+            "metadata": "Serwus, ktoś zostawił na kanapie.",
+            "reactions": [
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                },
+                {
+                    "id": 2,
+                    "user": {"email": "nope@xd.com", "photoUrl": "qwe@rty.com"}
+                }
+            ]
         },
         {
             "id": "mako69",
@@ -69,7 +102,7 @@
                 "name": "szara",
                 "imageUrl": "/images/post3.jpg"
             },
-            "metadata": "Witam, zlokalizowana czapka przy 5060."
+            "metadata": "Witam, zlokalizowana niebieska czapka przy 5060."
         },
         {
             "id": "tyrol37",

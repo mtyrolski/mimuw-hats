@@ -5,6 +5,7 @@ import {RadioChangeEvent} from "antd/es/radio";
 import {layout, optionLayout, tailLayout, uploadProps} from "./FormLayouts";
 import {MailOutlined} from "@ant-design/icons/lib";
 import {UploadFile} from "antd/es/upload/interface";
+import {apiFetchAuth} from "./fetcher";
 
 const { Option } = Select;
 
@@ -124,20 +125,25 @@ export class LostOverlay extends React.Component<overlayProps> {
                         initialValues={{ remember: true }}
                         onFinish={async (values) => {
                             let formData = new FormData();
-                            // Object.keys(values).map((item) => {
-                            //     formData.append(item, values[item]);
-                            // })
+                            Object.keys(values).map((item) => {
+                                formData.append(item, values[item]);
+                            })
 
-                            formData.append('metadata', 'twoja stara to kopara');
+                            // formData.append('metadata', 'twoja stara to kopara');
                             formData.append('image', this.state.fileList[0].originFileObj!);
 
                             // apiFetchAuth(true, 'dupa', {
-                            let response = await fetch('http://localhost:4000/api/hats', {
+                            // let response = await fetch('http://localhost:4000/api/hats', {
+                            //     method: 'POST',
+                            //     body: formData
+                            // });
+                            // let result = await response.json();
+                            // console.log(result);
+
+                            await apiFetchAuth(true, 'hats', {
                                 method: 'POST',
                                 body: formData
                             });
-                            let result = await response.json();
-                            console.log(result);
                         }}
                     >
                         <Form.Item
@@ -150,7 +156,7 @@ export class LostOverlay extends React.Component<overlayProps> {
 
                         <Form.Item {...tailLayout} name="radio-options">
                             <Radio.Group onChange={this.handleRadioChange} defaultValue={"choose"}>
-                                <Radio value={"choose"}>Choose from register hats
+                                <Radio value={"choose"}>Choose from registered hats
 
                                 </Radio>
 

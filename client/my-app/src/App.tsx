@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-do
 import './App.css';
 import {FoundOverlay, LostOverlay} from "./Overlay"
 import  {Layout, Menu} from 'antd';
+import DocumentTitle from 'react-document-title';
 import {
     UserOutlined,
     SearchOutlined,
@@ -43,6 +44,7 @@ class App extends React.Component {
         if (!this.state.user) return <Landing />;
 
         return <Router>
+            <DocumentTitle title='MIMUW-hats' />
             <Layout>
             <Sider
                 style={{

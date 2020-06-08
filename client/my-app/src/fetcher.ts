@@ -1,4 +1,4 @@
-const API: string = 'http://localhost:4000';
+const API: string = 'http://localhost:4000/api';
 
 function getJWT(cookies = document.cookie) {
     const cookiesObj = Object.fromEntries(cookies.split('; ').map(c => {
@@ -9,8 +9,8 @@ function getJWT(cookies = document.cookie) {
 };
 
 export function apiFetch(endpoint: RequestInfo, config: RequestInit = {}) {
-    return fetch(`${API}/${endpoint}`, config)
-        .then(response => response.json());
+    return fetch(`${API}/${endpoint}`, config);
+        // .then(response => response.json());
 }
 
 export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...customConfig}: RequestInit = {}) {
@@ -31,9 +31,9 @@ export function apiFetchAuth(logout: boolean, endpoint: RequestInfo, {body, ...c
         }
     };
 
-    if (body) {
-        config.body = JSON.stringify(body);
-    }
+    // if (body) {
+    //     config.body = JSON.stringify(body);
+    // }
 
     return fetch(`${API}/${endpoint}`, config)
         .then(async response => {

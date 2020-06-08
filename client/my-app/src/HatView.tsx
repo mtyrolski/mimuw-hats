@@ -4,6 +4,8 @@ import {Hat} from "./Hat";
 import {User} from "./User";
 import {SliderValue} from "antd/es/slider";
 import {layout, tailLayout, uploadProps} from "./FormLayouts";
+import 'react-image-crop/dist/ReactCrop.css';
+import ReactCrop, {makeAspectCrop} from 'react-image-crop';
 import {
     DeleteOutlined,
     MailOutlined,
@@ -49,7 +51,7 @@ export class HatView extends React.Component<HatViewProps> {
                 float: "left", border: this.props.footerVisibility ? "3px solid" : "none", borderColor: "dark-blue"}}
                 >
                     {this.props.footerVisibility && <b style={{fontSize: this.props.size}}>{this.props.hat.name}</b>}
-                <img style={{width: '100%'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
+                    <img style={this.props.footerVisibility ? {width: '100%'} : {width: '100%', height: '40em', objectFit: 'cover'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
                 </div>
 
                 <Modal
