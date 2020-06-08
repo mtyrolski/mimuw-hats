@@ -59,11 +59,11 @@ def sim(a, b):
         dict: json-like dictionary 'similar': TRUE|FALSE
     """
     a,b = np.asarray(a), np.asarray(b)
-    st.resize(a, (128, 128))
-    st.resize(b, (128, 128))
+    a=st.resize(a, (224, 224)).copy().astype(int)
+    b=st.resize(b, (224, 224)).copy().astype(int)
 
     d = rgb_wasserstein_distance(a,b)
-    h, w = 128, 128
+    h, w = 224, 224
     a = np.moveaxis(a, -1, 0)
     b = np.moveaxis(b, -1, 0)
     mean1 = [a[i, int(BEGIN*w):int(END*w), int(BEGIN*h):int(END*h)].mean() for i in range(3)]
