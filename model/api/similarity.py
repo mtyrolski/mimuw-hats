@@ -59,8 +59,8 @@ def sim(a, b):
         dict: json-like dictionary 'similar': TRUE|FALSE
     """
     a,b = np.asarray(a), np.asarray(b)
-    a = st.resize(a, (128, 128))
-    b = st.resize(b, (128, 128))
+    st.resize(a, (128, 128))
+    st.resize(b, (128, 128))
 
     d = rgb_wasserstein_distance(a,b)
     h, w = 128, 128
