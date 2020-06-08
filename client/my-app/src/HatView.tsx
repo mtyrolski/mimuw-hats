@@ -192,7 +192,7 @@ export class MineView extends React.Component<MineViewProps> {
     render() {
         return (
             <div style={{textAlign: "center"}}>
-                <Slider defaultValue={20} onChange={this.onSliderChange} min={5}
+                <Slider defaultValue={20} onChange={this.onSliderChange} min={5} style={{marginBottom: '4em'}}
                     marks={{
                         5: 'small',
                         20: 'medium',
