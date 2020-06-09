@@ -1,8 +1,15 @@
 import * as React from "react";
 import {apiFetchAuth} from "./fetcher";
 import {SliderValue} from "antd/es/slider";
-import {Alert, Button, Divider, message, Modal, Popconfirm, Slider} from "antd";
-import {AlertOutlined, DeleteOutlined, HeartOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons/lib";
+import {Alert, Button, Divider, message, Modal, Popconfirm, Slider, Spin} from "antd";
+import {
+    AlertOutlined,
+    DeleteOutlined,
+    HeartOutlined,
+    LoadingOutlined,
+    PlusOutlined,
+    SearchOutlined
+} from "@ant-design/icons/lib";
 import {AddHat, HatView} from "./HatView";
 import {Hat} from "./Hat";
 import Line from "antd/es/progress/Line";
@@ -25,12 +32,14 @@ export class LostHatView extends React.Component<LostHatViewProps> {
         popupVisibility: false,
         posts: [],
         visibility: true,
+        loadingVisibility: true,
     }
 
     async getPosts() {
-        await apiFetchAuth(true, `posts?page=1&perPage=3`, {method: 'GET'})
+        await apiFetchAuth(true, `hats/${this.props.postHat.hat.id}/similar`, {method: 'GET'})
             .then(response => response.json())
-            .then(json => this.setState({posts: [...json]}));
+            .then(json => this.setState({posts: [...json]}))
+            .then(() => this.setState({loadingVisibility: false}));
     }
 
     handleSearch() {
@@ -41,7 +50,6 @@ export class LostHatView extends React.Component<LostHatViewProps> {
     async markFound() {
         await apiFetchAuth(true, `posts/${this.props.postHat.id}`, {method: 'DELETE'})
             .then(response => response.json())
-            .then();
         this.setState({visibility: false});
     }
 
@@ -70,14 +78,17 @@ export class LostHatView extends React.Component<LostHatViewProps> {
                 <Divider/>
 
                 <Modal
-                    title={[this.props.postHat.hat.name]}
+                    title={["Our suggestions"]}
                     visible={this.state.popupVisibility}
                     onCancel={() => this.setState({popupVisibility: false})}
+                    width={"1000px"}
 
                     footer={[
                         <Button onClick={() => this.setState({popupVisibility: false})}> Cancel </Button>
                     ]}
                 >
+
+                    {this.state.loadingVisibility ? <div style={{margin: 'auto auto'}}><Spin indicator={<LoadingOutlined style={{fontSize: 24}} spin/>} /></div> : null }
 
                     {this.state.posts.map(post => <PostView post={post} />)}
 
