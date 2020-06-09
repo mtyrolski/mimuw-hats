@@ -15,11 +15,13 @@ import {apiFetchAuth} from "./fetcher";
 import {BoundingBox} from "./BoundingBox";
 import {UploadFile} from "antd/es/upload/interface";
 import getCroppedImg from "./cropImage";
+import {Post} from "./Post";
 
 interface HatViewProps {
     hat: Hat;
     size: number;
     footerVisibility: boolean;
+    lost: boolean;
 }
 
 interface MineViewProps {
@@ -52,7 +54,7 @@ export class HatView extends React.Component<HatViewProps> {
             <div style={{display: this.state.hatVisibility ? "inline" : "none"}}>
                 <div onClick={() => {this.setState({popupVisibility: true})}}
                  className="site-layout-background" style={{ width: this.props.size.toString() + "%",
-                float: "left", border: this.props.footerVisibility ? "3px solid" : "none", borderColor: "dark-blue"}}
+                float: "left", border: this.props.footerVisibility ? "3px solid" : "none", borderColor: this.props.lost ? "red" :"dark-blue"}}
                 >
                     {this.props.footerVisibility && <b style={{fontSize: this.props.size}}>{this.props.hat.name}</b>}
                     <img style={this.props.footerVisibility ? {width: '100%'} : {width: '100%', height: '40em', objectFit: 'cover'}} alt={this.props.hat.imageUrl} src={this.props.hat.imageUrl} />
@@ -166,7 +168,8 @@ export class MineView extends React.Component<MineViewProps> {
     state = {
         size: 20,
         addVisible: false,
-        hats: [],
+        hats: new Array<Hat>(0),
+        lostHats: new Array<number>(0),
     }
 
     async getHats() {
@@ -177,10 +180,19 @@ export class MineView extends React.Component<MineViewProps> {
             }));
     }
 
+    async getLostHats() {
+        let posts : Post[] = [];
+        await apiFetchAuth(true, `posts/lost`, {method: 'GET'})
+            .then(response => response.json())
+            .then(json => posts = [...json]);
+        this.setState({lostHats: posts.map(post => post.hat.id)});
+    }
+
     constructor(props: MineViewProps) {
         super(props);
         this.onSliderChange = this.onSliderChange.bind(this);
         this.getHats();
+        this.getLostHats();
     }
 
     onSliderChange(value: SliderValue) {
@@ -201,7 +213,7 @@ export class MineView extends React.Component<MineViewProps> {
                     }}
                 />
 
-                {this.state.hats.map(hat => <HatView hat={hat} size={this.state.size} footerVisibility={true}/>)}
+                {this.state.hats.map(hat => <HatView hat={hat} size={this.state.size} footerVisibility={true} lost={this.state.lostHats.some(id => id === hat.id)}/>)}
 
                 <Divider />
 

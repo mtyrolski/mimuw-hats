@@ -20,7 +20,7 @@ export class PostView extends React.Component<Props> {
                     <b style={{marginLeft: '1em'}} >{getName(this.props.post.poster)}</b>
                 </div>}
                 <p>{this.props.post.textContent}</p>
-                {this.props.post.hat && <HatView hat={this.props.post.hat} size={100} footerVisibility={false}/>}
+                {this.props.post.hat && <HatView hat={this.props.post.hat} size={100} footerVisibility={false} lost={false}/>}
                 <Divider />
                 <ReactionBox post={this.props.post} />
             </div>
