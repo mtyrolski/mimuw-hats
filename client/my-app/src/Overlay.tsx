@@ -151,18 +151,24 @@ export class LostOverlay extends React.Component<overlayProps> {
         super(props);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.state.radioValue = "choose";
+        this.updateHats();
     }
 
-    async handleRadioChange(event : RadioChangeEvent) {
-        this.setState({radioValue: event.target.value});
-
+    async updateHats() {
         let hats: Hat[] = await apiFetchAuth(true, `hats`, {method: 'GET'}).then(response => response.json());
         let lostHats: Hat[] = await apiFetchAuth(true, `posts/lost`, {method: 'GET'})
             .then(response => response.json())
             .then(json => json.map((post: Post) => post.hat));
-        hats = hats.filter((el: Hat) => !(lostHats || []).includes(el));
+
+        lostHats = lostHats || [];
+        hats = hats.filter((el: Hat) => !(lostHats.map(hat => hat.id).includes(el.id)));
 
         this.setState({hatList: hats});
+    }
+
+    async handleRadioChange(event : RadioChangeEvent) {
+        this.setState({radioValue: event.target.value});
+        this.updateHats();
     };
 
     render() {
