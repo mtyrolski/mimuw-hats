@@ -24,6 +24,7 @@ export class LostHatView extends React.Component<LostHatViewProps> {
     state = {
         popupVisibility: false,
         posts: [],
+        visibility: true,
     }
 
     async getPosts() {
@@ -37,14 +38,17 @@ export class LostHatView extends React.Component<LostHatViewProps> {
         this.setState({popupVisibility: true,});
     }
 
-    markFound() {
-
+    async markFound() {
+        await apiFetchAuth(true, `posts/${this.props.postHat.id}`, {method: 'DELETE'})
+            .then(response => response.json())
+            .then();
+        this.setState({visibility: false});
     }
 
     render() {
         return (
 
-            <div className="site-layout-background">
+            (this.state.visibility ? <div className="site-layout-background">
 
             <div style={{width: "100%", height: "100px"}} >
 
@@ -79,7 +83,7 @@ export class LostHatView extends React.Component<LostHatViewProps> {
 
                 </Modal>
 
-            </div>
+            </div> : null)
         );
     }
 }

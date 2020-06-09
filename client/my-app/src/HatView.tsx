@@ -191,8 +191,8 @@ export class MineView extends React.Component<MineViewProps> {
     constructor(props: MineViewProps) {
         super(props);
         this.onSliderChange = this.onSliderChange.bind(this);
-        this.getHats();
         this.getLostHats();
+        this.getHats();
     }
 
     onSliderChange(value: SliderValue) {
