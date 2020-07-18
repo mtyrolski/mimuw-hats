@@ -57,7 +57,7 @@ class Server {
     this.app.use(
       cors({
         // // TODO: set to frontend and local in debug
-        origin: 'http://localhost:3000', // allow to server to accept request from different origin
+        origin: process.env.CLIENT_HOME_PAGE_URL, // allow to server to accept request from different origin
         credentials: true, // allow session cookie from browser to pass through
       })
     );
