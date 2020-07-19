@@ -1,44 +1,29 @@
 version: '3'
 services:
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    volumes:
-      - static-volume:/usr/share/nginx/html
-    ports:
-      - '80:80'
-    depends_on:
-      - client
-#  mongo:
-#    container_name: mongo
-#    image: mongo
-#    ports:
-#      - '27017:27017'
-#  api:
-#    restart: always
-#    build:
-#      dockerfile: Dockerfile
-#      context: ./server
-#    volumes:
-#      - /app/node_modules
-#      - ./server:/app
-#    links:
-#      - mongo
-#    ports:
-#      - '5000:5000'
-#    depends_on:
-#      - mongo
+  #  mongo:
+  #    container_name: mongo
+  #    image: mongo
+  #    ports:
+  #      - '27017:27017'
+  #  api:
+  #    restart: always
+  #    build:
+  #      dockerfile: Dockerfile
+  #      context: ./server
+  #    volumes:
+  #      - /app/node_modules
+  #      - ./server:/app
+  #    links:
+  #      - mongo
+  #    ports:
+  #      - '5000:5000'
+  #    depends_on:
+  #      - mongo
   client:
     build:
       dockerfile: prod.Dockerfile
       context: ./client
-    volumes:
-      - static-volume:/app/build
-      - /app/node_modules
-      - ./client:/app
+    ports:
+      - '80:80'
 #    links:
 #      - api
-volumes:
-  static-volume:
