@@ -54,11 +54,11 @@
     "passport-jwt": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "typescript": "^3.8.3",
-    "uuid": "^8.1.0"
+    "uuid": "^8.1.0",
+    "gts": "^2.0.2"
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "gts": "^2.0.2"
+    "concurrently": "^4.1.0"
   },
   "main": "index.js",
   "repository": {

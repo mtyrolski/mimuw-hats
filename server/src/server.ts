@@ -26,7 +26,7 @@ class Server {
     this.static();
     this.errorHandler();
     this.mongo();
-    this.swagger();
+    if (process.env.NODE_ENV !== 'production') this.swagger();
   }
 
   public routes(): void {

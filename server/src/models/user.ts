@@ -44,3 +44,13 @@ export const User: Model<Authorizable> = model<Authorizable>(
   'User',
   userSchema
 );
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface User {
+      _id: string;
+      email: string;
+    }
+  }
+}
