@@ -1,22 +1,13 @@
-FROM node:carbon
+FROM node:lts-alpine
 
 ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_ENV production
+ENV PORT 3000
 
-ADD dist /home/node/app/dist
-ADD package.json /home/node/app/package.json
+WORKDIR /app
 
-ENV MONGODB_URI mongodb://db:27017
-ENV JWT_SECRET ashdfjhasdlkjfhalksdjhflak
-ENV SALT_SECRET 8
+COPY . .
+RUN npm install
+RUN npm run compile
 
-RUN chown -R node:node /home/node/app 
-
-USER node
-WORKDIR /home/node/app
-RUN npm install --save
-
-EXPOSE 3000
-
-#CMD node dist/server.js
-CMD npm run watch
+CMD [ "node", "dist/server.js" ]
