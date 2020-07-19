@@ -1,0 +1,485 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is our REST API specification. You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
+    "version": "0.1.0",
+    "title": "Mimuw Hats",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Mainly user authentication",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "hats",
+      "description": "Hat management endpoints"
+    },
+    {
+      "name": "posts",
+      "description": "Users posts, mostly describing some events of losing hats"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "First user registration step - sends verification URL to given email.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "emailPayload",
+            "schema": {
+              "$ref": "#/definitions/Email"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email successfully sent."
+          },
+          "409": {
+            "description": "Unable to register - user with given email already exists."
+          },
+          "422": {
+            "description": "Incorrect email (probably not a MIMUW one)."
+          },
+          "503": {
+            "description": "Email correct, problem with sending it, try again."
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged in",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "text/plain"
+        ],
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirect to the home page",
+            "headers": {
+              "Location": {
+                "description": "Frontend homepage",
+                "type": "string",
+                "default": "http://localhost:3000"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/google": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Endpoint for Google API login/registration, in case of unauthorized user",
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to Google OAuth2",
+            "headers": {
+              "Location": {
+                "description": "Google OAuth2 link",
+                "type": "string"
+              },
+              "Set-Cookie": {
+                "description": "After successful external authentication, user is redirected to the frontend and a newly generated JWT token is stored in 'jwt' cookie",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hats": {
+      "get": {
+        "tags": [
+          "hats"
+        ],
+        "summary": "Return all user's hats",
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Collection of hat objects containing their metadata",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Hat"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "hats"
+        ],
+        "summary": "Upload a new hat along with form data to the server.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "lost",
+            "type": "boolean",
+            "description": "Type of upload - registration: 0, lost: 1"
+          },
+          {
+            "in": "formData",
+            "name": "metadata",
+            "type": "string",
+            "description": "Hat metadata"
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "description": "The new hat's image"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly added hat object with metadata",
+            "schema": {
+              "$ref": "#/definitions/Hat"
+            }
+          },
+          "400": {
+            "description": "No picture provided."
+          },
+          "408": {
+            "description": "Timeout - failed to upload/process hat."
+          },
+          "422": {
+            "description": "Uploaded item classified as a non-hat."
+          }
+        }
+      }
+    },
+    "/hats/{id}": {
+      "delete": {
+        "tags": [
+          "hats"
+        ],
+        "summary": "Delete user's hat.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hat has been successfully deleted.",
+            "schema": {
+              "$ref": "#/definitions/Hat"
+            }
+          },
+          "404": {
+            "description": "No hat found with given ID"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Get a collection (maybe some fragment) of public posts, ordered from the newest",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts ordered by publication date",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Add a new event of losing / finding hat.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "payload",
+            "description": "Data for the new post to be added. You don't have to include the 'id' field",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostPost"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added post, with a newly generated id.",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/posts/lost": {
+      "get": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Get a collection of post representing user's lost hats.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts ordered by publication date",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Email": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User's MIMUW e-mail for registration."
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Mimuw e-mail as a unique user ID."
+        },
+        "photoUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "User's photo URL."
+        }
+      }
+    },
+    "Hat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique hat ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Hat name given by owner"
+        },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "PostPost": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "enum": [
+            "lost", "found"
+          ]
+        },
+        "poster": {
+          "type": "string"
+        },
+        "textContent": {
+          "type": "string"
+        },
+        "hat": {
+          "type": "string"
+        }
+      }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "eventType": {
+          "type": "string",
+          "enum": [
+            "lost", "found"
+          ]
+        },
+        "textContent": {
+          "type": "string"
+        },
+        "poster": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "hat": {
+          "type": "object",
+          "$ref": "#/definitions/Hat"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
