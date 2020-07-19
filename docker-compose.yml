@@ -1,16 +1,5 @@
 version: '3'
 services:
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    volumes:
-      - static-volume:/usr/share/nginx/html
-    ports:
-      - '80:80'
-    depends_on:
-      - client
 #  mongo:
 #    container_name: mongo
 #    image: mongo
@@ -34,11 +23,7 @@ services:
     build:
       dockerfile: prod.Dockerfile
       context: ./client
-    volumes:
-      - static-volume:/app/build
-      - /app/node_modules
-      - ./client:/app
+    ports:
+      - '80:80'
 #    links:
 #      - api
-volumes:
-  static-volume:
