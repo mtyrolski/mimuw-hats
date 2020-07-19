@@ -16,9 +16,10 @@ import {AddHat, MineView} from "./HatView";
 import {FeedView} from "./FeedView";
 import Landing from "./Landing";
 import {User} from "./User";
-import {apiFetchAuth, logIn, logOut} from "./fetcher";
+import {apiFetchAuth, logOut} from "./fetcher";
 import {Preferences} from "./Preferences";
 import {LostedHats} from "./LostedHats";
+import Cookies from "universal-cookie";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -41,6 +42,13 @@ class App extends React.Component {
     };
 
     componentDidMount() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const cookies = new Cookies();
+        if (urlParams.has('jwt')) {
+            const jwt = urlParams.get('jwt');
+            cookies.set('jwt', jwt);
+        }
+
         apiFetchAuth(false, 'user/login')
             .then(response => response.ok ? response : Promise.reject(response))
             .then(response => response.json())

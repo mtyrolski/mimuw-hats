@@ -1,4 +1,4 @@
-const API = process.env.REACT_APP_API_URL as string;
+const API: string = '/api';
 
 function getJWT(cookies = document.cookie) {
     const cookiesObj = Object.fromEntries(cookies.split('; ').map(c => {
