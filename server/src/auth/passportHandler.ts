@@ -24,6 +24,7 @@ passport.use(
       clientSecret: GOOGLE_OAUTH2_CLIENT_SECRET,
       callbackURL: GOOGLE_OAUTH2_CALLBACK_URL,
       passReqToCallback: true,
+      proxy: true
     },
     async (
       req: Request,
