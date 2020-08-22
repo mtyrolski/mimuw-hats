@@ -14,7 +14,7 @@ import {
   JWT_SECRET,
   JWT_EXPIRATION_SECS,
   CLIENT_HOME_PAGE_URL,
-  SENDGRID_API_KEY,
+  SENDGRID_API_KEY, SERVER_HOME_PAGE_URL,
 } from '../util/secrets';
 import {Authorizable, User} from '../models/user';
 import {
@@ -35,11 +35,7 @@ export class UserController {
       JWT_SECRET,
       {expiresIn: JWT_EXPIRATION_SECS}
     );
-    res.cookie('jwt', token, {
-      maxAge: (1 + JWT_EXPIRATION_SECS) * 1000,
-    });
-    // TODO: redirect needed? I don't think so.
-    res.status(200).redirect(CLIENT_HOME_PAGE_URL);
+    res.status(200).redirect(`${CLIENT_HOME_PAGE_URL}?jwt=${token}`);
   }
 
   public getUser(req: Request, res: Response) {
@@ -71,8 +67,7 @@ export class UserController {
       from: 'kkrecikov@yandex.com',
       subject: 'Mimuw-hats: continue your registration',
       text:
-        'Here is your activation link: http://localhost:4000/api/user/google/register/' +
-        tokenWrapper.token,
+        `Here is your activation link: ${SERVER_HOME_PAGE_URL}/api/user/google/register/${tokenWrapper.token}`
     };
     try {
       await sgMail.send(msg);
