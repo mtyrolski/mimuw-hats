@@ -32,6 +32,10 @@ export const CLIENT_HOME_PAGE_URL = process.env[
   'CLIENT_HOME_PAGE_URL'
 ] as string;
 
+export const SERVER_HOME_PAGE_URL = process.env[
+  'SERVER_HOME_PAGE_URL'
+] as string;
+
 export const HATS_STORAGE_DIR = resolve(
   process.env['HATS_STORAGE_DIR'] as string
 );
