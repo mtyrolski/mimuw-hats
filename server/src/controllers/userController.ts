@@ -35,11 +35,7 @@ export class UserController {
       JWT_SECRET,
       {expiresIn: JWT_EXPIRATION_SECS}
     );
-    res.cookie('jwt', token, {
-      maxAge: (1 + JWT_EXPIRATION_SECS) * 1000,
-    });
-    // TODO: redirect needed? I don't think so.
-    res.status(200).redirect(CLIENT_HOME_PAGE_URL);
+    res.status(200).redirect(`${CLIENT_HOME_PAGE_URL}?jwt=${token}`);
   }
 
   public getUser(req: Request, res: Response) {
