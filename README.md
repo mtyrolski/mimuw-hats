@@ -5,7 +5,7 @@ MIMUW-hats is a project meant to help fight against the plague of hats and other
 https://mimuw-hats.herokuapp.com/
 ## <img src="client/public/images/sumport.png" width="35" height="35" /> Software Architecture Introduction
 
-The project provides a web app which allows users to post found hats as well as report their finds. <br> <br> The system will automatically match images and/or textual descriptions, notifying the owners of the lost items. There will be the option to register their hats to be automatically matched if they are found. There will also be an element of gamification by means of awarding productive users with experience points as well as a verysimple feed for viewing, bumping and reacting to posts about lost and found items. The project can also be modified to suit current market demand, for example handling face masks in addition to hats.
+The project provides a web app which allows users to post found hats as well as report their finds. <br> <br> The system will automatically match images and/or textual descriptions, notifying the owners of the lost items. There will be the option to register their hats to be automatically matched if they are found. There will also be an element of gamification by means of awarding productive users with experience points as well as a very simple feed for viewing, bumping and reacting to posts about lost and found items. The project can also be modified to suit current market demand, for example handling face masks in addition to hats.
 
 ## <img src="client/public/images/sumport_2.png" width="35" height="35" /> Technical Details
 
