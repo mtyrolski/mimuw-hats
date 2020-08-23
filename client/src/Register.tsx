@@ -80,9 +80,12 @@ export class RegisterView extends React.Component<OverlayProps> {
 
                         <Form.Item name="mail" label={"E-mail"} rules={[{required: true, message: 'E-mail required'},
                             {
-                                pattern: new RegExp("^[\\w.+\\-]+@(students.)?mimuw\\.edu\\.pl$"),
+                                pattern: process.env.DISABLE_MIMUW_EMAIL ?
+                                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                                  : new RegExp("^[\\w.+\\-]+@(students.)?mimuw\\.edu\\.pl$"),
                                 message: 'Not correct MIMUW adress'
-                            }]}>
+                            }
+                            ]}>
                             <Input/>
                         </Form.Item>
 
