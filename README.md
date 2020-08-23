@@ -38,6 +38,12 @@ Google Colab - the free version gives access to NVIDIA Tesla K80, P4,
 T4, P100, and V100 GPUs (Google Colab assigns specific models
 without the possibility of choosing them by us).
 
+### Deployment
+The current deployment setup consists of two Heroku apps - the one visible to the user (frontend) is powered by a nginx
+server which serves the React app through static files as well as acts as a (reverse) proxy to the actual backend, which is another
+Heroku app, not visible directly to the user. The backend is connected to a MongoDB cluster. Both frontend and backend run
+as Docker containers (on Heroku they are deployed through heroku.yml). Machine learning backend is easily configurable 
+and can run on any provided infrastructure.
 
 ## <img src="client/public/images/sumport_3.png" width="35" height="35" /> Additional constraints
 
