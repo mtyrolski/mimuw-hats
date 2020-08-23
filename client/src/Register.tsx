@@ -3,6 +3,8 @@ import React from 'react';
 import {GoogleOutlined} from "@ant-design/icons/lib";
 import {apiFetch} from "./fetcher";
 
+const DISABLE_MIMUW_EMAIL = true;
+
 const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16, offset: 8},
@@ -80,7 +82,7 @@ export class RegisterView extends React.Component<OverlayProps> {
 
                         <Form.Item name="mail" label={"E-mail"} rules={[{required: true, message: 'E-mail required'},
                             {
-                                pattern: process.env.DISABLE_MIMUW_EMAIL ?
+                                pattern: DISABLE_MIMUW_EMAIL ?
                                     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                                   : new RegExp("^[\\w.+\\-]+@(students.)?mimuw\\.edu\\.pl$"),
                                 message: 'Not correct MIMUW adress'
