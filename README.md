@@ -62,4 +62,4 @@ fast as to provide a better user experience.
 User participation is encouraged by awarding active players with
 experience points. When accumulated, they allow users to gain
 ranks. Ranks will be named by MIMUW courses according to their
-difficulty, e.g. Rank 1 - PO, Rank 5 - MD, Rank 10 - WPI.
+difficulty, e.g. Rank 1 - PO, Rank 5 - MD, Rank 10 - WPI, Rank 997 - Paweł będzie skakał
