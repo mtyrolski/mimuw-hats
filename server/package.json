@@ -43,7 +43,7 @@
     "email-validator": "^2.0.4",
     "express": "^4.16.4",
     "formdata-node": "^2.1.2",
-    "got": "9.6.0",
+    "got": "11.8.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.16",
     "morgan": "^1.10.0",
