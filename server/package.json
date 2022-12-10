@@ -41,7 +41,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "formdata-node": "^2.1.2",
     "got": "9.6.0",
     "jsonwebtoken": "^8.5.1",
